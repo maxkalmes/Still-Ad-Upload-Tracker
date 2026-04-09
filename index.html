@@ -370,12 +370,9 @@ function showPairStep(){
   const thumbHTML=(file,side)=>{
     const isPaired=(side==='45'?paired45Ids:paired916Ids).has(file.id);
     const isSel=pending45&&file.id===pending45.id&&side==='45';
-    return `<div class="pthumb ${isPaired?'paired':''} ${isSel?'selected':''}"
-      onclick="${isPaired?'void(0)':''}" id="pt_${side}_${file.id}"
-      ${isPaired?'':'onclick="pickFile(\''+side+'\',\''+file.id+'\')"'}>
-      <img src="${file.thumbUrl}" onerror="this.style.opacity='.15'"/>
-      <div class="pname">${file.name}</div>
-    </div>`;
+    const cls='pthumb'+(isPaired?' paired':'')+(isSel?' selected':'');
+    const click=isPaired?'':' onclick="pickFile(\x27'+side+'\x27,\x27'+file.id+'\x27)"';
+    return '<div class="'+cls+'"'+click+'><img src="'+file.thumbUrl+'" onerror="this.style.opacity=.15"/><div class="pname">'+file.name+'</div></div>';
   };
   const pairsHTML=pairs.length?`
     <div style="border-top:1px solid var(--bor);padding-top:14px;margin-top:14px">
