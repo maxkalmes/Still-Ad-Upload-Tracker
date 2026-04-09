@@ -394,11 +394,17 @@ function closeImport(){cv('importOv');}
 
 function showStep1(){
   g('importBody').innerHTML=`
-    <div class="info">Paste all your Drive links at once — both 4×5 and 9×16 mixed together. The app will show thumbnails and you just click once to label each one.</div>
+    <div class="info">Paste your 4×5 links in the left box and 9×16 links in the right box. Then you'll pair them visually.</div>
     <div class="fg"><div class="flabel">Product / Campaign name *</div><input class="fi" id="imp_prod" placeholder="e.g. Summer Shield Vault" list="prodList"/></div>
-    <div class="fg">
-      <div class="flabel">Paste all Google Drive links</div>
-      <textarea class="fi" id="imp_links_all" style="min-height:120px" placeholder="https://drive.google.com/file/d/...&#10;https://drive.google.com/file/d/..."></textarea>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+      <div class="fg" style="margin:0">
+        <div class="flabel" style="margin-bottom:5px">4×5 links *</div>
+        <textarea class="fi" id="imp_links45" style="min-height:100px;font-size:11px" placeholder="Paste 4×5 Drive links here..."></textarea>
+      </div>
+      <div class="fg" style="margin:0">
+        <div class="flabel" style="margin-bottom:5px">9×16 links *</div>
+        <textarea class="fi" id="imp_links916" style="min-height:100px;font-size:11px" placeholder="Paste 9×16 Drive links here..."></textarea>
+      </div>
     </div>
     <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:14px;border-top:1px solid var(--bor)">
       <button class="btn btn-ghost" onclick="closeImport()">Cancel</button>
@@ -407,70 +413,97 @@ function showStep1(){
 }
 
 function extractLinks(raw){
-  const matches=raw.match(/https:\/\/drive\.google\.com\/file\/d\/[a-zA-Z0-9_-]+[^\s,"']*/g)||[];
+  const matches=(raw||'').match(/https:\/\/drive\.google\.com\/file\/d\/[a-zA-Z0-9_-]+[^\s,"']*/g)||[];
   return matches.map((url,i)=>{
     const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);
     const id=m?m[1]:null;
-    return {id:id||('f'+i),name:'Image '+(i+1),url:'https://drive.google.com/file/d/'+id+'/view',thumbUrl:id?'https://drive.google.com/thumbnail?id='+id+'&sz=w600':''};
+    return {id:id||('f'+i),name:'Image '+(i+1),url:'https://drive.google.com/file/d/'+id+'/view',thumbUrl:id?'https://drive.google.com/thumbnail?id='+id+'&sz=w400':''};
   });
 }
 
+let files45=[], files916=[];
+
 function loadLinks(){
   const prod=document.getElementById('imp_prod').value.trim();
-  const raw=document.getElementById('imp_links_all').value.trim();
+  const raw45=document.getElementById('imp_links45').value.trim();
+  const raw916=document.getElementById('imp_links916').value.trim();
   if(!prod){toast('Enter a product name');return;}
-  if(!raw){toast('Paste at least one link');return;}
-  const files=extractLinks(raw);
-  if(!files.length){toast('No valid Drive links found');return;}
+  if(!raw45){toast('Paste your 4×5 links');return;}
+  if(!raw916){toast('Paste your 9×16 links');return;}
+  files45=extractLinks(raw45);
+  files916=extractLinks(raw916);
+  if(!files45.length){toast('No valid Drive links found in 4×5 box');return;}
+  if(!files916.length){toast('No valid Drive links found in 9×16 box');return;}
   impProduct=prod;
-  allFiles=files.map(f=>({...f,label:null})); // label: null | '45' | '916'
   pairs=[];
-  showLabelStep();
+  pending45=null;
+  showPairingUI();
 }
 
-function showLabelStep(){
-  const labeled45=allFiles.filter(f=>f.label==='45');
-  const labeled916=allFiles.filter(f=>f.label==='916');
-  const unlabeled=allFiles.filter(f=>!f.label);
+function showPairingUI(){
+  const paired45=new Set(pairs.map(p=>p.file45.id));
+  const paired916=new Set(pairs.map(p=>p.file916.id));
 
-  // Auto-pair any matched sets
-  pairs=[];
-  const minPairs=Math.min(labeled45.length,labeled916.length);
-  for(let i=0;i<minPairs;i++) pairs.push({file45:labeled45[i],file916:labeled916[i]});
-
-  const thumbCard=(file)=>{
-    const lbl=file.label;
-    const border=lbl==='45'?'border:2px solid var(--tx)':lbl==='916'?'border:2px solid var(--gnm)':'border:1.5px solid var(--bor)';
-    const badge=lbl==='45'?'<div style="position:absolute;top:4px;left:4px;background:var(--tx);color:#fff;font-size:9px;font-weight:600;padding:2px 6px;border-radius:100px">4×5</div>'
-      :lbl==='916'?'<div style="position:absolute;top:4px;left:4px;background:var(--gn);color:#fff;font-size:9px;font-weight:600;padding:2px 6px;border-radius:100px">9×16</div>':'';
-    const overlay=!lbl?'<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:rgba(0,0,0,.32)">'
-      +'<button onclick="labelFile(\''+file.id+'\',\'45\')" style="background:var(--tx);color:#fff;border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif;width:72px">4×5</button>'
-      +'<button onclick="labelFile(\''+file.id+'\',\'916\')" style="background:var(--gn);color:#fff;border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif;width:72px">9×16</button>'
-      +'</div>':'<div style="position:absolute;top:4px;right:4px;cursor:pointer;background:rgba(0,0,0,.5);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px" onclick="labelFile(\''+file.id+'\',null)">✕</div>';
-    return '<div style="position:relative;'+border+';border-radius:var(--rs);overflow:hidden;cursor:pointer" onclick="'+(!lbl?'':'void(0)')+'">'+
-      '<img src="'+file.thumbUrl+'" style="width:100%;height:140px;object-fit:contain;background:#f0f0f0;display:block" onerror="this.style.opacity=.2"/>'+
-      badge+overlay+'</div>';
+  const makeThumb=(file,side)=>{
+    const isPaired=(side==='45'?paired45:paired916).has(file.id);
+    const isSel=pending45&&file.id===pending45.id&&side==='45';
+    const cls='position:relative;border-radius:var(--rs);overflow:hidden;cursor:'+(isPaired?'default':'pointer')+';opacity:'+(isPaired?'.4':'1')+';border:'+(isSel?'2.5px solid var(--tx)':isPaired?'1.5px solid var(--gnm)':'1.5px solid var(--bor)')+';background:#f5f5f5';
+    const click=isPaired?'':' onclick="pickFile2(\''+side+'\',\''+file.id+'\''+')"';
+    return '<div style="'+cls+'"'+click+'>'
+      +'<img src="'+file.thumbUrl+'" style="width:100%;height:120px;object-fit:contain;display:block;background:#f5f5f5"/>'
+      +(isPaired?'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(27,92,56,.15)"><span style="background:var(--gn);color:#fff;font-size:9px;font-weight:600;padding:2px 7px;border-radius:100px">Paired</span></div>':'')
+      +(isSel?'<div style="position:absolute;inset:0;background:rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center"><span style="background:var(--tx);color:#fff;font-size:9px;font-weight:600;padding:2px 7px;border-radius:100px">Selected</span></div>':'')
+      +'</div>';
   };
 
+  const pairsHTML=pairs.length?
+    '<div style="border-top:1px solid var(--bor);padding-top:12px;margin-top:12px">'
+    +'<div style="font-size:12px;font-weight:600;margin-bottom:10px;color:var(--tx)">'+pairs.length+' paired</div>'
+    +'<div style="display:flex;flex-direction:column;gap:8px;max-height:160px;overflow-y:auto">'
+    +pairs.map((p,i)=>'<div style="display:flex;align-items:center;gap:8px;background:var(--sur2);border-radius:var(--rs);padding:6px 8px">'
+      +'<img src="'+p.file45.thumbUrl+'" style="width:32px;height:40px;object-fit:contain;border-radius:3px;background:#f0f0f0"/>'
+      +'<span style="font-size:11px;color:var(--mu)">4×5</span>'
+      +'<span style="color:var(--bor2)">↔</span>'
+      +'<img src="'+p.file916.thumbUrl+'" style="width:23px;height:40px;object-fit:contain;border-radius:3px;background:#f0f0f0"/>'
+      +'<span style="font-size:11px;color:var(--mu)">9×16</span>'
+      +'<button onclick="removePair2('+i+')" style="margin-left:auto;background:none;border:none;cursor:pointer;color:var(--mu);font-size:13px">✕</button>'
+      +'</div>').join('')
+    +'</div></div>':' ';
+
   g('importBody').innerHTML=
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">'
-    +'<div style="font-size:13px;color:var(--mu)">Click each image to label it as <strong style="color:var(--tx)">4×5</strong> or <strong style="color:var(--gn)">9×16</strong>. Labeled: <strong>'+labeled45.length+'</strong> × 4×5 &nbsp; <strong>'+labeled916.length+'</strong> × 9×16 &nbsp; <strong>'+unlabeled.length+'</strong> unlabeled</div>'
+    '<div style="font-size:13px;color:var(--mu);margin-bottom:12px">'
+    +(pending45?'<span style="color:var(--am);font-weight:500">4×5 selected — now click its matching 9×16 →</span>':'Click a <strong style="color:var(--tx)">4×5</strong>, then its matching <strong style="color:var(--tx)">9×16</strong>.')
+    +' <span style="color:var(--bor2)">'+pairs.length+' paired, '+(files45.length-pairs.length)+' remaining</span>'
     +'</div>'
-    +'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;max-height:420px;overflow-y:auto;margin-bottom:16px">'
-    +allFiles.map(f=>thumbCard(f)).join('')
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">'
+    +'<div><div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);margin-bottom:8px;text-align:center">4×5</div>'
+    +'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;max-height:340px;overflow-y:auto">'
+    +files45.map(f=>makeThumb(f,'45')).join('')+'</div></div>'
+    +'<div><div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);margin-bottom:8px;text-align:center">9×16</div>'
+    +'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;max-height:340px;overflow-y:auto">'
+    +files916.map(f=>makeThumb(f,'916')).join('')+'</div></div>'
     +'</div>'
-    +'<div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid var(--bor)">'
+    +pairsHTML
+    +'<div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid var(--bor);margin-top:14px">'
     +'<button class="btn btn-ghost btn-sm" onclick="showStep1()">← Back</button>'
-    +(pairs.length?'<button class="btn btn-dark" onclick="addPairsToBoard()">Add '+pairs.length+' paired creative'+(pairs.length!==1?'s':'')+' to board →</button>':'<span style="font-size:12px;color:var(--mu)">Label images to create pairs</span>')
+    +(pairs.length?'<button class="btn btn-dark" onclick="addPairsToBoard()">Add '+pairs.length+' creative'+(pairs.length!==1?'s':'')+' to board →</button>':'<span style="font-size:12px;color:var(--mu)">Pair at least one to continue</span>')
     +'</div>';
 }
 
-function labelFile(fileId, label){
-  const f=allFiles.find(x=>x.id===fileId);
-  if(!f) return;
-  f.label=label;
-  showLabelStep();
+function pickFile2(side,fileId){
+  if(side==='45'){
+    pending45=files45.find(f=>f.id===fileId)||null;
+    showPairingUI();
+    toast('Now click the matching 9×16');
+  } else {
+    if(!pending45){toast('Select a 4×5 first');return;}
+    pairs.push({file45:pending45,file916:files916.find(f=>f.id===fileId)});
+    pending45=null;
+    showPairingUI();
+  }
 }
+
+function removePair2(i){pairs.splice(i,1);showPairingUI();}
 
 function showPairStep(){
   const paired45Ids=new Set(pairs.map(p=>p.file45.id));
