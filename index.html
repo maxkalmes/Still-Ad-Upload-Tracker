@@ -630,35 +630,83 @@ async function publishShare(){
   const btn=g('shareBtn');
   btn.textContent='Publishing...';btn.disabled=true;
   try{
-    // Check if we already have a blob ID stored
+    const payload={creatives:data,publishedAt:new Date().toISOString()};
     const existingId=localStorage.getItem('ct_blob_id');
     let blobId=existingId;
-    const payload=JSON.stringify({creatives:data,publishedAt:new Date().toISOString()});
+
     if(existingId){
-      // Update existing blob
-      const res=await fetch('https://jsonblob.com/api/jsonBlob/'+existingId,{
-        method:'PUT',
-        headers:{'Content-Type':'application/json','Accept':'application/json'},
-        body:payload
-      });
-      if(!res.ok) blobId=null; // if update fails, create new
+      // Try to update existing via npoint
+      try{
+        const res=await fetch('https://api.npoint.io/'+existingId,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify(payload)
+        });
+        if(!res.ok) blobId=null;
+      }catch(e){ blobId=null; }
     }
+
     if(!blobId){
-      // Create new blob
-      const res=await fetch('https://jsonblob.com/api/jsonBlob',{
+      // Create new bin via npoint
+      const res=await fetch('https://api.npoint.io/bins',{
         method:'POST',
-        headers:{'Content-Type':'application/json','Accept':'application/json'},
-        body:payload
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(payload)
       });
-      if(!res.ok) throw new Error('Could not publish');
-      const loc=res.headers.get('Location')||'';
-      blobId=loc.split('/').pop();
+      if(!res.ok) throw new Error('publish failed');
+      const json=await res.json();
+      blobId=json.id||json._id;
+      if(!blobId) throw new Error('no id returned');
       localStorage.setItem('ct_blob_id',blobId);
     }
+
     const shareUrl=window.location.origin+window.location.pathname+'?view='+blobId;
     showShareModal(shareUrl,blobId);
   }catch(e){
-    toast('Could not publish — check your connection');
+    console.error(e);
+    // Fallback: encode data in URL using compression
+    publishViaUrl();
+  }finally{
+    btn.textContent='⬡ Share board';btn.disabled=false;
+  }
+}
+
+async function publishViaUrl(){
+  // Fallback: store on jsonbin.io (free, CORS-friendly)
+  const btn=g('shareBtn');
+  btn.textContent='Trying backup...';btn.disabled=true;
+  try{
+    const payload={creatives:data,publishedAt:new Date().toISOString()};
+    const existingId=localStorage.getItem('ct_jsonbin_id');
+    let binId=existingId;
+
+    if(existingId){
+      const res=await fetch('https://api.jsonbin.io/v3/b/'+existingId,{
+        method:'PUT',
+        headers:{'Content-Type':'application/json','X-Bin-Private':'false'},
+        body:JSON.stringify(payload)
+      });
+      if(!res.ok) binId=null;
+    }
+
+    if(!binId){
+      const res=await fetch('https://api.jsonbin.io/v3/b',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','X-Bin-Private':'false','X-Bin-Name':'creative-tracker'},
+        body:JSON.stringify(payload)
+      });
+      if(!res.ok) throw new Error('jsonbin failed');
+      const json=await res.json();
+      binId=json.metadata&&json.metadata.id;
+      if(!binId) throw new Error('no bin id');
+      localStorage.setItem('ct_jsonbin_id',binId);
+      localStorage.setItem('ct_blob_id',binId);
+    }
+
+    const shareUrl=window.location.origin+window.location.pathname+'?view='+binId+'&src=jb';
+    showShareModal(shareUrl,binId);
+  }catch(e){
+    toast('Could not publish. Try again in a moment.');
     console.error(e);
   }finally{
     btn.textContent='⬡ Share board';btn.disabled=false;
@@ -693,7 +741,7 @@ async function checkViewMode(){
   const params=new URLSearchParams(window.location.search);
   const blobId=params.get('view');
   if(!blobId) return false;
-  // Show loading
+  const src=params.get('src');
   document.body.innerHTML=`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:12px;font-family:DM Sans,sans-serif;color:#78766e">
     <div style="font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#161510;margin-bottom:8px">Creative Tracker</div>
     <div style="display:inline-block;width:16px;height:16px;border:2px solid #e0ddd4;border-top-color:#78766e;border-radius:50%;animation:spin .7s linear infinite"></div>
@@ -701,16 +749,27 @@ async function checkViewMode(){
     <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
   </div>`;
   try{
-    const res=await fetch('https://jsonblob.com/api/jsonBlob/'+blobId);
-    if(!res.ok) throw new Error('Not found');
-    const json=await res.json();
-    data=json.creatives||[];
-    renderViewMode(json.publishedAt);
+    let json;
+    if(src==='jb'){
+      // jsonbin.io
+      const res=await fetch('https://api.jsonbin.io/v3/b/'+blobId+'/latest',{
+        headers:{'X-Bin-Meta':'false'}
+      });
+      if(!res.ok) throw new Error('Not found');
+      json=await res.json();
+    } else {
+      // npoint.io
+      const res=await fetch('https://api.npoint.io/'+blobId);
+      if(!res.ok) throw new Error('Not found');
+      json=await res.json();
+    }
+    data=json.creatives||json.record?.creatives||[];
+    renderViewMode(json.publishedAt||json.record?.publishedAt);
   }catch(e){
     document.body.innerHTML=`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:12px;font-family:DM Sans,sans-serif">
       <div style="font-size:20px;font-weight:600;color:#161510">Board not found</div>
       <div style="font-size:13px;color:#78766e">This share link may have expired or been removed.</div>
-      <a href="${window.location.pathname}" style="color:#1b5c38;font-size:13px">Go to my tracker →</a>
+      <a href="${window.location.pathname}" style="color:#1b5c38;font-size:13px">Go to my tracker</a>
     </div>`;
   }
   return true;
