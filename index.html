@@ -109,6 +109,8 @@ tr:hover td{background:var(--sur2)}
 .info{background:var(--blb);border:1px solid #b5d4f4;border-radius:var(--rs);padding:10px 13px;font-size:12px;color:var(--bl);line-height:1.6;margin-bottom:14px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(0,0,0,.15);border-top-color:var(--mu);border-radius:50%;animation:spin .7s linear infinite}
+.chip{border:1px solid var(--bor);background:var(--sur);border-radius:100px;padding:5px 13px;font-size:12px;font-weight:500;color:var(--mu);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.chip:hover{border-color:var(--bor2);color:var(--tx)}.chip-on{background:var(--tx);color:#fff;border-color:var(--tx)}
 </style>
 </head>
 <body>
@@ -127,6 +129,7 @@ tr:hover td{background:var(--sur2)}
   </div>
   <div id="boardEl">
     <div class="pills" id="pillsEl"></div>
+    <div id="prodTabsEl" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem"></div>
     <div id="groupsEl"></div>
   </div>
   <div id="queueEl" style="display:none">
@@ -178,13 +181,38 @@ tr:hover td{background:var(--sur2)}
     <div class="mhead"><div class="mtitle">Add to upload queue</div><button class="mclose" onclick="closePush()">✕</button></div>
     <div class="mbody">
       <div style="font-size:12px;color:var(--mu);margin-bottom:14px">Fill in what your intern needs to upload this ad to Meta.</div>
-      <div class="fg"><div class="flabel">Primary Text</div><textarea class="fi" id="q_copy" placeholder="Ad copy..."></textarea></div>
+      <div class="fg"><div class="flabel">Ad Name *</div><input class="fi" id="q_adname" placeholder="e.g. SummerShield_BeachScene_v1"/></div>
+      <div class="fg">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+          <div class="flabel" style="margin:0">Primary Text</div>
+          <select class="fi" id="q_copy_saved" onchange="applySaved('q_copy','q_copy_saved')" style="width:auto;font-size:11px;padding:3px 7px;max-width:180px"><option value="">— use saved —</option></select>
+        </div>
+        <textarea class="fi" id="q_copy" placeholder="Ad copy..."></textarea>
+      </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div class="fg"><div class="flabel">Headline</div><input class="fi" id="q_headline"/></div>
+        <div class="fg">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+            <div class="flabel" style="margin:0">Headline</div>
+            <select class="fi" id="q_headline_saved" onchange="applySaved('q_headline','q_headline_saved')" style="width:auto;font-size:11px;padding:3px 7px;max-width:140px"><option value="">— saved —</option></select>
+          </div>
+          <input class="fi" id="q_headline"/>
+        </div>
         <div class="fg"><div class="flabel">Call To Action</div><input class="fi" id="q_cta" placeholder="Shop Now"/></div>
       </div>
-      <div class="fg"><div class="flabel">Website URL</div><input class="fi fi-mono" id="q_url" placeholder="https://"/></div>
-      <div class="fg"><div class="flabel">URL Parameters</div><input class="fi fi-mono" id="q_params" placeholder="utm_source=meta..."/></div>
+      <div class="fg">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+          <div class="flabel" style="margin:0">Website URL</div>
+          <select class="fi" id="q_url_saved" onchange="applySaved('q_url','q_url_saved')" style="width:auto;font-size:11px;padding:3px 7px;max-width:180px"><option value="">— saved —</option></select>
+        </div>
+        <input class="fi fi-mono" id="q_url" placeholder="https://"/>
+      </div>
+      <div class="fg">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+          <div class="flabel" style="margin:0">URL Parameters</div>
+          <select class="fi" id="q_params_saved" onchange="applySaved('q_params','q_params_saved')" style="width:auto;font-size:11px;padding:3px 7px;max-width:180px"><option value="">— saved —</option></select>
+        </div>
+        <input class="fi fi-mono" id="q_params" placeholder="utm_source=meta..."/>
+      </div>
       <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:14px;border-top:1px solid var(--bor)">
         <button class="btn btn-ghost" onclick="closePush()">Cancel</button>
         <button class="btn btn-dark" onclick="confirmPush()">Add to queue</button>
@@ -218,6 +246,7 @@ const STORE='ct_v9';
 let data=JSON.parse(localStorage.getItem(STORE)||'[]');
 let sel=new Set(), editId=null, pushingIds=[];
 let allFiles=[], pairs=[], pending45=null, impProduct='';
+let activeProd='all';
 
 function save(){localStorage.setItem(STORE,JSON.stringify(data));}
 window.onload=()=>{render();};
@@ -234,8 +263,15 @@ function renderBoard(){
     <div class="pill"><div class="dot d-inq"></div><strong>${inq}</strong> in queue</div>
     <div class="pill"><div class="dot d-q"></div><strong>${none}</strong> not queued</div>`;
   const prods=[...new Set(data.map(r=>r.product))];
-  if(!prods.length){g('groupsEl').innerHTML='<div class="empty">No creatives yet — click Import folder or + Add manually.</div>';return;}
-  g('groupsEl').innerHTML=prods.map(prod=>{
+  if(!prods.length){g('groupsEl').innerHTML='<div class="empty">No creatives yet — click Import folder or + Add manually.</div>';g('prodTabsEl').innerHTML='';return;}
+  // render product tabs
+  if(!prods.includes(activeProd)&&activeProd!=='all') activeProd='all';
+  g('prodTabsEl').innerHTML=
+    `<button class="chip ${activeProd==='all'?'chip-on':''}" onclick="setProd('all')">All products</button>`+
+    prods.map(p=>`<button class="chip ${activeProd===p?'chip-on':''}" onclick="setProd('${p.replace(/'/g,"\'")}')">${p}</button>`).join('');
+  // filter by active product
+  const visibleProds=activeProd==='all'?prods:[activeProd];
+  g('groupsEl').innerHTML=visibleProds.map(prod=>{
     const pr=data.filter(r=>r.product===prod);
     const liveN=pr.filter(r=>r.status==='launched').length;
     const pct=pr.length?Math.round(liveN/pr.length*100):0;
@@ -248,6 +284,7 @@ function renderBoard(){
     </div>`;
   }).join('');
 }
+function setProd(p){activeProd=p;renderBoard();}
 function thumb(url){
   if(!url)return'';
   if(url.includes('thumbnail')||url.includes('/uc?'))return url;
@@ -433,13 +470,41 @@ function addPairsToBoard(){
 }
 
 // ── PUSH TO QUEUE ─────────────────────────────────────
-function openSinglePush(id){pushingIds=[id];['q_copy','q_headline','q_cta','q_url','q_params'].forEach(i=>g(i).value='');closeCard();ov('pushOv');}
-function openMultiPush(){pushingIds=[...sel];['q_copy','q_headline','q_cta','q_url','q_params'].forEach(i=>g(i).value='');ov('pushOv');}
+function openSinglePush(id){
+  pushingIds=[id];
+  ['q_adname','q_copy','q_headline','q_cta','q_url','q_params'].forEach(i=>g(i).value='');
+  // pre-fill ad name if single creative
+  const r=data.find(x=>x.id===id);
+  if(r&&r.adName) g('q_adname').value=r.adName;
+  populateSavedDropdowns();
+  closeCard();ov('pushOv');
+}
+function openMultiPush(){
+  pushingIds=[...sel];
+  ['q_adname','q_copy','q_headline','q_cta','q_url','q_params'].forEach(i=>g(i).value='');
+  populateSavedDropdowns();
+  ov('pushOv');
+}
+function populateSavedDropdowns(){
+  const qd=data.filter(r=>r.inQueue||r.status==='launched');
+  const uniq=(field)=>[...new Set(qd.map(r=>r[field]).filter(Boolean))];
+  const makeOpts=(vals)=>'<option value="">— use saved —</option>'+vals.map(v=>`<option value="${v.replace(/"/g,'&quot;')}">${v.length>50?v.slice(0,50)+'…':v}</option>`).join('');
+  g('q_copy_saved').innerHTML=makeOpts(uniq('primaryText'));
+  g('q_headline_saved').innerHTML=makeOpts(uniq('headline'));
+  g('q_url_saved').innerHTML=makeOpts(uniq('url'));
+  g('q_params_saved').innerHTML=makeOpts(uniq('urlParams'));
+}
+function applySaved(inputId,selectId){
+  const val=g(selectId).value;
+  if(val) g(inputId).value=val;
+}
 function closePush(){cv('pushOv');}
 function confirmPush(){
+  const adName=gv('q_adname');
   pushingIds.forEach(id=>{
     const r=data.find(x=>x.id===id);if(!r)return;
     r.inQueue=true;r.status='queued';
+    if(adName) r.adName=adName;
     r.primaryText=gv('q_copy');r.headline=gv('q_headline');r.cta=gv('q_cta');r.url=gv('q_url');r.urlParams=gv('q_params');
   });
   save();render();sel.clear();updateFAB();closePush();
