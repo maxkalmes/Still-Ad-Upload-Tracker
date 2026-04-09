@@ -4,175 +4,140 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Creative Tracker</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f6f5f0;--surface:#fff;--surface2:#efede6;--border:#e2dfd4;--border2:#ccc9bc;
-  --text:#161510;--muted:#78766e;--faint:#b0ae a6;
-  --green:#1b5e38;--green-bg:#ceebd8;--green-mid:#40b070;
+  --bg:#f5f4f0;--surface:#fff;--surface2:#eeecea;--border:#e0ddd4;--border2:#c8c5ba;
+  --text:#161510;--muted:#78766e;--faint:#b0ae a8;
+  --green:#1b5c38;--green-bg:#d0eedd;--green-mid:#3fad6a;
   --amber:#7a4800;--amber-bg:#fde4b0;--amber-mid:#f5a000;
-  --blue:#1a3a6e;--blue-bg:#ddeaff;
-  --radius:12px;--radius-sm:8px;
+  --r:12px;--rs:8px;
 }
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
-/* HEADER */
-header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100}
-.logo{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text)}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100}
+.logo{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
 .hright{display:flex;align-items:center;gap:8px}
-.htime{font-size:11px;color:#b0ae a6;font-family:'DM Mono',monospace;color:var(--muted)}
 
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:var(--radius-sm);font-size:12px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;border:none;line-height:1}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:var(--rs);font-size:12px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;border:none;line-height:1;white-space:nowrap}
 .btn-dark{background:var(--text);color:#fff}.btn-dark:hover{opacity:.82}
 .btn-outline{background:transparent;color:var(--text);border:1px solid var(--border2)}.btn-outline:hover{background:var(--surface2)}
-.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}.btn-ghost:hover{color:var(--text);border-color:var(--border2)}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}.btn-ghost:hover{color:var(--text)}
 .btn-green{background:var(--green);color:#fff}.btn-green:hover{opacity:.85}
 .btn-sm{padding:5px 11px;font-size:11px}
-.btn:disabled{opacity:.38;pointer-events:none}
+.btn:disabled{opacity:.35;pointer-events:none}
+.btn-danger{background:transparent;color:#b91c1c;border:1px solid #fca5a5}.btn-danger:hover{background:#fef2f2}
 
-/* LAYOUT */
-.wrap{max-width:1440px;margin:0 auto;padding:1.5rem 2rem}
+.wrap{max-width:1400px;margin:0 auto;padding:1.5rem}
 
-/* TABS */
-.tabs{display:flex;gap:2px;background:var(--surface2);border-radius:var(--radius);padding:4px;width:fit-content;margin-bottom:1.5rem}
-.tab{padding:7px 18px;font-size:13px;font-weight:500;color:var(--muted);border-radius:var(--radius-sm);cursor:pointer;border:none;background:transparent;font-family:'DM Sans',sans-serif;transition:all .15s}
-.tab.active{background:var(--surface);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.tabs{display:flex;gap:2px;background:var(--surface2);border-radius:var(--r);padding:4px;width:fit-content;margin-bottom:1.5rem}
+.tab{padding:7px 18px;font-size:13px;font-weight:500;color:var(--muted);border-radius:var(--rs);cursor:pointer;border:none;background:transparent;font-family:'DM Sans',sans-serif;transition:all .15s}
+.tab.active{background:var(--surface);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.07)}
 
-/* SUMMARY PILLS */
-.pills{display:flex;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
-.pill{background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:6px 14px;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
+/* BOARD */
+.board-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:10px}
+.pills{display:flex;gap:8px;flex-wrap:wrap}
+.pill{background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:5px 13px;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
 .pill strong{color:var(--text);font-weight:600}
-.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.dot-all{background:var(--text)}.dot-live{background:var(--green-mid)}.dot-q{background:#ccc9bc}.dot-queued{background:#d0b060}
+.dot{width:6px;height:6px;border-radius:50%}
+.dot-all{background:var(--text)}.dot-live{background:var(--green-mid)}.dot-q{background:#bbb}.dot-inq{background:var(--amber-mid)}
 
-/* FILTER BAR */
-.bar{display:flex;align-items:center;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
-.bar-label{font-size:11px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
-.chip{border:1px solid var(--border);background:var(--surface);border-radius:100px;padding:5px 12px;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
-.chip:hover{border-color:var(--border2);color:var(--text)}.chip.on{background:var(--text);color:#fff;border-color:var(--text)}
-
-/* PRODUCT GROUP */
 .group{margin-bottom:2.5rem}
 .gh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border)}
-.gl{display:flex;align-items:center;gap:10px}
 .gtitle{font-size:15px;font-weight:600}
-.gtag{font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);background:var(--surface2);border-radius:100px;padding:2px 8px}
-.gr{display:flex;align-items:center;gap:10px}
-.pbar{width:70px;height:3px;background:var(--border);border-radius:100px;overflow:hidden}
-.pfill{height:100%;background:var(--green-mid);border-radius:100px;transition:width .4s}
-.plabel{font-size:11px;color:var(--muted)}
+.gtag{font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);background:var(--surface2);border-radius:100px;padding:2px 8px;margin-left:8px}
+.gprog{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted)}
+.pbar{width:64px;height:3px;background:var(--border);border-radius:100px;overflow:hidden}
+.pfill{height:100%;background:var(--green-mid);border-radius:100px}
 
-/* GRID */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
 
-/* CARD */
-.card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s;position:relative;user-select:none}
-.card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.09)}
-.card.launched{border-color:var(--green-mid)}
-.card.in-queue{border-color:var(--amber-mid)}
-.card.selected-card{outline:3px solid var(--text);outline-offset:2px}
+/* CARD — thumbnail only */
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s;position:relative}
+.card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
+.card.is-live{border-color:var(--green-mid)}
+.card.is-queued{border-color:var(--amber-mid)}
 
-/* SELECT CHECKBOX */
-.card-check{position:absolute;top:8px;left:8px;width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,.85);background:rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;z-index:2;transition:all .15s;backdrop-filter:blur(2px)}
-.card.selected-card .card-check{background:var(--text);border-color:var(--text)}
-.card-check svg{width:11px;height:11px;stroke:#fff;stroke-width:2.5;fill:none;opacity:0}
-.card.selected-card .card-check svg{opacity:1}
-
-.card-img{width:100%;aspect-ratio:4/5;background:var(--surface2);overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center}
+.card-img{width:100%;aspect-ratio:4/5;background:var(--surface2);overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative}
 .card-img img{width:100%;height:100%;object-fit:cover;display:block}
-.no-img{display:flex;flex-direction:column;align-items:center;gap:5px;opacity:.28}
-.no-img svg{width:26px;height:26px}
-.no-img span{font-size:10px;color:var(--muted)}
+.no-img{display:flex;flex-direction:column;align-items:center;gap:5px;opacity:.25}
+.no-img svg{width:24px;height:24px}
+.no-img span{font-size:9px;color:var(--muted)}
 
-/* STATUS OVERLAYS */
-.launched-stamp{position:absolute;bottom:0;left:0;right:0;background:rgba(27,94,56,.88);color:#fff;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-align:center;padding:6px 4px;backdrop-filter:blur(2px)}
-.queue-stamp{position:absolute;bottom:0;left:0;right:0;background:rgba(122,72,0,.82);color:#fff;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-align:center;padding:6px 4px;backdrop-filter:blur(2px)}
+.status-bar{height:4px;width:100%}
+.sb-live{background:var(--green-mid)}
+.sb-queued{background:var(--amber-mid)}
+.sb-none{background:var(--border)}
 
-.stripe{height:3px;width:100%}
-.s-launched{background:var(--green-mid)}.s-queued{background:var(--amber-mid)}.s-none{background:var(--border)}
-
-.card-body{padding:9px 10px}
-.card-name{font-size:11px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
-.cbadge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:500;padding:2px 7px;border-radius:100px}
-.cdot{width:5px;height:5px;border-radius:50%}
-.cb-launched{background:var(--green-bg);color:var(--green)}.cb-launched .cdot{background:var(--green-mid)}
-.cb-queued{background:var(--amber-bg);color:var(--amber)}.cb-queued .cdot{background:var(--amber-mid)}
-.cb-none{background:var(--surface2);color:var(--muted)}.cb-none .cdot{background:#ccc}
-.cdate{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:3px}
-
-/* FLOATING ACTION BAR */
-.fab{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--text);color:#fff;border-radius:100px;padding:12px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 32px rgba(0,0,0,.22);z-index:99;transition:transform .25s cubic-bezier(.34,1.56,.64,1);white-space:nowrap}
-.fab.visible{transform:translateX(-50%) translateY(0)}
-.fab-label{font-size:13px;font-weight:500}
-.fab-count{background:rgba(255,255,255,.18);border-radius:100px;padding:2px 9px;font-size:12px;font-weight:600}
-.fab-divider{width:1px;height:18px;background:rgba(255,255,255,.22)}
+/* status stamp on image */
+.stamp{position:absolute;bottom:0;left:0;right:0;padding:5px 4px;text-align:center;font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.stamp-live{background:rgba(27,92,56,.85);color:#fff}
+.stamp-queued{background:rgba(122,72,0,.8);color:#fff}
 
 /* OVERLAY / MODAL */
-.overlay{display:none;position:fixed;inset:0;background:rgba(22,21,16,.5);z-index:200;align-items:center;justify-content:center;padding:1rem}
+.overlay{display:none;position:fixed;inset:0;background:rgba(22,21,16,.48);z-index:200;align-items:center;justify-content:center;padding:1rem}
 .overlay.open{display:flex}
-.modal{background:var(--surface);border-radius:var(--radius);width:100%;max-width:560px;max-height:92vh;overflow-y:auto;border:1px solid var(--border)}
-.mhead{padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;position:sticky;top:0;background:var(--surface);z-index:1}
-.mtitle{font-size:15px;font-weight:600}
-.mclose{background:var(--surface2);border:none;border-radius:6px;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);flex-shrink:0}
+.modal{background:var(--surface);border-radius:var(--r);width:100%;max-width:420px;border:1px solid var(--border);overflow:hidden}
+.mhead{padding:16px 20px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.mtitle{font-size:14px;font-weight:600}
+.mclose{background:var(--surface2);border:none;border-radius:6px;width:26px;height:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted)}
 .mclose:hover{background:var(--border)}
-.mbody{padding:20px 22px}
-.mimg{width:100%;max-height:240px;object-fit:contain;background:var(--surface2);border-radius:var(--radius-sm);margin-bottom:16px;display:block}
-.mf{margin-bottom:13px}
-.mflabel{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:3px}
-.mfval{font-size:13px;line-height:1.55;word-break:break-word}
-.mfval a{color:var(--green);text-decoration:none}.mfval a:hover{text-decoration:underline}
-.mono{font-family:'DM Mono',monospace;font-size:11px}
-.mactions{display:flex;gap:8px;flex-wrap:wrap;padding-top:16px;border-top:1px solid var(--border);margin-top:6px}
+.mbody{padding:18px 20px}
 
-/* SIZE LINKS */
-.size-links{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
-.size-link{border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;display:flex;flex-direction:column;gap:3px;text-decoration:none;color:var(--text);transition:all .15s}
-.size-link:hover{border-color:var(--border2);background:var(--surface2)}
-.size-link-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
-.size-link-url{font-size:11px;color:var(--green);font-family:'DM Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-/* FORM */
-.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.ffull{grid-column:1/-1}
-.fg{display:flex;flex-direction:column;gap:5px}
-.flabel{font-size:11px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
-.finput{padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);outline:none;transition:border-color .15s;width:100%}
+/* ADD CREATIVE MODAL */
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.flabel{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.finput{padding:8px 11px;border:1px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);outline:none;width:100%}
 .finput:focus{border-color:var(--border2)}
-textarea.finput{resize:vertical;min-height:76px;line-height:1.5}
-.upload-box{border:1.5px dashed var(--border2);border-radius:var(--radius-sm);padding:22px;text-align:center;cursor:pointer;transition:all .15s;background:var(--surface2);display:block}
+.upload-box{border:1.5px dashed var(--border2);border-radius:var(--rs);padding:20px;text-align:center;cursor:pointer;background:var(--surface2);display:block;transition:all .15s}
 .upload-box:hover{border-color:var(--muted);background:var(--surface)}
-.upload-hint{font-size:12px;color:var(--muted);margin-top:6px}
-.preview-img{width:100%;max-height:150px;object-fit:contain;border-radius:var(--radius-sm);display:none}
+.upload-hint{font-size:11px;color:var(--muted);margin-top:5px}
+.prev-img{width:100%;max-height:120px;object-fit:contain;border-radius:var(--rs);display:none;margin-bottom:8px}
 
 /* QUEUE TABLE */
-.twrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border)}
-table{width:100%;border-collapse:collapse;font-size:12px;background:var(--surface)}
-th{background:var(--surface2);padding:10px 13px;text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap}
-td{padding:11px 13px;border-bottom:1px solid var(--border);vertical-align:middle}
+.twrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;background:var(--surface);font-size:12px}
+th{background:var(--surface2);padding:9px 12px;text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:var(--surface2)}
-.tcopy{font-size:11px;color:var(--muted);line-height:1.5;max-width:240px}
-.tname{font-weight:500;font-size:12px;max-width:150px}
+.tcopy{font-size:11px;color:var(--muted);line-height:1.5;max-width:220px}
 .tmono{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);max-width:160px;word-break:break-all}
 .tlink a{color:var(--green);font-size:11px;text-decoration:none}.tlink a:hover{text-decoration:underline}
+.teditable{min-width:120px}
+.editable-cell{cursor:pointer;border-radius:4px;padding:3px 5px;transition:background .12s}
+.editable-cell:hover{background:var(--surface2)}
+.editable-cell.empty{color:var(--faint);font-style:italic;color:var(--muted);opacity:.5}
+.cell-input{width:100%;padding:4px 6px;border:1.5px solid var(--border2);border-radius:4px;font-size:12px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);outline:none}
+textarea.cell-input{min-height:60px;resize:vertical;line-height:1.4}
+
+/* badge */
+.badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:500;padding:3px 8px;border-radius:100px}
+.bdot{width:5px;height:5px;border-radius:50%}
+.b-live{background:var(--green-bg);color:var(--green)}.b-live .bdot{background:var(--green-mid)}
+.b-queued{background:var(--amber-bg);color:var(--amber)}.b-queued .bdot{background:var(--amber-mid)}
+.b-none{background:var(--surface2);color:var(--muted)}.b-none .bdot{background:#bbb}
 
 /* SETUP */
-.setup{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:72vh;gap:14px;text-align:center;padding:2rem}
-.setup-icon{font-size:38px;margin-bottom:4px}
-.setup-h{font-size:22px;font-weight:600}
-.setup-p{font-size:13px;color:var(--muted);max-width:420px;line-height:1.7}
-.sinput{width:100%;max-width:420px;padding:9px 13px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:'DM Mono',monospace;background:var(--surface);color:var(--text);outline:none}
+.setup{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:72vh;gap:12px;text-align:center;padding:2rem}
+.setup-h{font-size:20px;font-weight:600}
+.setup-p{font-size:13px;color:var(--muted);max-width:400px;line-height:1.7}
+.sinput{width:100%;max-width:400px;padding:9px 12px;border:1px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:'DM Mono',monospace;background:var(--surface);color:var(--text);outline:none}
 .sinput:focus{border-color:var(--border2)}
-.shint{font-size:11px;color:var(--muted);max-width:420px;line-height:1.65}
+.shint{font-size:11px;color:var(--muted);max-width:400px;line-height:1.6}
 
-/* TOAST */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--text);color:#fff;padding:10px 20px;border-radius:100px;font-size:13px;font-weight:500;z-index:999;transition:transform .28s;pointer-events:none}
+/* FAB */
+.fab{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--text);color:#fff;border-radius:100px;padding:11px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 28px rgba(0,0,0,.2);z-index:99;transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
+.fab.up{transform:translateX(-50%) translateY(0)}
+.fab-n{background:rgba(255,255,255,.15);border-radius:100px;padding:2px 9px;font-size:12px;font-weight:600}
+.fab-div{width:1px;height:16px;background:rgba(255,255,255,.2)}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--text);color:#fff;padding:9px 18px;border-radius:100px;font-size:13px;font-weight:500;z-index:999;transition:transform .25s;pointer-events:none}
 .toast.show{transform:translateX(-50%) translateY(0)}
-.empty{text-align:center;padding:3rem 1rem;color:var(--muted);font-size:13px}
+.empty{text-align:center;padding:2.5rem;color:var(--muted);font-size:13px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+.spin{display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
 </style>
 </head>
 <body>
@@ -180,52 +145,51 @@ tr:hover td{background:var(--surface2)}
 <header>
   <div class="logo">Creative Tracker</div>
   <div class="hright">
-    <span class="htime" id="htime"></span>
-    <button class="btn btn-ghost btn-sm" onclick="showSettings()">⚙ Settings</button>
+    <button class="btn btn-ghost btn-sm" onclick="openSettings()">⚙ Settings</button>
     <button class="btn btn-outline btn-sm" onclick="loadData()">↻ Refresh</button>
-    <button class="btn btn-dark btn-sm" onclick="openAdd()">+ Add creative</button>
+    <button class="btn btn-dark btn-sm" onclick="openAddCreative()">+ Add creative</button>
   </div>
 </header>
 
 <div class="wrap" id="root">
 
-  <!-- SETUP SCREEN -->
-  <div class="setup" id="setupScreen">
-    <div class="setup-icon">🎨</div>
+  <!-- SETUP -->
+  <div class="setup" id="setupEl">
+    <div style="font-size:32px">🎨</div>
     <div class="setup-h">Connect your sheet</div>
-    <div class="setup-p">Paste your Google Sheet ID, tab name, and Apps Script URL. See <strong>README.md</strong> for the full setup guide including the script to paste.</div>
-    <input class="sinput" id="s_sid" placeholder="Google Sheet ID"/>
-    <input class="sinput" id="s_sname" placeholder="Tab name (e.g. Sheet1)"/>
-    <input class="sinput" id="s_surl" placeholder="Apps Script Web App URL"/>
-    <div class="shint">The Apps Script stores images to Google Drive and writes status back to your sheet — no paid tools needed.</div>
-    <button class="btn btn-dark" style="margin-top:4px" onclick="saveConfig()">Launch tracker</button>
+    <div class="setup-p">Paste your Google Sheet ID, tab name, and Apps Script Web App URL to get started.</div>
+    <input class="sinput" id="s_id" placeholder="Google Sheet ID"/>
+    <input class="sinput" id="s_tab" placeholder="Tab name (e.g. Sheet1)"/>
+    <input class="sinput" id="s_url" placeholder="Apps Script Web App URL"/>
+    <div class="shint">Need help? See README.md for the full setup guide.</div>
+    <button class="btn btn-dark" onclick="saveConfig()">Launch tracker</button>
   </div>
 
   <!-- APP -->
-  <div id="app" style="display:none">
-
+  <div id="appEl" style="display:none">
     <div class="tabs">
-      <button class="tab active" onclick="switchTab('board')">Visual board</button>
-      <button class="tab" onclick="switchTab('queue')">Upload queue</button>
+      <button class="tab active" onclick="goTab('board')">Visual board</button>
+      <button class="tab" onclick="goTab('queue')">Upload queue</button>
     </div>
 
-    <!-- BOARD -->
-    <div id="boardTab">
-      <div class="pills" id="pillsEl"></div>
-      <div class="bar" id="barEl"></div>
+    <!-- BOARD TAB -->
+    <div id="boardEl">
+      <div class="board-bar">
+        <div class="pills" id="pillsEl"></div>
+      </div>
       <div id="groupsEl"></div>
     </div>
 
-    <!-- QUEUE -->
-    <div id="queueTab" style="display:none">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px">
-        <div class="bar" id="qbarEl" style="margin:0"></div>
+    <!-- QUEUE TAB -->
+    <div id="queueEl" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;gap:10px;flex-wrap:wrap">
+        <div style="font-size:13px;color:var(--muted)">Click any cell to edit. Changes save automatically.</div>
         <button class="btn btn-outline btn-sm" onclick="exportCSV()">↓ Export CSV</button>
       </div>
       <div class="twrap">
-        <table>
+        <table id="queueTable">
           <thead><tr>
-            <th></th>
+            <th style="width:52px"></th>
             <th>Ad Name</th>
             <th>Product</th>
             <th>Primary Text</th>
@@ -233,107 +197,68 @@ tr:hover td{background:var(--surface2)}
             <th>CTA</th>
             <th>Website URL</th>
             <th>URL Parameters</th>
-            <th>4x5 Link</th>
-            <th>9x16 Link</th>
+            <th>4×5 Air Link</th>
+            <th>9×16 Air Link</th>
             <th>Status</th>
-            <th>Launched</th>
+            <th style="width:130px"></th>
           </tr></thead>
           <tbody id="qbody"></tbody>
         </table>
       </div>
     </div>
-
   </div>
 </div>
 
-<!-- FLOATING ACTION BAR -->
-<div class="fab" id="fab">
-  <span class="fab-label">Add to upload queue</span>
-  <span class="fab-count" id="fabCount">0</span>
-  <div class="fab-divider"></div>
-  <button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:#fff;border:none;padding:5px 12px" onclick="pushToQueue()">Push to queue →</button>
-  <button class="btn btn-sm" style="background:transparent;color:rgba(255,255,255,.6);border:none;padding:5px 8px" onclick="clearSelection()">✕</button>
-</div>
-
-<!-- DETAIL MODAL -->
-<div class="overlay" id="detailOv" onclick="closeDet(event)">
+<!-- CARD ACTION MODAL -->
+<div class="overlay" id="cardOv" onclick="closeCardOv(event)">
   <div class="modal">
     <div class="mhead">
-      <div class="mtitle" id="detTitle"></div>
-      <button class="mclose" onclick="closeDetDirect()">✕</button>
+      <div class="mtitle" id="cardOvTitle">Creative</div>
+      <button class="mclose" onclick="closeCardDirect()">✕</button>
     </div>
-    <div class="mbody" id="detBody"></div>
+    <div class="mbody" id="cardOvBody"></div>
   </div>
 </div>
 
-<!-- ADD / EDIT MODAL -->
+<!-- ADD CREATIVE MODAL -->
 <div class="overlay" id="addOv" onclick="closeAddOv(event)">
-  <div class="modal" style="max-width:620px">
+  <div class="modal" style="max-width:480px">
     <div class="mhead">
-      <div class="mtitle" id="addTitle">Add creative</div>
+      <div class="mtitle" id="addOvTitle">Add creative</div>
       <button class="mclose" onclick="closeAddDirect()">✕</button>
     </div>
     <div class="mbody">
-      <div class="fgrid">
-        <!-- IMAGE -->
-        <div class="fg ffull">
-          <div class="flabel">Thumbnail image</div>
-          <label class="upload-box" id="uploadBox">
-            <input type="file" id="imgFile" accept="image/*" style="display:none" onchange="previewImg(event)"/>
-            <img id="imgPrev" class="preview-img"/>
-            <div id="uploadPrompt">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:26px;height:26px;margin:0 auto;opacity:.35"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-              <div class="upload-hint">Click to upload thumbnail</div>
-            </div>
-          </label>
-        </div>
-        <!-- AD NAME -->
-        <div class="fg ffull">
-          <div class="flabel">Ad Name *</div>
-          <input class="finput" id="f_name" placeholder="e.g. SummerShield_BeachScene_v1"/>
-        </div>
-        <!-- PRODUCT -->
-        <div class="fg ffull">
-          <div class="flabel">Product / Campaign *</div>
-          <input class="finput" id="f_product" placeholder="e.g. Summer Shield Vault" list="prodList"/>
-          <datalist id="prodList"></datalist>
-        </div>
-        <!-- 4x5 LINK -->
+      <div class="fg">
+        <div class="flabel">Thumbnail image</div>
+        <label class="upload-box">
+          <input type="file" id="imgFile" accept="image/*" style="display:none" onchange="prevImg(event)"/>
+          <img id="imgPrev" class="prev-img"/>
+          <div id="uploadPrompt">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:24px;height:24px;margin:0 auto;opacity:.35"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+            <div class="upload-hint">Click to upload thumbnail</div>
+          </div>
+        </label>
+      </div>
+      <div class="fg">
+        <div class="flabel">Ad Name *</div>
+        <input class="finput" id="f_name" placeholder="e.g. SummerShield_BeachScene_v1"/>
+      </div>
+      <div class="fg">
+        <div class="flabel">Product / Campaign *</div>
+        <input class="finput" id="f_prod" placeholder="e.g. Summer Shield Vault" list="prodList"/>
+        <datalist id="prodList"></datalist>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <div class="fg">
-          <div class="flabel">4x5 Air Link</div>
-          <input class="finput" id="f_link45" placeholder="https://app.air.inc/..."/>
-        </div>
-        <!-- 9x16 LINK -->
-        <div class="fg">
-          <div class="flabel">9x16 Air Link</div>
-          <input class="finput" id="f_link916" placeholder="https://app.air.inc/..."/>
-        </div>
-        <!-- PRIMARY TEXT -->
-        <div class="fg ffull">
-          <div class="flabel">Primary Text</div>
-          <textarea class="finput" id="f_copy" placeholder="Ad copy..."></textarea>
-        </div>
-        <!-- HEADLINE / CTA -->
-        <div class="fg">
-          <div class="flabel">Headline</div>
-          <input class="finput" id="f_headline" placeholder="Headline"/>
+          <div class="flabel">4×5 Air Link</div>
+          <input class="finput" id="f_45" placeholder="https://app.air.inc/..."/>
         </div>
         <div class="fg">
-          <div class="flabel">Call To Action</div>
-          <input class="finput" id="f_cta" placeholder="Shop Now"/>
-        </div>
-        <!-- URL -->
-        <div class="fg ffull">
-          <div class="flabel">Website URL</div>
-          <input class="finput" id="f_url" placeholder="https://"/>
-        </div>
-        <!-- URL PARAMS -->
-        <div class="fg ffull">
-          <div class="flabel">URL Parameters</div>
-          <input class="finput" id="f_params" placeholder="utm_source=meta&utm_medium=paid_social"/>
+          <div class="flabel">9×16 Air Link</div>
+          <input class="finput" id="f_916" placeholder="https://app.air.inc/..."/>
         </div>
       </div>
-      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
         <button class="btn btn-ghost" onclick="closeAddDirect()">Cancel</button>
         <button class="btn btn-dark" id="saveBtn" onclick="saveCreative()">Save creative</button>
       </div>
@@ -342,488 +267,415 @@ tr:hover td{background:var(--surface2)}
 </div>
 
 <!-- SETTINGS MODAL -->
-<div class="overlay" id="settingsOv" onclick="closeSet(event)">
-  <div class="modal" style="max-width:460px">
+<div class="overlay" id="settingsOv" onclick="closeSetOv(event)">
+  <div class="modal" style="max-width:440px">
     <div class="mhead">
       <div class="mtitle">Settings</div>
       <button class="mclose" onclick="closeSetDirect()">✕</button>
     </div>
     <div class="mbody">
-      <div style="display:flex;flex-direction:column;gap:12px">
-        <div class="fg"><div class="flabel">Google Sheet ID</div><input class="finput" id="c_sid"/></div>
-        <div class="fg"><div class="flabel">Sheet Tab Name</div><input class="finput" id="c_sname"/></div>
-        <div class="fg"><div class="flabel">Apps Script Web App URL</div><input class="finput" id="c_surl"/></div>
-        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:4px">
-          <button class="btn btn-ghost" onclick="closeSetDirect()">Cancel</button>
-          <button class="btn btn-dark" onclick="updateConfig()">Save</button>
-        </div>
+      <div class="fg"><div class="flabel">Google Sheet ID</div><input class="finput" id="c_id"/></div>
+      <div class="fg"><div class="flabel">Tab Name</div><input class="finput" id="c_tab"/></div>
+      <div class="fg"><div class="flabel">Apps Script URL</div><input class="finput" id="c_url"/></div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px">
+        <button class="btn btn-ghost" onclick="closeSetDirect()">Cancel</button>
+        <button class="btn btn-dark" onclick="saveSettings()">Save</button>
       </div>
     </div>
   </div>
+</div>
+
+<!-- FAB -->
+<div class="fab" id="fab">
+  <span style="font-size:13px;font-weight:500">Add to queue</span>
+  <span class="fab-n" id="fabN">0</span>
+  <div class="fab-div"></div>
+  <button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:#fff;border:none" onclick="pushSelected()">Push to queue →</button>
+  <button class="btn btn-sm" style="background:transparent;color:rgba(255,255,255,.55);border:none;padding:4px 6px" onclick="clearSel()">✕</button>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
 // ── STATE ─────────────────────────────────────────────
-const CFGK = 'ct_v4';
-let cfg = JSON.parse(localStorage.getItem(CFGK)||'null');
-let rows = [];
-let selected = new Set(); // ids selected for queue push
-let editId = null;
-let pendingImg = null;
-let pendingImgName = null;
-let activeFilter = 'all';
-let qFilter = 'all';
-let activeTab = 'board';
+const CK = 'ct_v5';
+let cfg = JSON.parse(localStorage.getItem(CK)||'null');
+let rows = [];       // board rows (from sheet col A-E: id, adName, product, imageUrl, status, inQueue)
+let qrows = [];      // queue rows (full data)
+let sel = new Set();
+let editCreativeId = null;
+let pendingImg = null, pendingImgName = null;
 
 // ── BOOT ──────────────────────────────────────────────
 window.onload = () => {
   if (cfg?.sheetId && cfg?.scriptUrl) { showApp(); loadData(); }
 };
-
 function showApp() {
-  document.getElementById('setupScreen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
+  g('setupEl').style.display = 'none';
+  g('appEl').style.display = 'block';
 }
 
 // ── CONFIG ────────────────────────────────────────────
 function saveConfig() {
-  const sid = v('s_sid'), sname = v('s_sname')||'Sheet1', surl = v('s_surl');
-  if (!sid||!surl) { toast('Fill in Sheet ID and Script URL'); return; }
-  cfg = {sheetId:sid, sheetName:sname, scriptUrl:surl};
-  localStorage.setItem(CFGK, JSON.stringify(cfg));
+  const id=gv('s_id'), tab=gv('s_tab')||'Sheet1', url=gv('s_url');
+  if (!id||!url){ toast('Fill in Sheet ID and Script URL'); return; }
+  cfg={sheetId:id,sheetName:tab,scriptUrl:url};
+  localStorage.setItem(CK,JSON.stringify(cfg));
   showApp(); loadData();
 }
-function showSettings() {
-  set('c_sid', cfg?.sheetId||'');
-  set('c_sname', cfg?.sheetName||'');
-  set('c_surl', cfg?.scriptUrl||'');
-  open('settingsOv');
-}
-function updateConfig() {
-  cfg = {sheetId:v('c_sid'), sheetName:v('c_sname')||'Sheet1', scriptUrl:v('c_surl')};
-  localStorage.setItem(CFGK, JSON.stringify(cfg));
-  closeSetDirect(); loadData(); toast('Settings saved');
-}
-function closeSet(e) { if (e.target===el('settingsOv')) closeSetDirect(); }
-function closeSetDirect() { close('settingsOv'); }
+function openSettings(){ gs('c_id',cfg?.sheetId||''); gs('c_tab',cfg?.sheetName||''); gs('c_url',cfg?.scriptUrl||''); ov('settingsOv'); }
+function saveSettings(){ cfg={sheetId:gv('c_id'),sheetName:gv('c_tab')||'Sheet1',scriptUrl:gv('c_url')}; localStorage.setItem(CK,JSON.stringify(cfg)); cv('settingsOv'); loadData(); toast('Saved'); }
+function closeSetOv(e){ if(e.target===g('settingsOv')) closeSetDirect(); }
+function closeSetDirect(){ cv('settingsOv'); }
 
-// ── LOAD ──────────────────────────────────────────────
+// ── LOAD DATA ─────────────────────────────────────────
+// BOARD SHEET columns: A=ID, B=AdName, C=Product, D=ImageURL, E=Status(none/queued/launched), F=InQueue(true/false)
+// QUEUE SHEET is same sheet but we read all cols:
+// A=ID, B=AdName, C=Product, D=ImageURL, E=Status, F=InQueue,
+// G=PrimaryText, H=Headline, I=CTA, J=URL, K=URLParams, L=Link45, M=Link916, N=LaunchDate
 async function loadData() {
   try {
     const url = `https://docs.google.com/spreadsheets/d/${cfg.sheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(cfg.sheetName)}&t=${Date.now()}`;
-    const r = await fetch(url);
-    const txt = await r.text();
+    const res = await fetch(url);
+    const txt = await res.text();
     const json = JSON.parse(txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
-    const sheetRows = json.table.rows;
-    // Columns: 0=ID,1=AdName,2=Product,3=PrimaryText,4=Headline,5=CTA,6=URL,7=URLParams,8=Link45,9=Link916,10=ImageURL,11=Status,12=LaunchDate,13=InQueue
-    rows = sheetRows.slice(1).map(r=>({
-      id:          cv(r,0)||uid(),
-      adName:      cv(r,1),
-      product:     cv(r,2)||'Uncategorized',
-      primaryText: cv(r,3),
-      headline:    cv(r,4),
-      cta:         cv(r,5),
-      url:         cv(r,6),
-      urlParams:   cv(r,7),
-      link45:      cv(r,8),
-      link916:     cv(r,9),
-      imageUrl:    cv(r,10),
-      status:      cv(r,11)||'none',
-      launchDate:  cv(r,12),
-      inQueue:     cv(r,13)==='true'||cv(r,13)==='TRUE'||cv(r,13)==='1',
+    const sr = json.table.rows;
+    rows = sr.slice(1).map(r=>({
+      id:        rc(r,0)||uid(),
+      adName:    rc(r,1),
+      product:   rc(r,2)||'Uncategorized',
+      imageUrl:  rc(r,3),
+      status:    rc(r,4)||'none',
+      inQueue:   rc(r,5)==='true'||rc(r,5)==='TRUE',
+      primaryText: rc(r,6),
+      headline:  rc(r,7),
+      cta:       rc(r,8),
+      url:       rc(r,9),
+      urlParams: rc(r,10),
+      link45:    rc(r,11),
+      link916:   rc(r,12),
+      launchDate:rc(r,13),
     })).filter(r=>r.adName);
-    el('htime').textContent = `Updated ${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}`;
-    render();
+    qrows = rows.filter(r=>r.inQueue||r.status==='launched');
+    renderBoard();
+    renderQueue();
+    refreshProdList();
   } catch(e) {
     console.error(e);
     toast('Could not load sheet — check settings');
   }
 }
 
-function cv(row,idx) {
-  const c = row.c&&row.c[idx];
-  if (!c||c.v===null||c.v===undefined) return '';
+function rc(row,idx){
+  const c=row.c&&row.c[idx];
+  if(!c||c.v===null||c.v===undefined) return '';
   return String(c.v);
 }
 
-// ── RENDER ────────────────────────────────────────────
-function render() {
-  renderPills(); renderBar(); renderGroups(); renderQueue(); refreshProdList();
-}
-
-function renderPills() {
-  const total = rows.length;
-  const live = rows.filter(r=>r.status==='launched').length;
-  const inq = rows.filter(r=>r.inQueue&&r.status!=='launched').length;
-  const none = rows.filter(r=>r.status==='none'&&!r.inQueue).length;
-  el('pillsEl').innerHTML = `
+// ── BOARD ─────────────────────────────────────────────
+function renderBoard() {
+  // pills
+  const total=rows.length, live=rows.filter(r=>r.status==='launched').length,
+        inq=rows.filter(r=>r.inQueue&&r.status!=='launched').length,
+        none=rows.filter(r=>!r.inQueue&&r.status!=='launched').length;
+  g('pillsEl').innerHTML=`
     <div class="pill"><div class="dot dot-all"></div><strong>${total}</strong> total</div>
     <div class="pill"><div class="dot dot-live"></div><strong>${live}</strong> launched</div>
-    <div class="pill"><div class="dot dot-queued"></div><strong>${inq}</strong> in queue</div>
+    <div class="pill"><div class="dot dot-inq"></div><strong>${inq}</strong> in queue</div>
     <div class="pill"><div class="dot dot-q"></div><strong>${none}</strong> not queued</div>`;
-}
 
-function renderBar() {
-  const filters=[['all','All'],['launched','Launched'],['queued','In queue'],['none','Not queued']];
-  el('barEl').innerHTML = `<span class="bar-label">Show:</span>`+
-    filters.map(([val,lbl])=>`<button class="chip ${activeFilter===val?'on':''}" onclick="setFilter('${val}')">${lbl}</button>`).join('');
-  el('qbarEl').innerHTML = `<span class="bar-label">Show:</span>`+
-    filters.map(([val,lbl])=>`<button class="chip ${qFilter===val?'on':''}" onclick="setQFilter('${val}')">${lbl}</button>`).join('');
-}
-
-function setFilter(f) { activeFilter=f; renderBar(); renderGroups(); }
-function setQFilter(f) { qFilter=f; renderBar(); renderQueue(); }
-
-function getStatus(r) {
-  if (r.status==='launched') return 'launched';
-  if (r.inQueue) return 'queued';
-  return 'none';
-}
-
-function renderGroups() {
-  const products = [...new Set(rows.map(r=>r.product))];
-  let html = '';
-  products.forEach(prod => {
-    let all = rows.filter(r=>r.product===prod);
-    let filtered = activeFilter==='all' ? all :
-      activeFilter==='launched' ? all.filter(r=>r.status==='launched') :
-      activeFilter==='queued' ? all.filter(r=>r.inQueue&&r.status!=='launched') :
-      all.filter(r=>r.status!=='launched'&&!r.inQueue);
-    if (!filtered.length) return;
-    const liveN = all.filter(r=>r.status==='launched').length;
-    const pct = all.length ? Math.round(liveN/all.length*100) : 0;
-    html += `<div class="group">
+  const products=[...new Set(rows.map(r=>r.product))];
+  let html='';
+  products.forEach(prod=>{
+    const pr=rows.filter(r=>r.product===prod);
+    const liveN=pr.filter(r=>r.status==='launched').length;
+    const pct=pr.length?Math.round(liveN/pr.length*100):0;
+    html+=`<div class="group">
       <div class="gh">
-        <div class="gl">
-          <div class="gtitle">${prod}</div>
-          <span class="gtag">${all.length} ads</span>
-        </div>
-        <div class="gr">
-          <span class="plabel">${liveN}/${all.length} launched</span>
-          <div class="pbar"><div class="pfill" style="width:${pct}%"></div></div>
-        </div>
+        <div><span class="gtitle">${prod}</span><span class="gtag">${pr.length}</span></div>
+        <div class="gprog"><span>${liveN}/${pr.length} launched</span><div class="pbar"><div class="pfill" style="width:${pct}%"></div></div></div>
       </div>
-      <div class="grid">${filtered.map(r=>cardHTML(r)).join('')}</div>
+      <div class="grid">${pr.map(r=>cardHTML(r)).join('')}</div>
     </div>`;
   });
-  el('groupsEl').innerHTML = html || '<div class="empty">No creatives match this filter.</div>';
+  g('groupsEl').innerHTML=html||'<div class="empty">No creatives yet. Click + Add creative to get started.</div>';
 }
 
-function cardHTML(r) {
-  const st = getStatus(r);
-  const isSel = selected.has(r.id);
-  const imgHtml = r.imageUrl
-    ? `<img src="${r.imageUrl}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+function cardHTML(r){
+  const isSel=sel.has(r.id);
+  const st=r.status==='launched'?'launched':r.inQueue?'queued':'none';
+  const img=r.imageUrl
+    ?`<img src="${r.imageUrl}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
        <div class="no-img" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>No preview</span></div>`
-    : `<div class="no-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>No preview</span></div>`;
-  const stamp = st==='launched'
-    ? `<div class="launched-stamp">✓ Launched</div>`
-    : st==='queued' ? `<div class="queue-stamp">In queue</div>` : '';
-  const badge = st==='launched'
-    ? `<span class="cbadge cb-launched"><span class="cdot"></span>Launched</span>`
-    : st==='queued' ? `<span class="cbadge cb-queued"><span class="cdot"></span>In queue</span>`
-    : `<span class="cbadge cb-none"><span class="cdot"></span>Not queued</span>`;
-  return `<div class="card ${st==='launched'?'launched':st==='queued'?'in-queue':''} ${isSel?'selected-card':''}" 
-    onclick="handleCardClick(event,'${r.id}')">
-    <div class="card-check">
-      <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
-    </div>
-    <div class="card-img">${imgHtml}${stamp}</div>
-    <div class="stripe s-${st==='launched'?'launched':st==='queued'?'queued':'none'}"></div>
-    <div class="card-body">
-      <div class="card-name">${r.adName||'—'}</div>
-      ${badge}
-      ${r.launchDate?`<div class="cdate">${r.launchDate}</div>`:''}
-    </div>
+    :`<div class="no-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>No preview</span></div>`;
+  const stamp=st==='launched'?`<div class="stamp stamp-live">✓ Launched</div>`:st==='queued'?`<div class="stamp stamp-queued">In queue</div>`:'';
+  return `<div class="card ${st==='launched'?'is-live':st==='queued'?'is-queued':''} ${isSel?'selected-card':''}"
+    style="${isSel?'outline:2.5px solid var(--text);outline-offset:2px':''}"
+    onclick="handleCard(event,'${r.id}')">
+    <div class="card-img">${img}${stamp}</div>
+    <div class="status-bar sb-${st}"></div>
   </div>`;
 }
 
-// ── CARD CLICK — select vs open ───────────────────────
-function handleCardClick(e, id) {
-  // If already in selection mode OR clicking the checkbox area, toggle selection
-  if (selected.size > 0 || e.target.closest('.card-check')) {
-    e.stopPropagation();
-    toggleSelect(id);
-    return;
-  }
-  openDetail(id);
+function handleCard(e,id){
+  if(sel.size>0){ toggleSel(id); return; }
+  openCardModal(id);
 }
 
-function toggleSelect(id) {
-  const r = rows.find(x=>x.id===id);
-  if (!r) return;
-  // Can't select already-launched or already-queued
-  if (r.status==='launched') { toast('Already launched'); return; }
-  if (r.inQueue) { toast('Already in upload queue'); return; }
-  if (selected.has(id)) selected.delete(id);
-  else selected.add(id);
-  updateFAB();
-  renderGroups();
+function toggleSel(id){
+  const r=rows.find(x=>x.id===id);
+  if(!r) return;
+  if(r.status==='launched'){ toast('Already launched'); return; }
+  if(r.inQueue){ toast('Already in queue'); return; }
+  sel.has(id)?sel.delete(id):sel.add(id);
+  updateFAB(); renderBoard();
 }
 
-function clearSelection() {
-  selected.clear();
-  updateFAB();
-  renderGroups();
+function clearSel(){ sel.clear(); updateFAB(); renderBoard(); }
+
+function updateFAB(){
+  g('fabN').textContent=sel.size;
+  g('fab').classList.toggle('up',sel.size>0);
 }
 
-function updateFAB() {
-  const fab = el('fab');
-  el('fabCount').textContent = selected.size;
-  if (selected.size > 0) fab.classList.add('visible');
-  else fab.classList.remove('visible');
-}
-
-async function pushToQueue() {
-  if (!selected.size) return;
-  const ids = [...selected];
+async function pushSelected(){
+  if(!sel.size) return;
+  const ids=[...sel];
   try {
-    await scriptCall({action:'pushToQueue', ids});
-    toast(`${ids.length} ad${ids.length>1?'s':''} added to upload queue`);
-    selected.clear();
-    updateFAB();
-    await loadData();
-  } catch(e) {
-    toast('Error — check Apps Script URL');
-  }
+    await api({action:'pushToQueue',ids});
+    toast(`${ids.length} creative${ids.length>1?'s':''} added to queue`);
+    sel.clear(); updateFAB(); await loadData();
+  } catch(e){ toast('Error — check Apps Script'); }
 }
 
-// ── DETAIL MODAL ──────────────────────────────────────
-function openDetail(id) {
-  const r = rows.find(x=>x.id===id);
-  if (!r) return;
-  const st = getStatus(r);
-  el('detTitle').textContent = r.adName||'Creative';
-  el('detBody').innerHTML = `
-    ${r.imageUrl?`<img class="mimg" src="${r.imageUrl}" onerror="this.style.display='none'"/>`:''}
-    <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap">
-      ${st==='launched'?`<span class="cbadge cb-launched"><span class="cdot"></span>Launched</span>`:
-        st==='queued'?`<span class="cbadge cb-queued"><span class="cdot"></span>In queue</span>`:
-        `<span class="cbadge cb-none"><span class="cdot"></span>Not queued</span>`}
-      ${r.launchDate?`<span style="font-size:12px;color:var(--muted)">on ${r.launchDate}</span>`:''}
+// ── CARD MODAL ────────────────────────────────────────
+function openCardModal(id){
+  const r=rows.find(x=>x.id===id);
+  if(!r) return;
+  const st=r.status==='launched'?'launched':r.inQueue?'queued':'none';
+  g('cardOvTitle').textContent=r.adName||'Creative';
+  g('cardOvBody').innerHTML=`
+    ${r.imageUrl?`<img src="${r.imageUrl}" style="width:100%;max-height:200px;object-fit:contain;background:var(--surface2);border-radius:var(--rs);margin-bottom:14px;display:block" onerror="this.style.display='none'"/>`:''}
+    <div style="margin-bottom:14px">
+      <span class="badge b-${st}"><span class="bdot"></span>${st==='launched'?'Launched':st==='queued'?'In upload queue':'Not queued'}</span>
+      ${r.launchDate?`<span style="font-size:11px;color:var(--muted);margin-left:8px">${r.launchDate}</span>`:''}
     </div>
-    <div class="mf"><div class="mflabel">Product</div><div class="mfval">${r.product||'—'}</div></div>
-    <div class="size-links">
-      ${r.link45?`<a class="size-link" href="${r.link45}" target="_blank"><span class="size-link-label">4 × 5</span><span class="size-link-url">${r.link45}</span></a>`:`<div class="size-link" style="opacity:.4"><span class="size-link-label">4 × 5</span><span class="size-link-url">No link added</span></div>`}
-      ${r.link916?`<a class="size-link" href="${r.link916}" target="_blank"><span class="size-link-label">9 × 16</span><span class="size-link-url">${r.link916}</span></a>`:`<div class="size-link" style="opacity:.4"><span class="size-link-label">9 × 16</span><span class="size-link-url">No link added</span></div>`}
-    </div>
-    ${mf('Primary text',r.primaryText)}
-    ${mf('Headline',r.headline)}
-    ${mf('Call to action',r.cta)}
-    ${r.url?`<div class="mf"><div class="mflabel">Website URL</div><div class="mfval"><a href="${r.url}" target="_blank">${r.url}</a></div></div>`:''}
-    ${r.urlParams?`<div class="mf"><div class="mflabel">URL Parameters</div><div class="mfval mono">${r.urlParams}</div></div>`:''}
-    <div class="mactions">
-      ${st==='none'?`<button class="btn btn-dark btn-sm" onclick="selectAndClose('${id}')">+ Add to queue</button>`:''}
-      ${st==='queued'?`<button class="btn btn-green btn-sm" onclick="markLaunched('${id}')">✓ Mark as launched</button>`:''}
-      ${st==='launched'?`<button class="btn btn-outline btn-sm" onclick="unlaunch('${id}')">↩ Unlaunch</button>`:''}
-      <button class="btn btn-outline btn-sm" onclick="openEdit('${id}')">Edit</button>
-      <button class="btn btn-ghost btn-sm" style="color:#c0392b" onclick="deleteRow('${id}')">Delete</button>
+    ${r.link45||r.link916?`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+      ${r.link45?`<a href="${r.link45}" target="_blank" style="border:1px solid var(--border);border-radius:var(--rs);padding:8px 10px;text-decoration:none;display:block"><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:2px">4×5</div><div style="font-size:11px;color:var(--green);font-family:'DM Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Open in Air ↗</div></a>`:''}
+      ${r.link916?`<a href="${r.link916}" target="_blank" style="border:1px solid var(--border);border-radius:var(--rs);padding:8px 10px;text-decoration:none;display:block"><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:2px">9×16</div><div style="font-size:11px;color:var(--green);font-family:'DM Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Open in Air ↗</div></a>`:''}
+    </div>`:''}
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      ${st==='none'?`<button class="btn btn-dark btn-sm" onclick="addOneToQueue('${id}')">+ Add to upload queue</button>`:''}
+      ${st==='queued'?`<button class="btn btn-green btn-sm" onclick="markLive('${id}')">✓ Mark as launched</button>`:''}
+      ${st==='launched'?`<button class="btn btn-outline btn-sm" onclick="markUnlaunch('${id}')">↩ Unlaunch</button>`:''}
+      <button class="btn btn-outline btn-sm" onclick="openEditCreative('${id}')">Edit</button>
+      <button class="btn btn-danger btn-sm" onclick="deleteCreative('${id}')">Delete</button>
     </div>`;
-  open('detailOv');
+  ov('cardOv');
 }
 
-function selectAndClose(id) {
-  closeDetDirect();
-  toggleSelect(id);
+async function addOneToQueue(id){
+  try {
+    await api({action:'pushToQueue',ids:[id]});
+    toast('Added to upload queue');
+    closeCardDirect(); await loadData();
+  } catch(e){ toast('Error — check Apps Script'); }
 }
 
-function mf(label, val) {
-  if (!val) return '';
-  return `<div class="mf"><div class="mflabel">${label}</div><div class="mfval">${val}</div></div>`;
+async function markLive(id){
+  const today=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  try {
+    await api({action:'markLaunched',id,launchDate:today});
+    toast('Marked as launched 🎉');
+    closeCardDirect(); await loadData();
+  } catch(e){ toast('Error'); }
 }
 
-async function markLaunched(id) {
-  const today = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-  await scriptCall({action:'markLaunched', id, launchDate:today});
-  toast('Marked as launched! 🎉');
-  closeDetDirect();
-  await loadData();
+async function markUnlaunch(id){
+  try {
+    await api({action:'unlaunch',id});
+    toast('Moved back to queue');
+    closeCardDirect(); await loadData();
+  } catch(e){ toast('Error'); }
 }
 
-async function unlaunch(id) {
-  await scriptCall({action:'unlaunch', id});
-  toast('Moved back to queue');
-  closeDetDirect();
-  await loadData();
+async function deleteCreative(id){
+  if(!confirm('Delete this creative?')) return;
+  try {
+    await api({action:'deleteRow',id});
+    toast('Deleted'); closeCardDirect(); await loadData();
+  } catch(e){ toast('Error'); }
 }
 
-async function deleteRow(id) {
-  if (!confirm('Delete this creative?')) return;
-  await scriptCall({action:'deleteRow', id});
-  toast('Deleted');
-  closeDetDirect();
-  await loadData();
+function closeCardOv(e){ if(e.target===g('cardOv')) closeCardDirect(); }
+function closeCardDirect(){ cv('cardOv'); }
+
+// ── ADD / EDIT CREATIVE ───────────────────────────────
+function openAddCreative(){
+  editCreativeId=null; pendingImg=null; pendingImgName=null;
+  g('addOvTitle').textContent='Add creative';
+  ['f_name','f_prod','f_45','f_916'].forEach(id=>gs(id,''));
+  g('imgPrev').style.display='none';
+  g('uploadPrompt').style.display='block';
+  ov('addOv');
 }
 
-function closeDet(e) { if(e.target===el('detailOv')) closeDetDirect(); }
-function closeDetDirect() { close('detailOv'); }
-
-// ── ADD / EDIT ────────────────────────────────────────
-function openAdd() {
-  editId = null; pendingImg = null; pendingImgName = null;
-  el('addTitle').textContent = 'Add creative';
-  ['f_name','f_product','f_copy','f_headline','f_cta','f_url','f_params','f_link45','f_link916'].forEach(id=>set(id,''));
-  el('imgPrev').style.display='none';
-  el('uploadPrompt').style.display='block';
-  open('addOv');
+function openEditCreative(id){
+  const r=rows.find(x=>x.id===id);
+  if(!r) return;
+  editCreativeId=id; pendingImg=null; pendingImgName=null;
+  g('addOvTitle').textContent='Edit creative';
+  gs('f_name',r.adName||'');
+  gs('f_prod',r.product||'');
+  gs('f_45',r.link45||'');
+  gs('f_916',r.link916||'');
+  if(r.imageUrl){ g('imgPrev').src=r.imageUrl; g('imgPrev').style.display='block'; g('uploadPrompt').style.display='none'; }
+  else { g('imgPrev').style.display='none'; g('uploadPrompt').style.display='block'; }
+  closeCardDirect();
+  ov('addOv');
 }
 
-function openEdit(id) {
-  const r = rows.find(x=>x.id===id);
-  if (!r) return;
-  editId = id; pendingImg = null; pendingImgName = null;
-  el('addTitle').textContent = 'Edit creative';
-  set('f_name', r.adName||'');
-  set('f_product', r.product||'');
-  set('f_copy', r.primaryText||'');
-  set('f_headline', r.headline||'');
-  set('f_cta', r.cta||'');
-  set('f_url', r.url||'');
-  set('f_params', r.urlParams||'');
-  set('f_link45', r.link45||'');
-  set('f_link916', r.link916||'');
-  if (r.imageUrl) {
-    el('imgPrev').src = r.imageUrl;
-    el('imgPrev').style.display='block';
-    el('uploadPrompt').style.display='none';
-  } else {
-    el('imgPrev').style.display='none';
-    el('uploadPrompt').style.display='block';
-  }
-  closeDetDirect();
-  open('addOv');
-}
-
-function previewImg(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  pendingImgName = file.name;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    pendingImg = ev.target.result;
-    el('imgPrev').src = pendingImg;
-    el('imgPrev').style.display = 'block';
-    el('uploadPrompt').style.display = 'none';
-  };
+function prevImg(e){
+  const file=e.target.files[0]; if(!file) return;
+  pendingImgName=file.name;
+  const reader=new FileReader();
+  reader.onload=ev=>{ pendingImg=ev.target.result; g('imgPrev').src=pendingImg; g('imgPrev').style.display='block'; g('uploadPrompt').style.display='none'; };
   reader.readAsDataURL(file);
 }
 
-async function saveCreative() {
-  const name = v('f_name'), prod = v('f_product');
-  if (!name) { toast('Ad name is required'); return; }
-  const btn = el('saveBtn');
-  btn.disabled=true; btn.innerHTML='<div class="spin"></div> Saving…';
+async function saveCreative(){
+  const name=gv('f_name'), prod=gv('f_prod');
+  if(!name){ toast('Ad name is required'); return; }
+  const btn=g('saveBtn'); btn.disabled=true; btn.innerHTML='<div class="spin"></div> Saving…';
   try {
-    await scriptCall({
-      action: editId ? 'updateRow' : 'addRow',
-      id: editId || uid(),
+    await api({
+      action: editCreativeId?'updateRow':'addRow',
+      id: editCreativeId||uid(),
       adName: name,
       product: prod||'Uncategorized',
-      primaryText: v('f_copy'),
-      headline: v('f_headline'),
-      cta: v('f_cta'),
-      url: v('f_url'),
-      urlParams: v('f_params'),
-      link45: v('f_link45'),
-      link916: v('f_link916'),
+      link45: gv('f_45'),
+      link916: gv('f_916'),
       imageBase64: pendingImg||null,
       imageName: pendingImgName||null,
     });
-    toast(editId?'Creative updated!':'Creative added!');
-    closeAddDirect();
-    await loadData();
-  } catch(e) {
-    toast('Error saving — check Apps Script URL');
-  } finally {
-    btn.disabled=false; btn.textContent='Save creative';
-  }
+    toast(editCreativeId?'Updated!':'Creative added!');
+    closeAddDirect(); await loadData();
+  } catch(e){ toast('Error saving — check Apps Script URL'); }
+  finally { btn.disabled=false; btn.textContent='Save creative'; }
 }
 
-function closeAddOv(e) { if(e.target===el('addOv')) closeAddDirect(); }
-function closeAddDirect() { close('addOv'); }
+function closeAddOv(e){ if(e.target===g('addOv')) closeAddDirect(); }
+function closeAddDirect(){ cv('addOv'); }
 
-// ── QUEUE TABLE ───────────────────────────────────────
-function renderQueue() {
-  let filtered = rows.filter(r=>r.inQueue||r.status==='launched');
-  if (qFilter==='launched') filtered = filtered.filter(r=>r.status==='launched');
-  else if (qFilter==='queued') filtered = filtered.filter(r=>r.inQueue&&r.status!=='launched');
-  else if (qFilter==='none') filtered = rows.filter(r=>!r.inQueue&&r.status!=='launched');
-  const tbody = el('qbody');
-  if (!filtered.length) { tbody.innerHTML='<tr><td colspan="12" class="empty">No ads here yet.</td></tr>'; return; }
-  tbody.innerHTML = filtered.map(r=>{
-    const st = getStatus(r);
-    const thumb = r.imageUrl?`<img src="${r.imageUrl}" style="width:40px;height:50px;object-fit:cover;border-radius:4px;display:block" onerror="this.style.display='none'"/>`:'—';
-    return `<tr>
+// ── QUEUE TABLE (inline editable) ─────────────────────
+function renderQueue(){
+  const tbody=g('qbody');
+  if(!qrows.length){ tbody.innerHTML='<tr><td colspan="12" class="empty">No ads in queue yet. Go to the visual board and add creatives to the queue.</td></tr>'; return; }
+  tbody.innerHTML=qrows.map(r=>{
+    const st=r.status==='launched'?'launched':r.inQueue?'queued':'none';
+    const thumb=r.imageUrl?`<img src="${r.imageUrl}" style="width:38px;height:48px;object-fit:cover;border-radius:4px" onerror="this.style.display='none'"/>`:'';
+    return `<tr data-id="${r.id}">
       <td>${thumb}</td>
-      <td class="tname">${r.adName||'—'}</td>
-      <td style="font-size:11px;color:var(--muted)">${r.product||'—'}</td>
-      <td class="tcopy">${r.primaryText||'—'}</td>
-      <td style="font-size:12px;max-width:130px">${r.headline||'—'}</td>
-      <td style="font-size:12px">${r.cta||'—'}</td>
-      <td class="tlink">${r.url?`<a href="${r.url}" target="_blank">${trunc(r.url,28)}</a>`:'—'}</td>
-      <td class="tmono">${r.urlParams||'—'}</td>
-      <td class="tlink">${r.link45?`<a href="${r.link45}" target="_blank">4×5 ↗</a>`:'—'}</td>
-      <td class="tlink">${r.link916?`<a href="${r.link916}" target="_blank">9×16 ↗</a>`:'—'}</td>
-      <td><span class="cbadge cb-${st}"><span class="cdot"></span>${st==='launched'?'Launched':st==='queued'?'In queue':'—'}</span></td>
-      <td>
-        ${st==='queued'?`<button class="btn btn-green btn-sm" onclick="markLaunchedFromQueue('${r.id}')">✓ Mark launched</button>`:''}
-        ${r.launchDate?`<div class="tmono" style="margin-top:4px">${r.launchDate}</div>`:''}
-      </td>
+      <td class="teditable">${ec(r.id,'adName',r.adName,'text')}</td>
+      <td class="teditable">${ec(r.id,'product',r.product,'text')}</td>
+      <td class="teditable" style="max-width:220px">${ec(r.id,'primaryText',r.primaryText,'textarea')}</td>
+      <td class="teditable">${ec(r.id,'headline',r.headline,'text')}</td>
+      <td class="teditable">${ec(r.id,'cta',r.cta,'text')}</td>
+      <td class="teditable">${ec(r.id,'url',r.url,'text')}</td>
+      <td class="teditable">${ec(r.id,'urlParams',r.urlParams,'text')}</td>
+      <td class="tlink">${r.link45?`<a href="${r.link45}" target="_blank">4×5 ↗</a>`:`<span style="color:var(--muted);font-size:11px">—</span>`}</td>
+      <td class="tlink">${r.link916?`<a href="${r.link916}" target="_blank">9×16 ↗</a>`:`<span style="color:var(--muted);font-size:11px">—</span>`}</td>
+      <td><span class="badge b-${st}"><span class="bdot"></span>${st==='launched'?'Launched':st==='queued'?'In queue':'—'}</span>${r.launchDate?`<div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);margin-top:3px">${r.launchDate}</div>`:''}</td>
+      <td>${st==='queued'?`<button class="btn btn-green btn-sm" onclick="markLiveFromQueue('${r.id}')">✓ Launched</button>`:''}
+          ${st!=='launched'?`<button class="btn btn-danger btn-sm" style="margin-top:4px" onclick="removeFromQueue('${r.id}')">Remove</button>`:''}</td>
     </tr>`;
   }).join('');
 }
 
-async function markLaunchedFromQueue(id) {
-  const today = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-  await scriptCall({action:'markLaunched', id, launchDate:today});
-  toast('Marked as launched! 🎉');
-  await loadData();
+// editable cell
+function ec(id,field,val,type){
+  const display=val?`<span class="editable-cell">${val}</span>`:`<span class="editable-cell empty">click to edit</span>`;
+  return `<div onclick="startEdit(this,'${id}','${field}','${type}')">${display}</div>`;
 }
 
-// ── APPS SCRIPT ───────────────────────────────────────
-async function scriptCall(payload) {
-  const res = await fetch(cfg.scriptUrl, {method:'POST', body:JSON.stringify(payload)});
-  const txt = await res.text();
-  try { const d=JSON.parse(txt); if(d.error) throw new Error(d.error); return d; } catch { return {status:'ok'}; }
+function startEdit(wrapper,id,field,type){
+  if(wrapper.querySelector('input,textarea')) return; // already editing
+  const cur=wrapper.querySelector('.editable-cell');
+  const curVal=cur&&!cur.classList.contains('empty')?cur.textContent:'';
+  const inp=document.createElement(type==='textarea'?'textarea':'input');
+  inp.className='cell-input';
+  inp.value=curVal;
+  if(type==='textarea') inp.style.minHeight='60px';
+  wrapper.innerHTML='';
+  wrapper.appendChild(inp);
+  inp.focus();
+  inp.addEventListener('blur',()=>commitEdit(wrapper,id,field,inp.value));
+  inp.addEventListener('keydown',e=>{ if(e.key==='Enter'&&type!=='textarea'){ e.preventDefault(); inp.blur(); } if(e.key==='Escape'){ renderQueue(); } });
+}
+
+async function commitEdit(wrapper,id,field,val){
+  // update local
+  const r=qrows.find(x=>x.id===id);
+  if(r) r[field]=val;
+  // re-render cell
+  wrapper.innerHTML=val?`<span class="editable-cell">${val}</span>`:`<span class="editable-cell empty">click to edit</span>`;
+  wrapper.onclick=()=>startEdit(wrapper,id,field,field==='primaryText'?'textarea':'text');
+  // save to sheet
+  try { await api({action:'updateField',id,field,value:val}); }
+  catch(e){ toast('Save failed — check Apps Script'); }
+}
+
+async function markLiveFromQueue(id){
+  const today=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  try {
+    await api({action:'markLaunched',id,launchDate:today});
+    toast('Marked as launched 🎉'); await loadData();
+  } catch(e){ toast('Error'); }
+}
+
+async function removeFromQueue(id){
+  try {
+    await api({action:'removeFromQueue',id});
+    toast('Removed from queue'); await loadData();
+  } catch(e){ toast('Error'); }
 }
 
 // ── EXPORT CSV ────────────────────────────────────────
-function exportCSV() {
-  const h = ['Ad Name','Product','Primary Text','Headline','CTA','Website URL','URL Parameters','4x5 Link','9x16 Link','Status','Launch Date'];
-  const data = rows.filter(r=>r.inQueue||r.status==='launched').map(r=>[r.adName,r.product,r.primaryText,r.headline,r.cta,r.url,r.urlParams,r.link45,r.link916,r.status,r.launchDate].map(x=>`"${(x||'').replace(/"/g,'""')}"`).join(','));
-  const blob = new Blob([[h.join(','),...data].join('\n')],{type:'text/csv'});
-  const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='upload-queue.csv'; a.click();
+function exportCSV(){
+  const h=['Ad Name','Product','Primary Text','Headline','CTA','Website URL','URL Parameters','4×5 Link','9×16 Link','Status','Launch Date'];
+  const d=qrows.map(r=>[r.adName,r.product,r.primaryText,r.headline,r.cta,r.url,r.urlParams,r.link45,r.link916,r.status,r.launchDate].map(x=>`"${(x||'').replace(/"/g,'""')}"`).join(','));
+  const blob=new Blob([[h.join(','),...d].join('\n')],{type:'text/csv'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='upload-queue.csv'; a.click();
+}
+
+// ── API ───────────────────────────────────────────────
+async function api(payload){
+  const res=await fetch(cfg.scriptUrl,{method:'POST',body:JSON.stringify(payload)});
+  const txt=await res.text();
+  try{ const d=JSON.parse(txt); if(d.error) throw new Error(d.error); return d; } catch{ return {status:'ok'}; }
 }
 
 // ── PROD DATALIST ─────────────────────────────────────
-function refreshProdList() {
-  const prods = [...new Set(rows.map(r=>r.product).filter(Boolean))];
-  el('prodList').innerHTML = prods.map(p=>`<option value="${p}"/>`).join('');
+function refreshProdList(){
+  const p=[...new Set(rows.map(r=>r.product).filter(Boolean))];
+  g('prodList').innerHTML=p.map(x=>`<option value="${x}"/>`).join('');
 }
 
-// ── TAB SWITCH ────────────────────────────────────────
-function switchTab(t) {
-  activeTab=t;
-  document.querySelectorAll('.tab').forEach((tab,i)=>tab.classList.toggle('active',(i===0&&t==='board')||(i===1&&t==='queue')));
-  el('boardTab').style.display=t==='board'?'block':'none';
-  el('queueTab').style.display=t==='queue'?'block':'none';
+// ── TABS ──────────────────────────────────────────────
+function goTab(t){
+  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',(i===0&&t==='board')||(i===1&&t==='queue')));
+  g('boardEl').style.display=t==='board'?'block':'none';
+  g('queueEl').style.display=t==='queue'?'block':'none';
 }
 
 // ── UTILS ─────────────────────────────────────────────
-const el = id => document.getElementById(id);
-const v = id => el(id).value.trim();
-const set = (id,val) => { el(id).value=val; };
-const open = id => el(id).classList.add('open');
-const close = id => el(id).classList.remove('open');
-const uid = () => Date.now().toString(36)+Math.random().toString(36).slice(2,7);
-const trunc = (s,n) => s.length>n?s.slice(0,n)+'…':s;
-
-function toast(msg) {
-  const t=el('toast'); t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2800);
-}
+const g=id=>document.getElementById(id);
+const gv=id=>g(id).value.trim();
+const gs=(id,v)=>{ g(id).value=v; };
+const ov=id=>g(id).classList.add('open');
+const cv=id=>g(id).classList.remove('open');
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+function toast(msg){ const t=g('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2800); }
 </script>
 </body>
 </html>
