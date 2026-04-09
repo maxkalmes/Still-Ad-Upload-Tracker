@@ -100,7 +100,7 @@ tr:hover td{background:var(--sur2)}
 .pthumb:hover{border-color:var(--bor2);transform:translateY(-1px)}
 .pthumb.selected{border-color:var(--tx);border-width:2.5px}
 .pthumb.paired{border-color:var(--gnm);opacity:.45;cursor:default;pointer-events:none}
-.pthumb img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block}
+.pthumb img{width:100%;aspect-ratio:4/5;object-fit:contain;background:#f0f0f0;display:block}
 .pthumb .pname{font-size:9px;color:var(--mu);padding:3px 4px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;font-family:'DM Mono',monospace}
 .pair-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bor)}
 .pair-item:last-child{border-bottom:none}
@@ -394,11 +394,11 @@ function closeImport(){cv('importOv');}
 
 function showStep1(){
   g('importBody').innerHTML=`
-    <div class="info">Open your Drive folder → right-click each image → Get link → paste all links below. You can paste them all at once.</div>
+    <div class="info">Paste all your Drive links at once — both 4×5 and 9×16 mixed together. The app will show thumbnails and you just click once to label each one.</div>
     <div class="fg"><div class="flabel">Product / Campaign name *</div><input class="fi" id="imp_prod" placeholder="e.g. Summer Shield Vault" list="prodList"/></div>
     <div class="fg">
-      <div class="flabel">Paste all Google Drive links (one per line or comma separated)</div>
-      <textarea class="fi" id="imp_links" style="min-height:130px" placeholder="https://drive.google.com/file/d/...&#10;https://drive.google.com/file/d/...&#10;..."></textarea>
+      <div class="flabel">Paste all Google Drive links</div>
+      <textarea class="fi" id="imp_links_all" style="min-height:120px" placeholder="https://drive.google.com/file/d/...&#10;https://drive.google.com/file/d/..."></textarea>
     </div>
     <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:14px;border-top:1px solid var(--bor)">
       <button class="btn btn-ghost" onclick="closeImport()">Cancel</button>
@@ -406,21 +406,70 @@ function showStep1(){
     </div>`;
 }
 
-function loadLinks(){
-  const prod=document.getElementById('imp_prod').value.trim();
-  const raw=document.getElementById('imp_links').value.trim();
-  if(!prod){toast('Enter a product name');return;}
-  if(!raw){toast('Paste at least one link');return;}
-  const matches=raw.match(/https:\/\/drive\.google\.com\/file\/d\/[a-zA-Z0-9_-]+[^\s,"]*/g)||[];
-  if(!matches.length){toast('No Google Drive file links found. Make sure links contain /file/d/');return;}
-  impProduct=prod;
-  allFiles=matches.map((url,i)=>{
+function extractLinks(raw){
+  const matches=raw.match(/https:\/\/drive\.google\.com\/file\/d\/[a-zA-Z0-9_-]+[^\s,"']*/g)||[];
+  return matches.map((url,i)=>{
     const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);
     const id=m?m[1]:null;
-    return {id:id||('f'+i),name:'Image '+(i+1),url:`https://drive.google.com/file/d/${id}/view`,thumbUrl:id?`https://drive.google.com/thumbnail?id=${id}&sz=w300`:''};
+    return {id:id||('f'+i),name:'Image '+(i+1),url:'https://drive.google.com/file/d/'+id+'/view',thumbUrl:id?'https://drive.google.com/thumbnail?id='+id+'&sz=w600':''};
   });
-  pairs=[];pending45=null;
-  showPairStep();
+}
+
+function loadLinks(){
+  const prod=document.getElementById('imp_prod').value.trim();
+  const raw=document.getElementById('imp_links_all').value.trim();
+  if(!prod){toast('Enter a product name');return;}
+  if(!raw){toast('Paste at least one link');return;}
+  const files=extractLinks(raw);
+  if(!files.length){toast('No valid Drive links found');return;}
+  impProduct=prod;
+  allFiles=files.map(f=>({...f,label:null})); // label: null | '45' | '916'
+  pairs=[];
+  showLabelStep();
+}
+
+function showLabelStep(){
+  const labeled45=allFiles.filter(f=>f.label==='45');
+  const labeled916=allFiles.filter(f=>f.label==='916');
+  const unlabeled=allFiles.filter(f=>!f.label);
+
+  // Auto-pair any matched sets
+  pairs=[];
+  const minPairs=Math.min(labeled45.length,labeled916.length);
+  for(let i=0;i<minPairs;i++) pairs.push({file45:labeled45[i],file916:labeled916[i]});
+
+  const thumbCard=(file)=>{
+    const lbl=file.label;
+    const border=lbl==='45'?'border:2px solid var(--tx)':lbl==='916'?'border:2px solid var(--gnm)':'border:1.5px solid var(--bor)';
+    const badge=lbl==='45'?'<div style="position:absolute;top:4px;left:4px;background:var(--tx);color:#fff;font-size:9px;font-weight:600;padding:2px 6px;border-radius:100px">4×5</div>'
+      :lbl==='916'?'<div style="position:absolute;top:4px;left:4px;background:var(--gn);color:#fff;font-size:9px;font-weight:600;padding:2px 6px;border-radius:100px">9×16</div>':'';
+    const overlay=!lbl?'<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:rgba(0,0,0,.32)">'
+      +'<button onclick="labelFile(\''+file.id+'\',\'45\')" style="background:var(--tx);color:#fff;border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif;width:72px">4×5</button>'
+      +'<button onclick="labelFile(\''+file.id+'\',\'916\')" style="background:var(--gn);color:#fff;border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif;width:72px">9×16</button>'
+      +'</div>':'<div style="position:absolute;top:4px;right:4px;cursor:pointer;background:rgba(0,0,0,.5);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px" onclick="labelFile(\''+file.id+'\',null)">✕</div>';
+    return '<div style="position:relative;'+border+';border-radius:var(--rs);overflow:hidden;cursor:pointer" onclick="'+(!lbl?'':'void(0)')+'">'+
+      '<img src="'+file.thumbUrl+'" style="width:100%;height:140px;object-fit:contain;background:#f0f0f0;display:block" onerror="this.style.opacity=.2"/>'+
+      badge+overlay+'</div>';
+  };
+
+  g('importBody').innerHTML=
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">'
+    +'<div style="font-size:13px;color:var(--mu)">Click each image to label it as <strong style="color:var(--tx)">4×5</strong> or <strong style="color:var(--gn)">9×16</strong>. Labeled: <strong>'+labeled45.length+'</strong> × 4×5 &nbsp; <strong>'+labeled916.length+'</strong> × 9×16 &nbsp; <strong>'+unlabeled.length+'</strong> unlabeled</div>'
+    +'</div>'
+    +'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;max-height:420px;overflow-y:auto;margin-bottom:16px">'
+    +allFiles.map(f=>thumbCard(f)).join('')
+    +'</div>'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid var(--bor)">'
+    +'<button class="btn btn-ghost btn-sm" onclick="showStep1()">← Back</button>'
+    +(pairs.length?'<button class="btn btn-dark" onclick="addPairsToBoard()">Add '+pairs.length+' paired creative'+(pairs.length!==1?'s':'')+' to board →</button>':'<span style="font-size:12px;color:var(--mu)">Label images to create pairs</span>')
+    +'</div>';
+}
+
+function labelFile(fileId, label){
+  const f=allFiles.find(x=>x.id===fileId);
+  if(!f) return;
+  f.label=label;
+  showLabelStep();
 }
 
 function showPairStep(){
