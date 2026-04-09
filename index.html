@@ -353,8 +353,8 @@ function openCard(id){
       ${r.link916?`<a class="sbox" href="${r.link916}" target="_blank"><div class="sbox-lbl">9×16</div><div class="sbox-url">Open in Drive ↗</div></a>`:`<div class="sbox sbox-empty"><div class="sbox-lbl">9×16</div><div class="sbox-url">No link</div></div>`}
     </div>
     <div class="mactions">
+      ${st!=='launched'?`<button class="btn btn-green btn-sm" onclick="markLive('${id}')">✓ Mark as launched</button>`:''}
       ${st==='none'?`<button class="btn btn-dark btn-sm" onclick="openSinglePush('${id}')">+ Add to queue</button>`:''}
-      ${st==='queued'?`<button class="btn btn-green btn-sm" onclick="markLive('${id}')">✓ Mark as launched</button>`:''}
       ${st==='launched'?`<button class="btn btn-out btn-sm" onclick="unlaunch('${id}')">↩ Unlaunch</button>`:''}
       <button class="btn btn-out btn-sm" onclick="openEdit('${id}')">Edit</button>
       <button class="btn btn-red btn-sm" onclick="del('${id}')">Delete</button>
