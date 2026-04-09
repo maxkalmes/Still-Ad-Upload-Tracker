@@ -9,17 +9,15 @@
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#f5f4f0;--surface:#fff;--surface2:#eeecea;--border:#e0ddd4;--border2:#c8c5ba;
-  --text:#161510;--muted:#78766e;--faint:#b0ae a8;
+  --text:#161510;--muted:#78766e;--faint:#b0aea8;
   --green:#1b5c38;--green-bg:#d0eedd;--green-mid:#3fad6a;
   --amber:#7a4800;--amber-bg:#fde4b0;--amber-mid:#f5a000;
   --r:12px;--rs:8px;
 }
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-
 header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100}
 .logo{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
 .hright{display:flex;align-items:center;gap:8px}
-
 .btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:var(--rs);font-size:12px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;border:none;line-height:1;white-space:nowrap}
 .btn-dark{background:var(--text);color:#fff}.btn-dark:hover{opacity:.82}
 .btn-outline{background:transparent;color:var(--text);border:1px solid var(--border2)}.btn-outline:hover{background:var(--surface2)}
@@ -28,21 +26,15 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .btn-sm{padding:5px 11px;font-size:11px}
 .btn:disabled{opacity:.35;pointer-events:none}
 .btn-danger{background:transparent;color:#b91c1c;border:1px solid #fca5a5}.btn-danger:hover{background:#fef2f2}
-
 .wrap{max-width:1400px;margin:0 auto;padding:1.5rem}
-
 .tabs{display:flex;gap:2px;background:var(--surface2);border-radius:var(--r);padding:4px;width:fit-content;margin-bottom:1.5rem}
 .tab{padding:7px 18px;font-size:13px;font-weight:500;color:var(--muted);border-radius:var(--rs);cursor:pointer;border:none;background:transparent;font-family:'DM Sans',sans-serif;transition:all .15s}
 .tab.active{background:var(--surface);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.07)}
-
-/* BOARD */
-.board-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:10px}
-.pills{display:flex;gap:8px;flex-wrap:wrap}
+.pills{display:flex;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
 .pill{background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:5px 13px;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
 .pill strong{color:var(--text);font-weight:600}
-.dot{width:6px;height:6px;border-radius:50%}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .dot-all{background:var(--text)}.dot-live{background:var(--green-mid)}.dot-q{background:#bbb}.dot-inq{background:var(--amber-mid)}
-
 .group{margin-bottom:2.5rem}
 .gh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border)}
 .gtitle{font-size:15px;font-weight:600}
@@ -50,90 +42,72 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .gprog{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted)}
 .pbar{width:64px;height:3px;background:var(--border);border-radius:100px;overflow:hidden}
 .pfill{height:100%;background:var(--green-mid);border-radius:100px}
-
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
-
-/* CARD — thumbnail only */
-.card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s;position:relative}
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s}
 .card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
 .card.is-live{border-color:var(--green-mid)}
 .card.is-queued{border-color:var(--amber-mid)}
-
+.card.is-sel{outline:2.5px solid var(--text);outline-offset:2px}
 .card-img{width:100%;aspect-ratio:4/5;background:var(--surface2);overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative}
 .card-img img{width:100%;height:100%;object-fit:cover;display:block}
 .no-img{display:flex;flex-direction:column;align-items:center;gap:5px;opacity:.25}
 .no-img svg{width:24px;height:24px}
 .no-img span{font-size:9px;color:var(--muted)}
-
-.status-bar{height:4px;width:100%}
-.sb-live{background:var(--green-mid)}
-.sb-queued{background:var(--amber-mid)}
-.sb-none{background:var(--border)}
-
-/* status stamp on image */
 .stamp{position:absolute;bottom:0;left:0;right:0;padding:5px 4px;text-align:center;font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
-.stamp-live{background:rgba(27,92,56,.85);color:#fff}
-.stamp-queued{background:rgba(122,72,0,.8);color:#fff}
-
-/* OVERLAY / MODAL */
+.stamp-live{background:rgba(27,92,56,.88);color:#fff}
+.stamp-queued{background:rgba(122,72,0,.82);color:#fff}
+.sbar{height:4px;width:100%}
+.sb-live{background:var(--green-mid)}.sb-queued{background:var(--amber-mid)}.sb-none{background:var(--border)}
 .overlay{display:none;position:fixed;inset:0;background:rgba(22,21,16,.48);z-index:200;align-items:center;justify-content:center;padding:1rem}
 .overlay.open{display:flex}
 .modal{background:var(--surface);border-radius:var(--r);width:100%;max-width:420px;border:1px solid var(--border);overflow:hidden}
+.modal-wide{max-width:520px}
 .mhead{padding:16px 20px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .mtitle{font-size:14px;font-weight:600}
 .mclose{background:var(--surface2);border:none;border-radius:6px;width:26px;height:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted)}
 .mclose:hover{background:var(--border)}
 .mbody{padding:18px 20px}
-
-/* ADD CREATIVE MODAL */
 .fg{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
 .flabel{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
 .finput{padding:8px 11px;border:1px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);outline:none;width:100%}
 .finput:focus{border-color:var(--border2)}
-.upload-box{border:1.5px dashed var(--border2);border-radius:var(--rs);padding:20px;text-align:center;cursor:pointer;background:var(--surface2);display:block;transition:all .15s}
-.upload-box:hover{border-color:var(--muted);background:var(--surface)}
-.upload-hint{font-size:11px;color:var(--muted);margin-top:5px}
-.prev-img{width:100%;max-height:120px;object-fit:contain;border-radius:var(--rs);display:none;margin-bottom:8px}
-
-/* QUEUE TABLE */
+.finput-mono{font-family:'DM Mono',monospace;font-size:12px}
+.badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:500;padding:3px 8px;border-radius:100px}
+.bdot{width:5px;height:5px;border-radius:50%}
+.b-live{background:var(--green-bg);color:var(--green)}.b-live .bdot{background:var(--green-mid)}
+.b-queued{background:var(--amber-bg);color:var(--amber)}.b-queued .bdot{background:var(--amber-mid)}
+.b-none{background:var(--surface2);color:var(--muted)}.b-none .bdot{background:#bbb}
+.size-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.size-box{border:1px solid var(--border);border-radius:var(--rs);padding:9px 11px;text-decoration:none;display:block;transition:all .15s}
+.size-box:hover{border-color:var(--border2);background:var(--surface2)}
+.size-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:2px}
+.size-url{font-size:11px;color:var(--green);font-family:'DM Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.size-empty{opacity:.35;cursor:default}
+.size-empty:hover{border-color:var(--border);background:transparent}
+.mactions{display:flex;gap:8px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--border);margin-top:4px}
 .twrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--border)}
 table{width:100%;border-collapse:collapse;background:var(--surface);font-size:12px}
 th{background:var(--surface2);padding:9px 12px;text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap}
 td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:var(--surface2)}
-.tcopy{font-size:11px;color:var(--muted);line-height:1.5;max-width:220px}
-.tmono{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);max-width:160px;word-break:break-all}
+.ecell{cursor:pointer;border-radius:4px;padding:3px 5px;transition:background .1s;min-width:80px}
+.ecell:hover{background:var(--surface2)}
+.ecell.mt{color:var(--faint);font-style:italic}
+.einput{width:100%;padding:4px 7px;border:1.5px solid var(--border2);border-radius:4px;font-size:12px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);outline:none}
+textarea.einput{min-height:64px;resize:vertical;line-height:1.4;font-size:11px}
 .tlink a{color:var(--green);font-size:11px;text-decoration:none}.tlink a:hover{text-decoration:underline}
-.teditable{min-width:120px}
-.editable-cell{cursor:pointer;border-radius:4px;padding:3px 5px;transition:background .12s}
-.editable-cell:hover{background:var(--surface2)}
-.editable-cell.empty{color:var(--faint);font-style:italic;color:var(--muted);opacity:.5}
-.cell-input{width:100%;padding:4px 6px;border:1.5px solid var(--border2);border-radius:4px;font-size:12px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);outline:none}
-textarea.cell-input{min-height:60px;resize:vertical;line-height:1.4}
-
-/* badge */
-.badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:500;padding:3px 8px;border-radius:100px}
-.bdot{width:5px;height:5px;border-radius:50%}
-.b-live{background:var(--green-bg);color:var(--green)}.b-live .bdot{background:var(--green-mid)}
-.b-queued{background:var(--amber-bg);color:var(--amber)}.b-queued .bdot{background:var(--amber-mid)}
-.b-none{background:var(--surface2);color:var(--muted)}.b-none .bdot{background:#bbb}
-
-/* SETUP */
+.tmono{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);max-width:150px;word-break:break-all}
 .setup{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:72vh;gap:12px;text-align:center;padding:2rem}
 .setup-h{font-size:20px;font-weight:600}
 .setup-p{font-size:13px;color:var(--muted);max-width:400px;line-height:1.7}
 .sinput{width:100%;max-width:400px;padding:9px 12px;border:1px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:'DM Mono',monospace;background:var(--surface);color:var(--text);outline:none}
 .sinput:focus{border-color:var(--border2)}
 .shint{font-size:11px;color:var(--muted);max-width:400px;line-height:1.6}
-
-/* FAB */
-.fab{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--text);color:#fff;border-radius:100px;padding:11px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 28px rgba(0,0,0,.2);z-index:99;transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
+.fab{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(110px);background:var(--text);color:#fff;border-radius:100px;padding:11px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 28px rgba(0,0,0,.2);z-index:99;transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
 .fab.up{transform:translateX(-50%) translateY(0)}
 .fab-n{background:rgba(255,255,255,.15);border-radius:100px;padding:2px 9px;font-size:12px;font-weight:600}
-.fab-div{width:1px;height:16px;background:rgba(255,255,255,.2)}
-
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--text);color:#fff;padding:9px 18px;border-radius:100px;font-size:13px;font-weight:500;z-index:999;transition:transform .25s;pointer-events:none}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(110px);background:var(--text);color:#fff;padding:9px 18px;border-radius:100px;font-size:13px;font-weight:500;z-index:999;transition:transform .25s;pointer-events:none}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .empty{text-align:center;padding:2.5rem;color:var(--muted);font-size:13px}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -147,7 +121,7 @@ textarea.cell-input{min-height:60px;resize:vertical;line-height:1.4}
   <div class="hright">
     <button class="btn btn-ghost btn-sm" onclick="openSettings()">⚙ Settings</button>
     <button class="btn btn-outline btn-sm" onclick="loadData()">↻ Refresh</button>
-    <button class="btn btn-dark btn-sm" onclick="openAddCreative()">+ Add creative</button>
+    <button class="btn btn-dark btn-sm" onclick="openAdd()">+ Add creative</button>
   </div>
 </header>
 
@@ -155,13 +129,12 @@ textarea.cell-input{min-height:60px;resize:vertical;line-height:1.4}
 
   <!-- SETUP -->
   <div class="setup" id="setupEl">
-    <div style="font-size:32px">🎨</div>
+    <div style="font-size:34px">🎨</div>
     <div class="setup-h">Connect your sheet</div>
-    <div class="setup-p">Paste your Google Sheet ID, tab name, and Apps Script Web App URL to get started.</div>
+    <div class="setup-p">Paste your Google Sheet ID, tab name, and Apps Script Web App URL.</div>
     <input class="sinput" id="s_id" placeholder="Google Sheet ID"/>
     <input class="sinput" id="s_tab" placeholder="Tab name (e.g. Sheet1)"/>
     <input class="sinput" id="s_url" placeholder="Apps Script Web App URL"/>
-    <div class="shint">Need help? See README.md for the full setup guide.</div>
     <button class="btn btn-dark" onclick="saveConfig()">Launch tracker</button>
   </div>
 
@@ -172,24 +145,22 @@ textarea.cell-input{min-height:60px;resize:vertical;line-height:1.4}
       <button class="tab" onclick="goTab('queue')">Upload queue</button>
     </div>
 
-    <!-- BOARD TAB -->
+    <!-- BOARD -->
     <div id="boardEl">
-      <div class="board-bar">
-        <div class="pills" id="pillsEl"></div>
-      </div>
+      <div class="pills" id="pillsEl"></div>
       <div id="groupsEl"></div>
     </div>
 
-    <!-- QUEUE TAB -->
+    <!-- QUEUE -->
     <div id="queueEl" style="display:none">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;gap:10px;flex-wrap:wrap">
-        <div style="font-size:13px;color:var(--muted)">Click any cell to edit. Changes save automatically.</div>
+        <div style="font-size:13px;color:var(--muted)">Click any cell to edit. Saves automatically on click away.</div>
         <button class="btn btn-outline btn-sm" onclick="exportCSV()">↓ Export CSV</button>
       </div>
       <div class="twrap">
-        <table id="queueTable">
+        <table>
           <thead><tr>
-            <th style="width:52px"></th>
+            <th style="width:48px"></th>
             <th>Ad Name</th>
             <th>Product</th>
             <th>Primary Text</th>
@@ -197,10 +168,10 @@ textarea.cell-input{min-height:60px;resize:vertical;line-height:1.4}
             <th>CTA</th>
             <th>Website URL</th>
             <th>URL Parameters</th>
-            <th>4×5 Air Link</th>
-            <th>9×16 Air Link</th>
+            <th>4×5</th>
+            <th>9×16</th>
             <th>Status</th>
-            <th style="width:130px"></th>
+            <th style="width:120px"></th>
           </tr></thead>
           <tbody id="qbody"></tbody>
         </table>
@@ -209,36 +180,25 @@ textarea.cell-input{min-height:60px;resize:vertical;line-height:1.4}
   </div>
 </div>
 
-<!-- CARD ACTION MODAL -->
-<div class="overlay" id="cardOv" onclick="closeCardOv(event)">
+<!-- CARD MODAL -->
+<div class="overlay" id="cardOv" onclick="if(event.target===this)closeCard()">
   <div class="modal">
     <div class="mhead">
-      <div class="mtitle" id="cardOvTitle">Creative</div>
-      <button class="mclose" onclick="closeCardDirect()">✕</button>
+      <div class="mtitle" id="cardTitle">Creative</div>
+      <button class="mclose" onclick="closeCard()">✕</button>
     </div>
-    <div class="mbody" id="cardOvBody"></div>
+    <div class="mbody" id="cardBody"></div>
   </div>
 </div>
 
-<!-- ADD CREATIVE MODAL -->
-<div class="overlay" id="addOv" onclick="closeAddOv(event)">
-  <div class="modal" style="max-width:480px">
+<!-- ADD / EDIT MODAL -->
+<div class="overlay" id="addOv" onclick="if(event.target===this)closeAdd()">
+  <div class="modal modal-wide">
     <div class="mhead">
-      <div class="mtitle" id="addOvTitle">Add creative</div>
-      <button class="mclose" onclick="closeAddDirect()">✕</button>
+      <div class="mtitle" id="addTitle">Add creative</div>
+      <button class="mclose" onclick="closeAdd()">✕</button>
     </div>
     <div class="mbody">
-      <div class="fg">
-        <div class="flabel">Thumbnail image</div>
-        <label class="upload-box">
-          <input type="file" id="imgFile" accept="image/*" style="display:none" onchange="prevImg(event)"/>
-          <img id="imgPrev" class="prev-img"/>
-          <div id="uploadPrompt">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:24px;height:24px;margin:0 auto;opacity:.35"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-            <div class="upload-hint">Click to upload thumbnail</div>
-          </div>
-        </label>
-      </div>
       <div class="fg">
         <div class="flabel">Ad Name *</div>
         <input class="finput" id="f_name" placeholder="e.g. SummerShield_BeachScene_v1"/>
@@ -250,35 +210,36 @@ textarea.cell-input{min-height:60px;resize:vertical;line-height:1.4}
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <div class="fg">
-          <div class="flabel">4×5 Air Link</div>
-          <input class="finput" id="f_45" placeholder="https://app.air.inc/..."/>
+          <div class="flabel">4×5 Google Drive Link</div>
+          <input class="finput finput-mono" id="f_45" placeholder="https://drive.google.com/..."/>
         </div>
         <div class="fg">
-          <div class="flabel">9×16 Air Link</div>
-          <input class="finput" id="f_916" placeholder="https://app.air.inc/..."/>
+          <div class="flabel">9×16 Google Drive Link</div>
+          <input class="finput finput-mono" id="f_916" placeholder="https://drive.google.com/..."/>
         </div>
       </div>
-      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
-        <button class="btn btn-ghost" onclick="closeAddDirect()">Cancel</button>
+      <div style="font-size:11px;color:var(--muted);margin-top:-4px;margin-bottom:14px">The 4×5 link will be used as the thumbnail on the visual board.</div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:14px;border-top:1px solid var(--border)">
+        <button class="btn btn-ghost" onclick="closeAdd()">Cancel</button>
         <button class="btn btn-dark" id="saveBtn" onclick="saveCreative()">Save creative</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- SETTINGS MODAL -->
-<div class="overlay" id="settingsOv" onclick="closeSetOv(event)">
-  <div class="modal" style="max-width:440px">
+<!-- SETTINGS -->
+<div class="overlay" id="setOv" onclick="if(event.target===this)closeSettings()">
+  <div class="modal modal-wide">
     <div class="mhead">
       <div class="mtitle">Settings</div>
-      <button class="mclose" onclick="closeSetDirect()">✕</button>
+      <button class="mclose" onclick="closeSettings()">✕</button>
     </div>
     <div class="mbody">
       <div class="fg"><div class="flabel">Google Sheet ID</div><input class="finput" id="c_id"/></div>
       <div class="fg"><div class="flabel">Tab Name</div><input class="finput" id="c_tab"/></div>
-      <div class="fg"><div class="flabel">Apps Script URL</div><input class="finput" id="c_url"/></div>
+      <div class="fg"><div class="flabel">Apps Script Web App URL</div><input class="finput finput-mono" id="c_url"/></div>
       <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px">
-        <button class="btn btn-ghost" onclick="closeSetDirect()">Cancel</button>
+        <button class="btn btn-ghost" onclick="closeSettings()">Cancel</button>
         <button class="btn btn-dark" onclick="saveSettings()">Save</button>
       </div>
     </div>
@@ -289,92 +250,77 @@ textarea.cell-input{min-height:60px;resize:vertical;line-height:1.4}
 <div class="fab" id="fab">
   <span style="font-size:13px;font-weight:500">Add to queue</span>
   <span class="fab-n" id="fabN">0</span>
-  <div class="fab-div"></div>
+  <div style="width:1px;height:16px;background:rgba(255,255,255,.2)"></div>
   <button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:#fff;border:none" onclick="pushSelected()">Push to queue →</button>
-  <button class="btn btn-sm" style="background:transparent;color:rgba(255,255,255,.55);border:none;padding:4px 6px" onclick="clearSel()">✕</button>
+  <button class="btn btn-sm" style="background:transparent;color:rgba(255,255,255,.5);border:none;padding:4px 6px" onclick="clearSel()">✕</button>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ── STATE ─────────────────────────────────────────────
-const CK = 'ct_v5';
-let cfg = JSON.parse(localStorage.getItem(CK)||'null');
-let rows = [];       // board rows (from sheet col A-E: id, adName, product, imageUrl, status, inQueue)
-let qrows = [];      // queue rows (full data)
-let sel = new Set();
-let editCreativeId = null;
-let pendingImg = null, pendingImgName = null;
+const CK='ct_v6';
+let cfg=JSON.parse(localStorage.getItem(CK)||'null');
+let rows=[], qrows=[], sel=new Set(), editId=null;
 
-// ── BOOT ──────────────────────────────────────────────
-window.onload = () => {
-  if (cfg?.sheetId && cfg?.scriptUrl) { showApp(); loadData(); }
-};
-function showApp() {
-  g('setupEl').style.display = 'none';
-  g('appEl').style.display = 'block';
+// convert Google Drive share URL to a direct viewable image URL
+function driveThumb(url){
+  if(!url) return '';
+  // already a thumbnail/direct link
+  if(url.includes('drive.google.com/thumbnail')||url.includes('drive.google.com/uc')) return url;
+  // extract file ID from share URL
+  const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/)||url.match(/id=([a-zA-Z0-9_-]+)/);
+  if(m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w400`;
+  return url;
 }
 
-// ── CONFIG ────────────────────────────────────────────
-function saveConfig() {
-  const id=gv('s_id'), tab=gv('s_tab')||'Sheet1', url=gv('s_url');
-  if (!id||!url){ toast('Fill in Sheet ID and Script URL'); return; }
+window.onload=()=>{ if(cfg?.sheetId&&cfg?.scriptUrl){ showApp(); loadData(); } };
+function showApp(){ g('setupEl').style.display='none'; g('appEl').style.display='block'; }
+
+function saveConfig(){
+  const id=gv('s_id'),tab=gv('s_tab')||'Sheet1',url=gv('s_url');
+  if(!id||!url){ toast('Fill in Sheet ID and Script URL'); return; }
   cfg={sheetId:id,sheetName:tab,scriptUrl:url};
   localStorage.setItem(CK,JSON.stringify(cfg));
   showApp(); loadData();
 }
-function openSettings(){ gs('c_id',cfg?.sheetId||''); gs('c_tab',cfg?.sheetName||''); gs('c_url',cfg?.scriptUrl||''); ov('settingsOv'); }
-function saveSettings(){ cfg={sheetId:gv('c_id'),sheetName:gv('c_tab')||'Sheet1',scriptUrl:gv('c_url')}; localStorage.setItem(CK,JSON.stringify(cfg)); cv('settingsOv'); loadData(); toast('Saved'); }
-function closeSetOv(e){ if(e.target===g('settingsOv')) closeSetDirect(); }
-function closeSetDirect(){ cv('settingsOv'); }
+function openSettings(){ gs('c_id',cfg?.sheetId||''); gs('c_tab',cfg?.sheetName||''); gs('c_url',cfg?.scriptUrl||''); ov('setOv'); }
+function saveSettings(){ cfg={sheetId:gv('c_id'),sheetName:gv('c_tab')||'Sheet1',scriptUrl:gv('c_url')}; localStorage.setItem(CK,JSON.stringify(cfg)); closeSettings(); loadData(); toast('Saved'); }
+function closeSettings(){ cv('setOv'); }
 
-// ── LOAD DATA ─────────────────────────────────────────
-// BOARD SHEET columns: A=ID, B=AdName, C=Product, D=ImageURL, E=Status(none/queued/launched), F=InQueue(true/false)
-// QUEUE SHEET is same sheet but we read all cols:
-// A=ID, B=AdName, C=Product, D=ImageURL, E=Status, F=InQueue,
-// G=PrimaryText, H=Headline, I=CTA, J=URL, K=URLParams, L=Link45, M=Link916, N=LaunchDate
-async function loadData() {
-  try {
-    const url = `https://docs.google.com/spreadsheets/d/${cfg.sheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(cfg.sheetName)}&t=${Date.now()}`;
-    const res = await fetch(url);
-    const txt = await res.text();
-    const json = JSON.parse(txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
-    const sr = json.table.rows;
-    rows = sr.slice(1).map(r=>({
-      id:        rc(r,0)||uid(),
-      adName:    rc(r,1),
-      product:   rc(r,2)||'Uncategorized',
-      imageUrl:  rc(r,3),
-      status:    rc(r,4)||'none',
-      inQueue:   rc(r,5)==='true'||rc(r,5)==='TRUE',
-      primaryText: rc(r,6),
-      headline:  rc(r,7),
-      cta:       rc(r,8),
-      url:       rc(r,9),
-      urlParams: rc(r,10),
-      link45:    rc(r,11),
-      link916:   rc(r,12),
-      launchDate:rc(r,13),
+async function loadData(){
+  try{
+    const url=`https://docs.google.com/spreadsheets/d/${cfg.sheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(cfg.sheetName)}&t=${Date.now()}`;
+    const res=await fetch(url);
+    const txt=await res.text();
+    const json=JSON.parse(txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+    const sr=json.table.rows;
+    // Columns: A=ID, B=AdName, C=Product, D=Link45, E=Link916,
+    //          F=Status, G=InQueue, H=PrimaryText, I=Headline,
+    //          J=CTA, K=URL, L=URLParams, M=LaunchDate
+    rows=sr.slice(1).map(r=>({
+      id:       rc(r,0)||uid(),
+      adName:   rc(r,1),
+      product:  rc(r,2)||'Uncategorized',
+      link45:   rc(r,3),
+      link916:  rc(r,4),
+      status:   rc(r,5)||'none',
+      inQueue:  rc(r,6)==='true'||rc(r,6)==='TRUE',
+      primaryText: rc(r,7),
+      headline: rc(r,8),
+      cta:      rc(r,9),
+      url:      rc(r,10),
+      urlParams:rc(r,11),
+      launchDate:rc(r,12),
     })).filter(r=>r.adName);
-    qrows = rows.filter(r=>r.inQueue||r.status==='launched');
-    renderBoard();
-    renderQueue();
-    refreshProdList();
-  } catch(e) {
-    console.error(e);
-    toast('Could not load sheet — check settings');
-  }
+    qrows=rows.filter(r=>r.inQueue||r.status==='launched');
+    renderBoard(); renderQueue(); refreshProdList();
+  }catch(e){ console.error(e); toast('Could not load sheet — check settings'); }
 }
 
-function rc(row,idx){
-  const c=row.c&&row.c[idx];
-  if(!c||c.v===null||c.v===undefined) return '';
-  return String(c.v);
-}
+function rc(row,idx){ const c=row.c&&row.c[idx]; if(!c||c.v===null||c.v===undefined) return ''; return String(c.v); }
 
 // ── BOARD ─────────────────────────────────────────────
-function renderBoard() {
-  // pills
+function renderBoard(){
   const total=rows.length, live=rows.filter(r=>r.status==='launched').length,
         inq=rows.filter(r=>r.inQueue&&r.status!=='launched').length,
         none=rows.filter(r=>!r.inQueue&&r.status!=='launched').length;
@@ -383,10 +329,9 @@ function renderBoard() {
     <div class="pill"><div class="dot dot-live"></div><strong>${live}</strong> launched</div>
     <div class="pill"><div class="dot dot-inq"></div><strong>${inq}</strong> in queue</div>
     <div class="pill"><div class="dot dot-q"></div><strong>${none}</strong> not queued</div>`;
-
-  const products=[...new Set(rows.map(r=>r.product))];
+  const prods=[...new Set(rows.map(r=>r.product))];
   let html='';
-  products.forEach(prod=>{
+  prods.forEach(prod=>{
     const pr=rows.filter(r=>r.product===prod);
     const liveN=pr.filter(r=>r.status==='launched').length;
     const pct=pr.length?Math.round(liveN/pr.length*100):0;
@@ -398,30 +343,29 @@ function renderBoard() {
       <div class="grid">${pr.map(r=>cardHTML(r)).join('')}</div>
     </div>`;
   });
-  g('groupsEl').innerHTML=html||'<div class="empty">No creatives yet. Click + Add creative to get started.</div>';
+  g('groupsEl').innerHTML=html||'<div class="empty">No creatives yet — click + Add creative to get started.</div>';
 }
 
 function cardHTML(r){
-  const isSel=sel.has(r.id);
   const st=r.status==='launched'?'launched':r.inQueue?'queued':'none';
-  const img=r.imageUrl
-    ?`<img src="${r.imageUrl}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+  const isSel=sel.has(r.id);
+  const thumb=driveThumb(r.link45);
+  const img=thumb
+    ?`<img src="${thumb}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
        <div class="no-img" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>No preview</span></div>`
     :`<div class="no-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>No preview</span></div>`;
   const stamp=st==='launched'?`<div class="stamp stamp-live">✓ Launched</div>`:st==='queued'?`<div class="stamp stamp-queued">In queue</div>`:'';
-  return `<div class="card ${st==='launched'?'is-live':st==='queued'?'is-queued':''} ${isSel?'selected-card':''}"
-    style="${isSel?'outline:2.5px solid var(--text);outline-offset:2px':''}"
+  return `<div class="card ${st==='launched'?'is-live':st==='queued'?'is-queued':''} ${isSel?'is-sel':''}"
     onclick="handleCard(event,'${r.id}')">
     <div class="card-img">${img}${stamp}</div>
-    <div class="status-bar sb-${st}"></div>
+    <div class="sbar sb-${st}"></div>
   </div>`;
 }
 
 function handleCard(e,id){
   if(sel.size>0){ toggleSel(id); return; }
-  openCardModal(id);
+  openCard(id);
 }
-
 function toggleSel(id){
   const r=rows.find(x=>x.id===id);
   if(!r) return;
@@ -430,217 +374,119 @@ function toggleSel(id){
   sel.has(id)?sel.delete(id):sel.add(id);
   updateFAB(); renderBoard();
 }
-
 function clearSel(){ sel.clear(); updateFAB(); renderBoard(); }
-
-function updateFAB(){
-  g('fabN').textContent=sel.size;
-  g('fab').classList.toggle('up',sel.size>0);
-}
-
+function updateFAB(){ g('fabN').textContent=sel.size; g('fab').classList.toggle('up',sel.size>0); }
 async function pushSelected(){
   if(!sel.size) return;
   const ids=[...sel];
-  try {
-    await api({action:'pushToQueue',ids});
-    toast(`${ids.length} creative${ids.length>1?'s':''} added to queue`);
-    sel.clear(); updateFAB(); await loadData();
-  } catch(e){ toast('Error — check Apps Script'); }
+  try{ await api({action:'pushToQueue',ids}); toast(`${ids.length} creative${ids.length>1?'s':''} added to queue`); sel.clear(); updateFAB(); await loadData(); }
+  catch(e){ toast('Error — check Apps Script'); }
 }
 
 // ── CARD MODAL ────────────────────────────────────────
-function openCardModal(id){
-  const r=rows.find(x=>x.id===id);
-  if(!r) return;
+function openCard(id){
+  const r=rows.find(x=>x.id===id); if(!r) return;
   const st=r.status==='launched'?'launched':r.inQueue?'queued':'none';
-  g('cardOvTitle').textContent=r.adName||'Creative';
-  g('cardOvBody').innerHTML=`
-    ${r.imageUrl?`<img src="${r.imageUrl}" style="width:100%;max-height:200px;object-fit:contain;background:var(--surface2);border-radius:var(--rs);margin-bottom:14px;display:block" onerror="this.style.display='none'"/>`:''}
-    <div style="margin-bottom:14px">
+  const thumb=driveThumb(r.link45);
+  g('cardTitle').textContent=r.adName||'Creative';
+  g('cardBody').innerHTML=`
+    ${thumb?`<img src="${thumb}" style="width:100%;max-height:200px;object-fit:contain;background:var(--surface2);border-radius:var(--rs);margin-bottom:14px;display:block" onerror="this.style.display='none'"/>`:''}
+    <div style="margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
       <span class="badge b-${st}"><span class="bdot"></span>${st==='launched'?'Launched':st==='queued'?'In upload queue':'Not queued'}</span>
-      ${r.launchDate?`<span style="font-size:11px;color:var(--muted);margin-left:8px">${r.launchDate}</span>`:''}
+      ${r.launchDate?`<span style="font-size:11px;color:var(--muted)">${r.launchDate}</span>`:''}
     </div>
-    ${r.link45||r.link916?`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
-      ${r.link45?`<a href="${r.link45}" target="_blank" style="border:1px solid var(--border);border-radius:var(--rs);padding:8px 10px;text-decoration:none;display:block"><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:2px">4×5</div><div style="font-size:11px;color:var(--green);font-family:'DM Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Open in Air ↗</div></a>`:''}
-      ${r.link916?`<a href="${r.link916}" target="_blank" style="border:1px solid var(--border);border-radius:var(--rs);padding:8px 10px;text-decoration:none;display:block"><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:2px">9×16</div><div style="font-size:11px;color:var(--green);font-family:'DM Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Open in Air ↗</div></a>`:''}
-    </div>`:''}
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      ${st==='none'?`<button class="btn btn-dark btn-sm" onclick="addOneToQueue('${id}')">+ Add to upload queue</button>`:''}
+    <div class="size-row">
+      ${r.link45?`<a class="size-box" href="${r.link45}" target="_blank"><div class="size-lbl">4×5</div><div class="size-url">Open in Drive ↗</div></a>`:`<div class="size-box size-empty"><div class="size-lbl">4×5</div><div class="size-url">No link</div></div>`}
+      ${r.link916?`<a class="size-box" href="${r.link916}" target="_blank"><div class="size-lbl">9×16</div><div class="size-url">Open in Drive ↗</div></a>`:`<div class="size-box size-empty"><div class="size-lbl">9×16</div><div class="size-url">No link</div></div>`}
+    </div>
+    <div class="mactions">
+      ${st==='none'?`<button class="btn btn-dark btn-sm" onclick="addOneToQueue('${id}')">+ Add to queue</button>`:''}
       ${st==='queued'?`<button class="btn btn-green btn-sm" onclick="markLive('${id}')">✓ Mark as launched</button>`:''}
-      ${st==='launched'?`<button class="btn btn-outline btn-sm" onclick="markUnlaunch('${id}')">↩ Unlaunch</button>`:''}
-      <button class="btn btn-outline btn-sm" onclick="openEditCreative('${id}')">Edit</button>
-      <button class="btn btn-danger btn-sm" onclick="deleteCreative('${id}')">Delete</button>
+      ${st==='launched'?`<button class="btn btn-outline btn-sm" onclick="doUnlaunch('${id}')">↩ Unlaunch</button>`:''}
+      <button class="btn btn-outline btn-sm" onclick="openEdit('${id}')">Edit</button>
+      <button class="btn btn-danger btn-sm" onclick="doDelete('${id}')">Delete</button>
     </div>`;
   ov('cardOv');
 }
+function closeCard(){ cv('cardOv'); }
+async function addOneToQueue(id){ try{ await api({action:'pushToQueue',ids:[id]}); toast('Added to queue'); closeCard(); await loadData(); }catch(e){ toast('Error'); } }
+async function markLive(id){ const d=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); try{ await api({action:'markLaunched',id,launchDate:d}); toast('Launched 🎉'); closeCard(); await loadData(); }catch(e){ toast('Error'); } }
+async function doUnlaunch(id){ try{ await api({action:'unlaunch',id}); toast('Moved back to queue'); closeCard(); await loadData(); }catch(e){ toast('Error'); } }
+async function doDelete(id){ if(!confirm('Delete this creative?')) return; try{ await api({action:'deleteRow',id}); toast('Deleted'); closeCard(); await loadData(); }catch(e){ toast('Error'); } }
 
-async function addOneToQueue(id){
-  try {
-    await api({action:'pushToQueue',ids:[id]});
-    toast('Added to upload queue');
-    closeCardDirect(); await loadData();
-  } catch(e){ toast('Error — check Apps Script'); }
+// ── ADD / EDIT ────────────────────────────────────────
+function openAdd(){ editId=null; g('addTitle').textContent='Add creative'; ['f_name','f_prod','f_45','f_916'].forEach(i=>gs(i,'')); ov('addOv'); }
+function openEdit(id){
+  const r=rows.find(x=>x.id===id); if(!r) return;
+  editId=id; g('addTitle').textContent='Edit creative';
+  gs('f_name',r.adName||''); gs('f_prod',r.product||''); gs('f_45',r.link45||''); gs('f_916',r.link916||'');
+  closeCard(); ov('addOv');
 }
-
-async function markLive(id){
-  const today=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-  try {
-    await api({action:'markLaunched',id,launchDate:today});
-    toast('Marked as launched 🎉');
-    closeCardDirect(); await loadData();
-  } catch(e){ toast('Error'); }
-}
-
-async function markUnlaunch(id){
-  try {
-    await api({action:'unlaunch',id});
-    toast('Moved back to queue');
-    closeCardDirect(); await loadData();
-  } catch(e){ toast('Error'); }
-}
-
-async function deleteCreative(id){
-  if(!confirm('Delete this creative?')) return;
-  try {
-    await api({action:'deleteRow',id});
-    toast('Deleted'); closeCardDirect(); await loadData();
-  } catch(e){ toast('Error'); }
-}
-
-function closeCardOv(e){ if(e.target===g('cardOv')) closeCardDirect(); }
-function closeCardDirect(){ cv('cardOv'); }
-
-// ── ADD / EDIT CREATIVE ───────────────────────────────
-function openAddCreative(){
-  editCreativeId=null; pendingImg=null; pendingImgName=null;
-  g('addOvTitle').textContent='Add creative';
-  ['f_name','f_prod','f_45','f_916'].forEach(id=>gs(id,''));
-  g('imgPrev').style.display='none';
-  g('uploadPrompt').style.display='block';
-  ov('addOv');
-}
-
-function openEditCreative(id){
-  const r=rows.find(x=>x.id===id);
-  if(!r) return;
-  editCreativeId=id; pendingImg=null; pendingImgName=null;
-  g('addOvTitle').textContent='Edit creative';
-  gs('f_name',r.adName||'');
-  gs('f_prod',r.product||'');
-  gs('f_45',r.link45||'');
-  gs('f_916',r.link916||'');
-  if(r.imageUrl){ g('imgPrev').src=r.imageUrl; g('imgPrev').style.display='block'; g('uploadPrompt').style.display='none'; }
-  else { g('imgPrev').style.display='none'; g('uploadPrompt').style.display='block'; }
-  closeCardDirect();
-  ov('addOv');
-}
-
-function prevImg(e){
-  const file=e.target.files[0]; if(!file) return;
-  pendingImgName=file.name;
-  const reader=new FileReader();
-  reader.onload=ev=>{ pendingImg=ev.target.result; g('imgPrev').src=pendingImg; g('imgPrev').style.display='block'; g('uploadPrompt').style.display='none'; };
-  reader.readAsDataURL(file);
-}
-
+function closeAdd(){ cv('addOv'); }
 async function saveCreative(){
-  const name=gv('f_name'), prod=gv('f_prod');
+  const name=gv('f_name'),prod=gv('f_prod');
   if(!name){ toast('Ad name is required'); return; }
   const btn=g('saveBtn'); btn.disabled=true; btn.innerHTML='<div class="spin"></div> Saving…';
-  try {
-    await api({
-      action: editCreativeId?'updateRow':'addRow',
-      id: editCreativeId||uid(),
-      adName: name,
-      product: prod||'Uncategorized',
-      link45: gv('f_45'),
-      link916: gv('f_916'),
-      imageBase64: pendingImg||null,
-      imageName: pendingImgName||null,
-    });
-    toast(editCreativeId?'Updated!':'Creative added!');
-    closeAddDirect(); await loadData();
-  } catch(e){ toast('Error saving — check Apps Script URL'); }
-  finally { btn.disabled=false; btn.textContent='Save creative'; }
+  try{
+    await api({action:editId?'updateRow':'addRow', id:editId||uid(), adName:name, product:prod||'Uncategorized', link45:gv('f_45'), link916:gv('f_916')});
+    toast(editId?'Updated!':'Creative added!'); closeAdd(); await loadData();
+  }catch(e){ toast('Error — check Apps Script'); }
+  finally{ btn.disabled=false; btn.textContent='Save creative'; }
 }
 
-function closeAddOv(e){ if(e.target===g('addOv')) closeAddDirect(); }
-function closeAddDirect(){ cv('addOv'); }
-
-// ── QUEUE TABLE (inline editable) ─────────────────────
+// ── QUEUE TABLE ───────────────────────────────────────
 function renderQueue(){
   const tbody=g('qbody');
   if(!qrows.length){ tbody.innerHTML='<tr><td colspan="12" class="empty">No ads in queue yet. Go to the visual board and add creatives to the queue.</td></tr>'; return; }
   tbody.innerHTML=qrows.map(r=>{
     const st=r.status==='launched'?'launched':r.inQueue?'queued':'none';
-    const thumb=r.imageUrl?`<img src="${r.imageUrl}" style="width:38px;height:48px;object-fit:cover;border-radius:4px" onerror="this.style.display='none'"/>`:'';
+    const thumb=driveThumb(r.link45);
+    const thumbEl=thumb?`<img src="${thumb}" style="width:36px;height:45px;object-fit:cover;border-radius:4px" onerror="this.style.display='none'"/>`:'';
     return `<tr data-id="${r.id}">
-      <td>${thumb}</td>
-      <td class="teditable">${ec(r.id,'adName',r.adName,'text')}</td>
-      <td class="teditable">${ec(r.id,'product',r.product,'text')}</td>
-      <td class="teditable" style="max-width:220px">${ec(r.id,'primaryText',r.primaryText,'textarea')}</td>
-      <td class="teditable">${ec(r.id,'headline',r.headline,'text')}</td>
-      <td class="teditable">${ec(r.id,'cta',r.cta,'text')}</td>
-      <td class="teditable">${ec(r.id,'url',r.url,'text')}</td>
-      <td class="teditable">${ec(r.id,'urlParams',r.urlParams,'text')}</td>
-      <td class="tlink">${r.link45?`<a href="${r.link45}" target="_blank">4×5 ↗</a>`:`<span style="color:var(--muted);font-size:11px">—</span>`}</td>
-      <td class="tlink">${r.link916?`<a href="${r.link916}" target="_blank">9×16 ↗</a>`:`<span style="color:var(--muted);font-size:11px">—</span>`}</td>
+      <td>${thumbEl}</td>
+      <td>${ec(r.id,'adName',r.adName,'text')}</td>
+      <td>${ec(r.id,'product',r.product,'text')}</td>
+      <td style="max-width:220px">${ec(r.id,'primaryText',r.primaryText,'textarea')}</td>
+      <td>${ec(r.id,'headline',r.headline,'text')}</td>
+      <td>${ec(r.id,'cta',r.cta,'text')}</td>
+      <td>${ec(r.id,'url',r.url,'text')}</td>
+      <td class="tmono">${ec(r.id,'urlParams',r.urlParams,'text')}</td>
+      <td class="tlink">${r.link45?`<a href="${r.link45}" target="_blank">4×5 ↗</a>`:'—'}</td>
+      <td class="tlink">${r.link916?`<a href="${r.link916}" target="_blank">9×16 ↗</a>`:'—'}</td>
       <td><span class="badge b-${st}"><span class="bdot"></span>${st==='launched'?'Launched':st==='queued'?'In queue':'—'}</span>${r.launchDate?`<div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);margin-top:3px">${r.launchDate}</div>`:''}</td>
-      <td>${st==='queued'?`<button class="btn btn-green btn-sm" onclick="markLiveFromQueue('${r.id}')">✓ Launched</button>`:''}
-          ${st!=='launched'?`<button class="btn btn-danger btn-sm" style="margin-top:4px" onclick="removeFromQueue('${r.id}')">Remove</button>`:''}</td>
+      <td style="white-space:nowrap">
+        ${st==='queued'?`<button class="btn btn-green btn-sm" onclick="markLiveQueue('${r.id}')">✓ Launched</button>`:''}
+        ${st!=='launched'?`<button class="btn btn-danger btn-sm" style="margin-top:4px" onclick="removeQueue('${r.id}')">Remove</button>`:''}
+      </td>
     </tr>`;
   }).join('');
 }
 
-// editable cell
 function ec(id,field,val,type){
-  const display=val?`<span class="editable-cell">${val}</span>`:`<span class="editable-cell empty">click to edit</span>`;
+  const isTa=type==='textarea';
+  const display=val?`<span class="ecell">${val}</span>`:`<span class="ecell mt">—</span>`;
   return `<div onclick="startEdit(this,'${id}','${field}','${type}')">${display}</div>`;
 }
-
-function startEdit(wrapper,id,field,type){
-  if(wrapper.querySelector('input,textarea')) return; // already editing
-  const cur=wrapper.querySelector('.editable-cell');
-  const curVal=cur&&!cur.classList.contains('empty')?cur.textContent:'';
+function startEdit(wrap,id,field,type){
+  if(wrap.querySelector('input,textarea')) return;
+  const cur=wrap.querySelector('.ecell');
+  const curVal=cur&&!cur.classList.contains('mt')?cur.textContent:'';
   const inp=document.createElement(type==='textarea'?'textarea':'input');
-  inp.className='cell-input';
-  inp.value=curVal;
-  if(type==='textarea') inp.style.minHeight='60px';
-  wrapper.innerHTML='';
-  wrapper.appendChild(inp);
-  inp.focus();
-  inp.addEventListener('blur',()=>commitEdit(wrapper,id,field,inp.value));
-  inp.addEventListener('keydown',e=>{ if(e.key==='Enter'&&type!=='textarea'){ e.preventDefault(); inp.blur(); } if(e.key==='Escape'){ renderQueue(); } });
+  inp.className='einput'; inp.value=curVal;
+  wrap.innerHTML=''; wrap.appendChild(inp); inp.focus();
+  inp.addEventListener('blur',()=>commitEdit(wrap,id,field,type,inp.value));
+  inp.addEventListener('keydown',e=>{ if(e.key==='Enter'&&type!=='textarea'){e.preventDefault();inp.blur();} if(e.key==='Escape') renderQueue(); });
 }
-
-async function commitEdit(wrapper,id,field,val){
-  // update local
-  const r=qrows.find(x=>x.id===id);
-  if(r) r[field]=val;
-  // re-render cell
-  wrapper.innerHTML=val?`<span class="editable-cell">${val}</span>`:`<span class="editable-cell empty">click to edit</span>`;
-  wrapper.onclick=()=>startEdit(wrapper,id,field,field==='primaryText'?'textarea':'text');
-  // save to sheet
-  try { await api({action:'updateField',id,field,value:val}); }
-  catch(e){ toast('Save failed — check Apps Script'); }
+async function commitEdit(wrap,id,field,type,val){
+  const r=qrows.find(x=>x.id===id); if(r) r[field]=val;
+  wrap.innerHTML=val?`<span class="ecell">${val}</span>`:`<span class="ecell mt">—</span>`;
+  wrap.onclick=()=>startEdit(wrap,id,field,type);
+  try{ await api({action:'updateField',id,field,value:val}); }
+  catch(e){ toast('Save failed'); }
 }
+async function markLiveQueue(id){ const d=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); try{ await api({action:'markLaunched',id,launchDate:d}); toast('Launched 🎉'); await loadData(); }catch(e){ toast('Error'); } }
+async function removeQueue(id){ try{ await api({action:'removeFromQueue',id}); toast('Removed from queue'); await loadData(); }catch(e){ toast('Error'); } }
 
-async function markLiveFromQueue(id){
-  const today=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-  try {
-    await api({action:'markLaunched',id,launchDate:today});
-    toast('Marked as launched 🎉'); await loadData();
-  } catch(e){ toast('Error'); }
-}
-
-async function removeFromQueue(id){
-  try {
-    await api({action:'removeFromQueue',id});
-    toast('Removed from queue'); await loadData();
-  } catch(e){ toast('Error'); }
-}
-
-// ── EXPORT CSV ────────────────────────────────────────
 function exportCSV(){
   const h=['Ad Name','Product','Primary Text','Headline','CTA','Website URL','URL Parameters','4×5 Link','9×16 Link','Status','Launch Date'];
   const d=qrows.map(r=>[r.adName,r.product,r.primaryText,r.headline,r.cta,r.url,r.urlParams,r.link45,r.link916,r.status,r.launchDate].map(x=>`"${(x||'').replace(/"/g,'""')}"`).join(','));
@@ -648,30 +494,26 @@ function exportCSV(){
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='upload-queue.csv'; a.click();
 }
 
-// ── API ───────────────────────────────────────────────
 async function api(payload){
   const res=await fetch(cfg.scriptUrl,{method:'POST',body:JSON.stringify(payload)});
   const txt=await res.text();
-  try{ const d=JSON.parse(txt); if(d.error) throw new Error(d.error); return d; } catch{ return {status:'ok'}; }
+  try{ const d=JSON.parse(txt); if(d.error) throw new Error(d.error); return d; }catch{ return {status:'ok'}; }
 }
 
-// ── PROD DATALIST ─────────────────────────────────────
 function refreshProdList(){
   const p=[...new Set(rows.map(r=>r.product).filter(Boolean))];
   g('prodList').innerHTML=p.map(x=>`<option value="${x}"/>`).join('');
 }
 
-// ── TABS ──────────────────────────────────────────────
 function goTab(t){
   document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',(i===0&&t==='board')||(i===1&&t==='queue')));
   g('boardEl').style.display=t==='board'?'block':'none';
   g('queueEl').style.display=t==='queue'?'block':'none';
 }
 
-// ── UTILS ─────────────────────────────────────────────
 const g=id=>document.getElementById(id);
 const gv=id=>g(id).value.trim();
-const gs=(id,v)=>{ g(id).value=v; };
+const gs=(id,v)=>{g(id).value=v;};
 const ov=id=>g(id).classList.add('open');
 const cv=id=>g(id).classList.remove('open');
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
