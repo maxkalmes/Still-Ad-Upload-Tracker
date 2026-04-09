@@ -122,6 +122,7 @@ tr:hover td{background:var(--sur2)}
   <div class="hright">
     <button class="btn btn-ghost btn-sm" onclick="backupData()" title="Save all your data as a backup file">↓ Backup</button>
     <button class="btn btn-ghost btn-sm" onclick="g('restoreFile').click()" title="Restore from a backup file">↑ Restore</button>
+    <button class="btn btn-ghost btn-sm" style="color:#b91c1c;border-color:#fca5a5" onclick="clearAll()">✕ Clear all</button>
     <input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreData(event)"/>
     <button class="btn btn-ghost btn-sm" onclick="publishShare()" id="shareBtn">⬡ Share board</button>
     <button class="btn btn-blue btn-sm" onclick="openImport()">↑ Import folder</button>
@@ -446,12 +447,13 @@ function showPairStep(){
         </div>`).join('')}
     </div>`:' ';
   g('importBody').innerHTML=`
-    <div style="font-size:13px;color:var(--mu);margin-bottom:1rem">
-      ${pending45?`<span style="color:var(--am);font-weight:500">4×5 selected — now click its matching 9×16</span>`:'Click a <strong style="color:var(--tx)">4×5</strong> thumbnail first, then its matching <strong style="color:var(--tx)">9×16</strong>.'}
+    <div style="background:var(--sur2);border:1px solid var(--bor);border-radius:var(--rs);padding:10px 13px;margin-bottom:1rem;font-size:12px;line-height:1.6;color:var(--mu)">
+      <strong style="color:var(--tx)">How to pair:</strong> Click a thumbnail on the <strong style="color:var(--tx)">left (4×5)</strong> first — these are your square-ish ads. Then click its matching image on the <strong style="color:var(--tx)">right (9×16)</strong> — these are your tall story-format ads. They pair into one card.
+      ${pending45?'<br/><span style="color:var(--am);font-weight:500">✓ 4×5 selected — now click its matching 9×16 on the right</span>':''}
     </div>
     <div class="pair-grid">
-      <div><div class="pair-col-title">4×5 images</div><div class="pair-thumbs">${allFiles.map(f=>thumbHTML(f,'45')).join('')}</div></div>
-      <div><div class="pair-col-title">9×16 images</div><div class="pair-thumbs">${allFiles.map(f=>thumbHTML(f,'916')).join('')}</div></div>
+      <div><div class="pair-col-title">4×5 images (square-ish)</div><div class="pair-thumbs">${allFiles.map(f=>thumbHTML(f,'45')).join('')}</div></div>
+      <div><div class="pair-col-title">9×16 images (tall/story)</div><div class="pair-thumbs">${allFiles.map(f=>thumbHTML(f,'916')).join('')}</div></div>
     </div>
     ${pairsHTML}
     <div style="display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid var(--bor);margin-top:16px">
@@ -778,6 +780,15 @@ function copyShareUrl(url){
   });
 }
 function closeShare(){cv('shareOv');}
+function clearAll(){
+  if(!confirm('Delete ALL creatives and start fresh? Make sure you have a backup first.')) return;
+  data=[];
+  localStorage.removeItem(STORE);
+  localStorage.removeItem('ct_blob_id');
+  localStorage.removeItem('ct_jsonbin_id');
+  render();
+  toast('All cleared — ready for fresh import');
+}
 function backupData(){
   if(!data.length){toast('Nothing to backup yet');return;}
   const blob=new Blob([JSON.stringify({version:1,date:new Date().toISOString(),creatives:data},null,2)],{type:'application/json'});
