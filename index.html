@@ -478,8 +478,10 @@ function showManualFallback(folderId){
 function loadManualLinks(){
   const raw=g('manualLinks').value.trim();
   if(!raw){toast('Paste at least one link');return;}
-  const links=raw.split('\n').map(l=>l.trim()).filter(Boolean);
-  allFiles=links.map((url,i)=>{
+  // Split by newlines, commas, or spaces — then extract any Drive URLs
+  const allMatches=raw.match(/https:\/\/drive\.google\.com\/[^\s,"]*/g)||[];
+  if(!allMatches.length){toast('No Google Drive links found — make sure links start with https://drive.google.com/');return;}
+  allFiles=allMatches.map((url,i)=>{
     const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/)||url.match(/id=([a-zA-Z0-9_-]+)/);
     const id=m?m[1]:null;
     return {id:id||('file_'+i), name:'Image '+(i+1), url:url, thumbUrl:id?`https://drive.google.com/thumbnail?id=${id}&sz=w400`:url};
