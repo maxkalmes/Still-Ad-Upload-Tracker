@@ -8,108 +8,97 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f5f4f0;--surface:#fff;--surface2:#eeecea;--border:#e0ddd4;--border2:#c8c5ba;
-  --text:#161510;--muted:#78766e;--faint:#b0aea8;
-  --green:#1b5c38;--green-bg:#d0eedd;--green-mid:#3fad6a;
-  --amber:#7a4800;--amber-bg:#fde4b0;--amber-mid:#f5a000;
+  --bg:#f5f4f0;--sur:#fff;--sur2:#eeecea;--bor:#e0ddd4;--bor2:#c8c5ba;
+  --tx:#161510;--mu:#78766e;--fa:#b0aea8;
+  --gn:#1b5c38;--gnb:#d0eedd;--gnm:#3fad6a;
+  --am:#7a4800;--amb:#fde4b0;--amm:#f5a000;
   --r:12px;--rs:8px;
 }
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
+header{background:var(--sur);border-bottom:1px solid var(--bor);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100}
 .logo{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
 .hright{display:flex;align-items:center;gap:8px}
 .btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:var(--rs);font-size:12px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;border:none;line-height:1;white-space:nowrap}
-.btn-dark{background:var(--text);color:#fff}.btn-dark:hover{opacity:.82}
-.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border2)}.btn-outline:hover{background:var(--surface2)}
-.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}.btn-ghost:hover{color:var(--text)}
-.btn-green{background:var(--green);color:#fff}.btn-green:hover{opacity:.85}
+.btn-dark{background:var(--tx);color:#fff}.btn-dark:hover{opacity:.82}
+.btn-out{background:transparent;color:var(--tx);border:1px solid var(--bor2)}.btn-out:hover{background:var(--sur2)}
+.btn-ghost{background:transparent;color:var(--mu);border:1px solid var(--bor)}.btn-ghost:hover{color:var(--tx)}
+.btn-green{background:var(--gn);color:#fff}.btn-green:hover{opacity:.85}
 .btn-sm{padding:5px 11px;font-size:11px}
+.btn-red{background:transparent;color:#b91c1c;border:1px solid #fca5a5}.btn-red:hover{background:#fef2f2}
 .btn:disabled{opacity:.35;pointer-events:none}
-.btn-danger{background:transparent;color:#b91c1c;border:1px solid #fca5a5}.btn-danger:hover{background:#fef2f2}
 .wrap{max-width:1400px;margin:0 auto;padding:1.5rem}
-.tabs{display:flex;gap:2px;background:var(--surface2);border-radius:var(--r);padding:4px;width:fit-content;margin-bottom:1.5rem}
-.tab{padding:7px 18px;font-size:13px;font-weight:500;color:var(--muted);border-radius:var(--rs);cursor:pointer;border:none;background:transparent;font-family:'DM Sans',sans-serif;transition:all .15s}
-.tab.active{background:var(--surface);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.tabs{display:flex;gap:2px;background:var(--sur2);border-radius:var(--r);padding:4px;width:fit-content;margin-bottom:1.5rem}
+.tab{padding:7px 18px;font-size:13px;font-weight:500;color:var(--mu);border-radius:var(--rs);cursor:pointer;border:none;background:transparent;font-family:'DM Sans',sans-serif;transition:all .15s}
+.tab.active{background:var(--sur);color:var(--tx);box-shadow:0 1px 4px rgba(0,0,0,.07)}
 .pills{display:flex;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
-.pill{background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:5px 13px;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
-.pill strong{color:var(--text);font-weight:600}
+.pill{background:var(--sur);border:1px solid var(--bor);border-radius:100px;padding:5px 13px;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mu)}
+.pill strong{color:var(--tx);font-weight:600}
 .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.dot-all{background:var(--text)}.dot-live{background:var(--green-mid)}.dot-q{background:#bbb}.dot-inq{background:var(--amber-mid)}
+.d-all{background:var(--tx)}.d-live{background:var(--gnm)}.d-q{background:#bbb}.d-inq{background:var(--amm)}
 .group{margin-bottom:2.5rem}
-.gh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.gh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--bor)}
 .gtitle{font-size:15px;font-weight:600}
-.gtag{font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);background:var(--surface2);border-radius:100px;padding:2px 8px;margin-left:8px}
-.gprog{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted)}
-.pbar{width:64px;height:3px;background:var(--border);border-radius:100px;overflow:hidden}
-.pfill{height:100%;background:var(--green-mid);border-radius:100px}
+.gtag{font-size:11px;font-family:'DM Mono',monospace;color:var(--mu);background:var(--sur2);border-radius:100px;padding:2px 8px;margin-left:8px}
+.gprog{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--mu)}
+.pbar{width:64px;height:3px;background:var(--bor);border-radius:100px;overflow:hidden}
+.pfill{height:100%;background:var(--gnm);border-radius:100px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
-.card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.card{background:var(--sur);border:1.5px solid var(--bor);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s}
 .card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
-.card.is-live{border-color:var(--green-mid)}
-.card.is-queued{border-color:var(--amber-mid)}
-.card.is-sel{outline:2.5px solid var(--text);outline-offset:2px}
-.card-img{width:100%;aspect-ratio:4/5;background:var(--surface2);overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative}
-.card-img img{width:100%;height:100%;object-fit:cover;display:block}
-.no-img{display:flex;flex-direction:column;align-items:center;gap:5px;opacity:.25}
-.no-img svg{width:24px;height:24px}
-.no-img span{font-size:9px;color:var(--muted)}
+.card.live{border-color:var(--gnm)}
+.card.queued{border-color:var(--amm)}
+.card.sel{outline:2.5px solid var(--tx);outline-offset:2px}
+.cimg{width:100%;aspect-ratio:4/5;background:var(--sur2);overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative}
+.cimg img{width:100%;height:100%;object-fit:cover;display:block}
+.noimg{display:flex;flex-direction:column;align-items:center;gap:4px;opacity:.25}
+.noimg svg{width:22px;height:22px}
+.noimg span{font-size:9px}
 .stamp{position:absolute;bottom:0;left:0;right:0;padding:5px 4px;text-align:center;font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
-.stamp-live{background:rgba(27,92,56,.88);color:#fff}
-.stamp-queued{background:rgba(122,72,0,.82);color:#fff}
-.sbar{height:4px;width:100%}
-.sb-live{background:var(--green-mid)}.sb-queued{background:var(--amber-mid)}.sb-none{background:var(--border)}
-.overlay{display:none;position:fixed;inset:0;background:rgba(22,21,16,.48);z-index:200;align-items:center;justify-content:center;padding:1rem}
+.s-live{background:rgba(27,92,56,.88);color:#fff}
+.s-queued{background:rgba(122,72,0,.82);color:#fff}
+.sbar{height:4px}
+.sb-live{background:var(--gnm)}.sb-queued{background:var(--amm)}.sb-none{background:var(--bor)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(22,21,16,.48);z-index:200;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto}
 .overlay.open{display:flex}
-.modal{background:var(--surface);border-radius:var(--r);width:100%;max-width:420px;border:1px solid var(--border);overflow:hidden}
-.modal-wide{max-width:520px}
-.mhead{padding:16px 20px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal{background:var(--sur);border-radius:var(--r);width:100%;max-width:440px;border:1px solid var(--bor);margin:auto}
+.mw{max-width:520px}
+.mhead{padding:16px 20px 12px;border-bottom:1px solid var(--bor);display:flex;align-items:center;justify-content:space-between}
 .mtitle{font-size:14px;font-weight:600}
-.mclose{background:var(--surface2);border:none;border-radius:6px;width:26px;height:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted)}
-.mclose:hover{background:var(--border)}
+.mclose{background:var(--sur2);border:none;border-radius:6px;width:26px;height:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--mu)}
+.mclose:hover{background:var(--bor)}
 .mbody{padding:18px 20px}
 .fg{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
-.flabel{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
-.finput{padding:8px 11px;border:1px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);outline:none;width:100%}
-.finput:focus{border-color:var(--border2)}
-.finput-mono{font-family:'DM Mono',monospace;font-size:12px}
+.flabel{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu)}
+.fi{padding:8px 11px;border:1px solid var(--bor);border-radius:var(--rs);font-size:13px;font-family:'DM Sans',sans-serif;background:var(--sur);color:var(--tx);outline:none;width:100%}
+.fi:focus{border-color:var(--bor2)}
+.fi-mono{font-family:'DM Mono',monospace;font-size:12px}
+textarea.fi{resize:vertical;min-height:72px;line-height:1.5}
 .badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:500;padding:3px 8px;border-radius:100px}
 .bdot{width:5px;height:5px;border-radius:50%}
-.b-live{background:var(--green-bg);color:var(--green)}.b-live .bdot{background:var(--green-mid)}
-.b-queued{background:var(--amber-bg);color:var(--amber)}.b-queued .bdot{background:var(--amber-mid)}
-.b-none{background:var(--surface2);color:var(--muted)}.b-none .bdot{background:#bbb}
+.b-live{background:var(--gnb);color:var(--gn)}.b-live .bdot{background:var(--gnm)}
+.b-queued{background:var(--amb);color:var(--am)}.b-queued .bdot{background:var(--amm)}
+.b-none{background:var(--sur2);color:var(--mu)}.b-none .bdot{background:#bbb}
+.mactions{display:flex;gap:8px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--bor);margin-top:6px}
 .size-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
-.size-box{border:1px solid var(--border);border-radius:var(--rs);padding:9px 11px;text-decoration:none;display:block;transition:all .15s}
-.size-box:hover{border-color:var(--border2);background:var(--surface2)}
-.size-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:2px}
-.size-url{font-size:11px;color:var(--green);font-family:'DM Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.size-empty{opacity:.35;cursor:default}
-.size-empty:hover{border-color:var(--border);background:transparent}
-.mactions{display:flex;gap:8px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--border);margin-top:4px}
-.twrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--border)}
-table{width:100%;border-collapse:collapse;background:var(--surface);font-size:12px}
-th{background:var(--surface2);padding:9px 12px;text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap}
-td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:var(--surface2)}
-.ecell{cursor:pointer;border-radius:4px;padding:3px 5px;transition:background .1s;min-width:80px}
-.ecell:hover{background:var(--surface2)}
-.ecell.mt{color:var(--faint);font-style:italic}
-.einput{width:100%;padding:4px 7px;border:1.5px solid var(--border2);border-radius:4px;font-size:12px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);outline:none}
-textarea.einput{min-height:64px;resize:vertical;line-height:1.4;font-size:11px}
-.tlink a{color:var(--green);font-size:11px;text-decoration:none}.tlink a:hover{text-decoration:underline}
-.tmono{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);max-width:150px;word-break:break-all}
-.setup{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:72vh;gap:12px;text-align:center;padding:2rem}
-.setup-h{font-size:20px;font-weight:600}
-.setup-p{font-size:13px;color:var(--muted);max-width:400px;line-height:1.7}
-.sinput{width:100%;max-width:400px;padding:9px 12px;border:1px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:'DM Mono',monospace;background:var(--surface);color:var(--text);outline:none}
-.sinput:focus{border-color:var(--border2)}
-.shint{font-size:11px;color:var(--muted);max-width:400px;line-height:1.6}
-.fab{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(110px);background:var(--text);color:#fff;border-radius:100px;padding:11px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 28px rgba(0,0,0,.2);z-index:99;transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
+.sbox{border:1px solid var(--bor);border-radius:var(--rs);padding:9px 11px;text-decoration:none;display:block;transition:all .15s;color:var(--tx)}
+.sbox:hover{border-color:var(--bor2);background:var(--sur2)}
+.sbox-empty{opacity:.35;pointer-events:none}
+.sbox-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--mu);margin-bottom:2px}
+.sbox-url{font-size:11px;color:var(--gn)}
+.fab{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(110px);background:var(--tx);color:#fff;border-radius:100px;padding:11px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 28px rgba(0,0,0,.2);z-index:99;transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
 .fab.up{transform:translateX(-50%) translateY(0)}
 .fab-n{background:rgba(255,255,255,.15);border-radius:100px;padding:2px 9px;font-size:12px;font-weight:600}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(110px);background:var(--text);color:#fff;padding:9px 18px;border-radius:100px;font-size:13px;font-weight:500;z-index:999;transition:transform .25s;pointer-events:none}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(110px);background:var(--tx);color:#fff;padding:9px 18px;border-radius:100px;font-size:13px;font-weight:500;z-index:999;transition:transform .25s;pointer-events:none}
 .toast.show{transform:translateX(-50%) translateY(0)}
-.empty{text-align:center;padding:2.5rem;color:var(--muted);font-size:13px}
+.empty{text-align:center;padding:2.5rem;color:var(--mu);font-size:13px}
+.setup{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:72vh;gap:12px;text-align:center;padding:2rem}
+.setup-h{font-size:20px;font-weight:600}
+.setup-p{font-size:13px;color:var(--mu);max-width:420px;line-height:1.7}
+.sinput{width:100%;max-width:420px;padding:9px 12px;border:1px solid var(--bor);border-radius:var(--rs);font-size:13px;font-family:'DM Mono',monospace;background:var(--sur);color:var(--tx);outline:none}
+.sinput:focus{border-color:var(--bor2)}
+.shint{font-size:11px;color:var(--mu);max-width:420px;line-height:1.6}
+.info-box{background:var(--sur2);border:1px solid var(--bor);border-radius:var(--rs);padding:12px 14px;font-size:12px;color:var(--mu);line-height:1.6;margin-bottom:16px}
+.info-box strong{color:var(--tx)}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spin{display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
 </style>
@@ -120,7 +109,7 @@ textarea.einput{min-height:64px;resize:vertical;line-height:1.4;font-size:11px}
   <div class="logo">Creative Tracker</div>
   <div class="hright">
     <button class="btn btn-ghost btn-sm" onclick="openSettings()">⚙ Settings</button>
-    <button class="btn btn-outline btn-sm" onclick="loadData()">↻ Refresh</button>
+    <button class="btn btn-out btn-sm" onclick="syncSheet()">↻ Sync launches</button>
     <button class="btn btn-dark btn-sm" onclick="openAdd()">+ Add creative</button>
   </div>
 </header>
@@ -130,12 +119,12 @@ textarea.einput{min-height:64px;resize:vertical;line-height:1.4;font-size:11px}
   <!-- SETUP -->
   <div class="setup" id="setupEl">
     <div style="font-size:34px">🎨</div>
-    <div class="setup-h">Connect your sheet</div>
-    <div class="setup-p">Paste your Google Sheet ID, tab name, and Apps Script Web App URL.</div>
-    <input class="sinput" id="s_id" placeholder="Google Sheet ID"/>
-    <input class="sinput" id="s_tab" placeholder="Tab name (e.g. Sheet1)"/>
-    <input class="sinput" id="s_url" placeholder="Apps Script Web App URL"/>
-    <button class="btn btn-dark" onclick="saveConfig()">Launch tracker</button>
+    <div class="setup-h">Set up Creative Tracker</div>
+    <div class="setup-p">Your creatives live in this app on your browser. Your intern gets a Google Sheet with the upload queue. Paste your Sheet ID below so the app can sync launch status back from her.</div>
+    <input class="sinput" id="s_id" placeholder="Google Sheet ID (for intern's queue)"/>
+    <input class="sinput" id="s_tab" placeholder="Sheet tab name (default: Queue)"/>
+    <div class="shint">The sheet will be auto-populated when you push ads to queue. Your intern marks rows as Launched there, and you click "Sync launches" to update your board.</div>
+    <button class="btn btn-dark" onclick="saveConfig()">Get started</button>
   </div>
 
   <!-- APP -->
@@ -153,25 +142,27 @@ textarea.einput{min-height:64px;resize:vertical;line-height:1.4;font-size:11px}
 
     <!-- QUEUE -->
     <div id="queueEl" style="display:none">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;gap:10px;flex-wrap:wrap">
-        <div style="font-size:13px;color:var(--muted)">Click any cell to edit. Saves automatically on click away.</div>
-        <button class="btn btn-outline btn-sm" onclick="exportCSV()">↓ Export CSV</button>
+      <div class="info-box">
+        <strong>How this works:</strong> When you push creatives to the queue, they appear here AND in your intern's Google Sheet. She fills in the copy details directly in the sheet, uploads to Meta, and marks the row "Launched". Click <strong>Sync launches</strong> in the top bar to pull her updates back to your visual board.
       </div>
-      <div class="twrap">
-        <table>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;gap:10px;flex-wrap:wrap">
+        <div style="font-size:13px;color:var(--mu)" id="sheetLinkEl"></div>
+        <button class="btn btn-out btn-sm" onclick="exportCSV()">↓ Export CSV</button>
+      </div>
+      <div style="overflow-x:auto;border-radius:var(--r);border:1px solid var(--bor)">
+        <table style="width:100%;border-collapse:collapse;background:var(--sur);font-size:12px">
           <thead><tr>
-            <th style="width:48px"></th>
-            <th>Ad Name</th>
-            <th>Product</th>
-            <th>Primary Text</th>
-            <th>Headline</th>
-            <th>CTA</th>
-            <th>Website URL</th>
-            <th>URL Parameters</th>
-            <th>4×5</th>
-            <th>9×16</th>
-            <th>Status</th>
-            <th style="width:120px"></th>
+            <th style="background:var(--sur2);padding:9px 12px;text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);border-bottom:1px solid var(--bor);white-space:nowrap;width:48px"></th>
+            <th style="background:var(--sur2);padding:9px 12px;text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);border-bottom:1px solid var(--bor);white-space:nowrap">Ad Name</th>
+            <th style="background:var(--sur2);padding:9px 12px;text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);border-bottom:1px solid var(--bor);white-space:nowrap">Product</th>
+            <th style="background:var(--sur2);padding:9px 12px;text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);border-bottom:1px solid var(--bor);white-space:nowrap">Primary Text</th>
+            <th style="background:var(--sur2);padding:9px 12px;text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);border-bottom:1px solid var(--bor);white-space:nowrap">Headline</th>
+            <th style="background:var(--sur2);padding:9px 12px;text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);border-bottom:1px solid var(--bor);white-space:nowrap">CTA</th>
+            <th style="background:var(--sur2);padding:9px 12px;text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);border-bottom:1px solid var(--bor);white-space:nowrap">Website URL</th>
+            <th style="background:var(--sur2);padding:9px 12px;text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);border-bottom:1px solid var(--bor);white-space:nowrap">URL Parameters</th>
+            <th style="background:var(--sur2);padding:9px 12px;text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);border-bottom:1px solid var(--bor);white-space:nowrap">4×5</th>
+            <th style="background:var(--sur2);padding:9px 12px;text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);border-bottom:1px solid var(--bor);white-space:nowrap">9×16</th>
+            <th style="background:var(--sur2);padding:9px 12px;text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);border-bottom:1px solid var(--bor);white-space:nowrap">Status</th>
           </tr></thead>
           <tbody id="qbody"></tbody>
         </table>
@@ -184,16 +175,16 @@ textarea.einput{min-height:64px;resize:vertical;line-height:1.4;font-size:11px}
 <div class="overlay" id="cardOv" onclick="if(event.target===this)closeCard()">
   <div class="modal">
     <div class="mhead">
-      <div class="mtitle" id="cardTitle">Creative</div>
+      <div class="mtitle" id="cardTitle"></div>
       <button class="mclose" onclick="closeCard()">✕</button>
     </div>
     <div class="mbody" id="cardBody"></div>
   </div>
 </div>
 
-<!-- ADD / EDIT MODAL -->
+<!-- ADD/EDIT MODAL -->
 <div class="overlay" id="addOv" onclick="if(event.target===this)closeAdd()">
-  <div class="modal modal-wide">
+  <div class="modal mw">
     <div class="mhead">
       <div class="mtitle" id="addTitle">Add creative</div>
       <button class="mclose" onclick="closeAdd()">✕</button>
@@ -201,25 +192,25 @@ textarea.einput{min-height:64px;resize:vertical;line-height:1.4;font-size:11px}
     <div class="mbody">
       <div class="fg">
         <div class="flabel">Ad Name *</div>
-        <input class="finput" id="f_name" placeholder="e.g. SummerShield_BeachScene_v1"/>
+        <input class="fi" id="f_name" placeholder="e.g. SummerShield_BeachScene_v1"/>
       </div>
       <div class="fg">
         <div class="flabel">Product / Campaign *</div>
-        <input class="finput" id="f_prod" placeholder="e.g. Summer Shield Vault" list="prodList"/>
+        <input class="fi" id="f_prod" placeholder="e.g. Summer Shield Vault" list="prodList"/>
         <datalist id="prodList"></datalist>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <div class="fg">
-          <div class="flabel">4×5 Google Drive Link</div>
-          <input class="finput finput-mono" id="f_45" placeholder="https://drive.google.com/..."/>
+          <div class="flabel">4×5 Google Drive link</div>
+          <input class="fi fi-mono" id="f_45" placeholder="https://drive.google.com/..."/>
         </div>
         <div class="fg">
-          <div class="flabel">9×16 Google Drive Link</div>
-          <input class="finput finput-mono" id="f_916" placeholder="https://drive.google.com/..."/>
+          <div class="flabel">9×16 Google Drive link</div>
+          <input class="fi fi-mono" id="f_916" placeholder="https://drive.google.com/..."/>
         </div>
       </div>
-      <div style="font-size:11px;color:var(--muted);margin-top:-4px;margin-bottom:14px">The 4×5 link will be used as the thumbnail on the visual board.</div>
-      <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:14px;border-top:1px solid var(--border)">
+      <div style="font-size:11px;color:var(--mu);margin-top:-4px;margin-bottom:14px">The 4×5 link is used as the thumbnail on the visual board.</div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:14px;border-top:1px solid var(--bor)">
         <button class="btn btn-ghost" onclick="closeAdd()">Cancel</button>
         <button class="btn btn-dark" id="saveBtn" onclick="saveCreative()">Save creative</button>
       </div>
@@ -227,17 +218,55 @@ textarea.einput{min-height:64px;resize:vertical;line-height:1.4;font-size:11px}
   </div>
 </div>
 
+<!-- PUSH TO QUEUE MODAL — fill in copy details -->
+<div class="overlay" id="pushOv" onclick="if(event.target===this)closePush()">
+  <div class="modal mw">
+    <div class="mhead">
+      <div class="mtitle">Add to upload queue</div>
+      <button class="mclose" onclick="closePush()">✕</button>
+    </div>
+    <div class="mbody">
+      <div style="font-size:12px;color:var(--mu);margin-bottom:14px">Fill in the details your intern needs to upload this ad to Meta. Leave blank anything you'll fill in later.</div>
+      <div class="fg">
+        <div class="flabel">Primary Text</div>
+        <textarea class="fi" id="q_copy" placeholder="Ad copy..."></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="fg">
+          <div class="flabel">Headline</div>
+          <input class="fi" id="q_headline" placeholder="Headline"/>
+        </div>
+        <div class="fg">
+          <div class="flabel">Call To Action</div>
+          <input class="fi" id="q_cta" placeholder="Shop Now"/>
+        </div>
+      </div>
+      <div class="fg">
+        <div class="flabel">Website URL</div>
+        <input class="fi fi-mono" id="q_url" placeholder="https://"/>
+      </div>
+      <div class="fg">
+        <div class="flabel">URL Parameters</div>
+        <input class="fi fi-mono" id="q_params" placeholder="utm_source=meta&utm_medium=paid_social"/>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:14px;border-top:1px solid var(--bor)">
+        <button class="btn btn-ghost" onclick="closePush()">Cancel</button>
+        <button class="btn btn-dark" id="pushBtn" onclick="confirmPush()">Add to queue</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- SETTINGS -->
 <div class="overlay" id="setOv" onclick="if(event.target===this)closeSettings()">
-  <div class="modal modal-wide">
+  <div class="modal mw">
     <div class="mhead">
       <div class="mtitle">Settings</div>
       <button class="mclose" onclick="closeSettings()">✕</button>
     </div>
     <div class="mbody">
-      <div class="fg"><div class="flabel">Google Sheet ID</div><input class="finput" id="c_id"/></div>
-      <div class="fg"><div class="flabel">Tab Name</div><input class="finput" id="c_tab"/></div>
-      <div class="fg"><div class="flabel">Apps Script Web App URL</div><input class="finput finput-mono" id="c_url"/></div>
+      <div class="fg"><div class="flabel">Google Sheet ID (intern's queue)</div><input class="fi" id="c_id"/></div>
+      <div class="fg"><div class="flabel">Sheet tab name</div><input class="fi" id="c_tab"/></div>
       <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px">
         <button class="btn btn-ghost" onclick="closeSettings()">Cancel</button>
         <button class="btn btn-dark" onclick="saveSettings()">Save</button>
@@ -248,276 +277,377 @@ textarea.einput{min-height:64px;resize:vertical;line-height:1.4;font-size:11px}
 
 <!-- FAB -->
 <div class="fab" id="fab">
-  <span style="font-size:13px;font-weight:500">Add to queue</span>
+  <span style="font-size:13px;font-weight:500">Push to queue</span>
   <span class="fab-n" id="fabN">0</span>
   <div style="width:1px;height:16px;background:rgba(255,255,255,.2)"></div>
-  <button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:#fff;border:none" onclick="pushSelected()">Push to queue →</button>
+  <button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:#fff;border:none" onclick="openMultiPush()">Continue →</button>
   <button class="btn btn-sm" style="background:transparent;color:rgba(255,255,255,.5);border:none;padding:4px 6px" onclick="clearSel()">✕</button>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const CK='ct_v6';
-let cfg=JSON.parse(localStorage.getItem(CK)||'null');
-let rows=[], qrows=[], sel=new Set(), editId=null;
+// ── STORAGE KEYS ──────────────────────────────────────
+const K_CFG = 'ct_cfg_v7';
+const K_DATA = 'ct_data_v7';
 
-// convert Google Drive share URL to a direct viewable image URL
-function driveThumb(url){
-  if(!url) return '';
-  // already a thumbnail/direct link
-  if(url.includes('drive.google.com/thumbnail')||url.includes('drive.google.com/uc')) return url;
-  // extract file ID from share URL
-  const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/)||url.match(/id=([a-zA-Z0-9_-]+)/);
-  if(m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w400`;
-  return url;
+// ── STATE ─────────────────────────────────────────────
+let cfg = JSON.parse(localStorage.getItem(K_CFG)||'null');
+let creatives = JSON.parse(localStorage.getItem(K_DATA)||'[]');
+let sel = new Set();
+let editId = null;
+let pushingId = null; // single card push
+
+// ── BOOT ──────────────────────────────────────────────
+window.onload = () => {
+  if (cfg?.sheetId) { showApp(); render(); updateSheetLink(); }
+};
+
+function showApp() {
+  g('setupEl').style.display = 'none';
+  g('appEl').style.display = 'block';
 }
 
-window.onload=()=>{ if(cfg?.sheetId&&cfg?.scriptUrl){ showApp(); loadData(); } };
-function showApp(){ g('setupEl').style.display='none'; g('appEl').style.display='block'; }
-
-function saveConfig(){
-  const id=gv('s_id'),tab=gv('s_tab')||'Sheet1',url=gv('s_url');
-  if(!id||!url){ toast('Fill in Sheet ID and Script URL'); return; }
-  cfg={sheetId:id,sheetName:tab,scriptUrl:url};
-  localStorage.setItem(CK,JSON.stringify(cfg));
-  showApp(); loadData();
-}
-function openSettings(){ gs('c_id',cfg?.sheetId||''); gs('c_tab',cfg?.sheetName||''); gs('c_url',cfg?.scriptUrl||''); ov('setOv'); }
-function saveSettings(){ cfg={sheetId:gv('c_id'),sheetName:gv('c_tab')||'Sheet1',scriptUrl:gv('c_url')}; localStorage.setItem(CK,JSON.stringify(cfg)); closeSettings(); loadData(); toast('Saved'); }
-function closeSettings(){ cv('setOv'); }
-
-async function loadData(){
-  try{
-    const url=`https://docs.google.com/spreadsheets/d/${cfg.sheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(cfg.sheetName)}&t=${Date.now()}`;
-    const res=await fetch(url);
-    const txt=await res.text();
-    const json=JSON.parse(txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
-    const sr=json.table.rows;
-    // Columns: A=ID, B=AdName, C=Product, D=Link45, E=Link916,
-    //          F=Status, G=InQueue, H=PrimaryText, I=Headline,
-    //          J=CTA, K=URL, L=URLParams, M=LaunchDate
-    rows=sr.slice(1).map(r=>({
-      id:       rc(r,0)||uid(),
-      adName:   rc(r,1),
-      product:  rc(r,2)||'Uncategorized',
-      link45:   rc(r,3),
-      link916:  rc(r,4),
-      status:   rc(r,5)||'none',
-      inQueue:  rc(r,6)==='true'||rc(r,6)==='TRUE',
-      primaryText: rc(r,7),
-      headline: rc(r,8),
-      cta:      rc(r,9),
-      url:      rc(r,10),
-      urlParams:rc(r,11),
-      launchDate:rc(r,12),
-    })).filter(r=>r.adName);
-    qrows=rows.filter(r=>r.inQueue||r.status==='launched');
-    renderBoard(); renderQueue(); refreshProdList();
-  }catch(e){ console.error(e); toast('Could not load sheet — check settings'); }
+function save() {
+  localStorage.setItem(K_DATA, JSON.stringify(creatives));
 }
 
-function rc(row,idx){ const c=row.c&&row.c[idx]; if(!c||c.v===null||c.v===undefined) return ''; return String(c.v); }
+// ── CONFIG ────────────────────────────────────────────
+function saveConfig() {
+  const id = gv('s_id'), tab = gv('s_tab') || 'Queue';
+  if (!id) { toast('Paste your Google Sheet ID'); return; }
+  cfg = { sheetId: id, sheetName: tab };
+  localStorage.setItem(K_CFG, JSON.stringify(cfg));
+  showApp(); render(); updateSheetLink();
+}
 
-// ── BOARD ─────────────────────────────────────────────
-function renderBoard(){
-  const total=rows.length, live=rows.filter(r=>r.status==='launched').length,
-        inq=rows.filter(r=>r.inQueue&&r.status!=='launched').length,
-        none=rows.filter(r=>!r.inQueue&&r.status!=='launched').length;
-  g('pillsEl').innerHTML=`
-    <div class="pill"><div class="dot dot-all"></div><strong>${total}</strong> total</div>
-    <div class="pill"><div class="dot dot-live"></div><strong>${live}</strong> launched</div>
-    <div class="pill"><div class="dot dot-inq"></div><strong>${inq}</strong> in queue</div>
-    <div class="pill"><div class="dot dot-q"></div><strong>${none}</strong> not queued</div>`;
-  const prods=[...new Set(rows.map(r=>r.product))];
-  let html='';
-  prods.forEach(prod=>{
-    const pr=rows.filter(r=>r.product===prod);
-    const liveN=pr.filter(r=>r.status==='launched').length;
-    const pct=pr.length?Math.round(liveN/pr.length*100):0;
-    html+=`<div class="group">
+function openSettings() {
+  g('c_id').value = cfg?.sheetId || '';
+  g('c_tab').value = cfg?.sheetName || '';
+  ov('setOv');
+}
+function saveSettings() {
+  cfg = { sheetId: gv('c_id'), sheetName: gv('c_tab') || 'Queue' };
+  localStorage.setItem(K_CFG, JSON.stringify(cfg));
+  closeSettings(); updateSheetLink(); toast('Saved');
+}
+function closeSettings() { cv('setOv'); }
+
+function updateSheetLink() {
+  const el = g('sheetLinkEl');
+  if (cfg?.sheetId) {
+    el.innerHTML = `Intern's sheet: <a href="https://docs.google.com/spreadsheets/d/${cfg.sheetId}" target="_blank" style="color:var(--gn)">Open Google Sheet ↗</a>`;
+  }
+}
+
+// ── RENDER ────────────────────────────────────────────
+function render() {
+  renderBoard();
+  renderQueue();
+  refreshProdList();
+}
+
+function renderBoard() {
+  const total = creatives.length;
+  const live = creatives.filter(r => r.status === 'launched').length;
+  const inq = creatives.filter(r => r.inQueue && r.status !== 'launched').length;
+  const none = creatives.filter(r => !r.inQueue && r.status !== 'launched').length;
+
+  g('pillsEl').innerHTML = `
+    <div class="pill"><div class="dot d-all"></div><strong>${total}</strong> total</div>
+    <div class="pill"><div class="dot d-live"></div><strong>${live}</strong> launched</div>
+    <div class="pill"><div class="dot d-inq"></div><strong>${inq}</strong> in queue</div>
+    <div class="pill"><div class="dot d-q"></div><strong>${none}</strong> not queued</div>`;
+
+  const prods = [...new Set(creatives.map(r => r.product))];
+  if (!prods.length) {
+    g('groupsEl').innerHTML = '<div class="empty">No creatives yet — click + Add creative to get started.</div>';
+    return;
+  }
+  g('groupsEl').innerHTML = prods.map(prod => {
+    const pr = creatives.filter(r => r.product === prod);
+    const liveN = pr.filter(r => r.status === 'launched').length;
+    const pct = pr.length ? Math.round(liveN / pr.length * 100) : 0;
+    return `<div class="group">
       <div class="gh">
         <div><span class="gtitle">${prod}</span><span class="gtag">${pr.length}</span></div>
         <div class="gprog"><span>${liveN}/${pr.length} launched</span><div class="pbar"><div class="pfill" style="width:${pct}%"></div></div></div>
       </div>
-      <div class="grid">${pr.map(r=>cardHTML(r)).join('')}</div>
+      <div class="grid">${pr.map(r => cardHTML(r)).join('')}</div>
     </div>`;
-  });
-  g('groupsEl').innerHTML=html||'<div class="empty">No creatives yet — click + Add creative to get started.</div>';
+  }).join('');
 }
 
-function cardHTML(r){
-  const st=r.status==='launched'?'launched':r.inQueue?'queued':'none';
-  const isSel=sel.has(r.id);
-  const thumb=driveThumb(r.link45);
-  const img=thumb
-    ?`<img src="${thumb}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
-       <div class="no-img" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>No preview</span></div>`
-    :`<div class="no-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>No preview</span></div>`;
-  const stamp=st==='launched'?`<div class="stamp stamp-live">✓ Launched</div>`:st==='queued'?`<div class="stamp stamp-queued">In queue</div>`:'';
-  return `<div class="card ${st==='launched'?'is-live':st==='queued'?'is-queued':''} ${isSel?'is-sel':''}"
+function driveThumb(url) {
+  if (!url) return '';
+  if (url.includes('thumbnail') || url.includes('/uc?')) return url;
+  const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+  if (m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w400`;
+  return url;
+}
+
+function cardHTML(r) {
+  const st = r.status === 'launched' ? 'launched' : r.inQueue ? 'queued' : 'none';
+  const isSel = sel.has(r.id);
+  const thumb = driveThumb(r.link45);
+  const img = thumb
+    ? `<img src="${thumb}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+       <div class="noimg" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>No preview</span></div>`
+    : `<div class="noimg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>No preview</span></div>`;
+  const stamp = st === 'launched' ? `<div class="stamp s-live">✓ Launched</div>`
+    : st === 'queued' ? `<div class="stamp s-queued">In queue</div>` : '';
+  return `<div class="card ${st === 'launched' ? 'live' : st === 'queued' ? 'queued' : ''} ${isSel ? 'sel' : ''}"
     onclick="handleCard(event,'${r.id}')">
-    <div class="card-img">${img}${stamp}</div>
+    <div class="cimg">${img}${stamp}</div>
     <div class="sbar sb-${st}"></div>
   </div>`;
 }
 
-function handleCard(e,id){
-  if(sel.size>0){ toggleSel(id); return; }
+function handleCard(e, id) {
+  if (sel.size > 0) { toggleSel(id); return; }
   openCard(id);
 }
-function toggleSel(id){
-  const r=rows.find(x=>x.id===id);
-  if(!r) return;
-  if(r.status==='launched'){ toast('Already launched'); return; }
-  if(r.inQueue){ toast('Already in queue'); return; }
-  sel.has(id)?sel.delete(id):sel.add(id);
+function toggleSel(id) {
+  const r = creatives.find(x => x.id === id);
+  if (!r) return;
+  if (r.status === 'launched') { toast('Already launched'); return; }
+  if (r.inQueue) { toast('Already in queue'); return; }
+  sel.has(id) ? sel.delete(id) : sel.add(id);
   updateFAB(); renderBoard();
 }
-function clearSel(){ sel.clear(); updateFAB(); renderBoard(); }
-function updateFAB(){ g('fabN').textContent=sel.size; g('fab').classList.toggle('up',sel.size>0); }
-async function pushSelected(){
-  if(!sel.size) return;
-  const ids=[...sel];
-  try{ await api({action:'pushToQueue',ids}); toast(`${ids.length} creative${ids.length>1?'s':''} added to queue`); sel.clear(); updateFAB(); await loadData(); }
-  catch(e){ toast('Error — check Apps Script'); }
+function clearSel() { sel.clear(); updateFAB(); renderBoard(); }
+function updateFAB() {
+  g('fabN').textContent = sel.size;
+  g('fab').classList.toggle('up', sel.size > 0);
 }
 
 // ── CARD MODAL ────────────────────────────────────────
-function openCard(id){
-  const r=rows.find(x=>x.id===id); if(!r) return;
-  const st=r.status==='launched'?'launched':r.inQueue?'queued':'none';
-  const thumb=driveThumb(r.link45);
-  g('cardTitle').textContent=r.adName||'Creative';
-  g('cardBody').innerHTML=`
-    ${thumb?`<img src="${thumb}" style="width:100%;max-height:200px;object-fit:contain;background:var(--surface2);border-radius:var(--rs);margin-bottom:14px;display:block" onerror="this.style.display='none'"/>`:''}
+function openCard(id) {
+  const r = creatives.find(x => x.id === id); if (!r) return;
+  const st = r.status === 'launched' ? 'launched' : r.inQueue ? 'queued' : 'none';
+  const thumb = driveThumb(r.link45);
+  g('cardTitle').textContent = r.adName || 'Creative';
+  g('cardBody').innerHTML = `
+    ${thumb ? `<img src="${thumb}" style="width:100%;max-height:200px;object-fit:contain;background:var(--sur2);border-radius:var(--rs);margin-bottom:14px;display:block" onerror="this.style.display='none'"/>` : ''}
     <div style="margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-      <span class="badge b-${st}"><span class="bdot"></span>${st==='launched'?'Launched':st==='queued'?'In upload queue':'Not queued'}</span>
-      ${r.launchDate?`<span style="font-size:11px;color:var(--muted)">${r.launchDate}</span>`:''}
+      <span class="badge b-${st}"><span class="bdot"></span>${st === 'launched' ? 'Launched' : st === 'queued' ? 'In upload queue' : 'Not queued'}</span>
+      ${r.launchDate ? `<span style="font-size:11px;color:var(--mu)">${r.launchDate}</span>` : ''}
     </div>
     <div class="size-row">
-      ${r.link45?`<a class="size-box" href="${r.link45}" target="_blank"><div class="size-lbl">4×5</div><div class="size-url">Open in Drive ↗</div></a>`:`<div class="size-box size-empty"><div class="size-lbl">4×5</div><div class="size-url">No link</div></div>`}
-      ${r.link916?`<a class="size-box" href="${r.link916}" target="_blank"><div class="size-lbl">9×16</div><div class="size-url">Open in Drive ↗</div></a>`:`<div class="size-box size-empty"><div class="size-lbl">9×16</div><div class="size-url">No link</div></div>`}
+      ${r.link45 ? `<a class="sbox" href="${r.link45}" target="_blank"><div class="sbox-lbl">4×5</div><div class="sbox-url">Open in Drive ↗</div></a>` : `<div class="sbox sbox-empty"><div class="sbox-lbl">4×5</div><div class="sbox-url">No link</div></div>`}
+      ${r.link916 ? `<a class="sbox" href="${r.link916}" target="_blank"><div class="sbox-lbl">9×16</div><div class="sbox-url">Open in Drive ↗</div></a>` : `<div class="sbox sbox-empty"><div class="sbox-lbl">9×16</div><div class="sbox-url">No link</div></div>`}
     </div>
     <div class="mactions">
-      ${st==='none'?`<button class="btn btn-dark btn-sm" onclick="addOneToQueue('${id}')">+ Add to queue</button>`:''}
-      ${st==='queued'?`<button class="btn btn-green btn-sm" onclick="markLive('${id}')">✓ Mark as launched</button>`:''}
-      ${st==='launched'?`<button class="btn btn-outline btn-sm" onclick="doUnlaunch('${id}')">↩ Unlaunch</button>`:''}
-      <button class="btn btn-outline btn-sm" onclick="openEdit('${id}')">Edit</button>
-      <button class="btn btn-danger btn-sm" onclick="doDelete('${id}')">Delete</button>
+      ${st === 'none' ? `<button class="btn btn-dark btn-sm" onclick="openSinglePush('${id}')">+ Add to queue</button>` : ''}
+      ${st === 'queued' ? `<button class="btn btn-green btn-sm" onclick="markLive('${id}')">✓ Mark as launched</button>` : ''}
+      ${st === 'launched' ? `<button class="btn btn-out btn-sm" onclick="unlaunch('${id}')">↩ Unlaunch</button>` : ''}
+      <button class="btn btn-out btn-sm" onclick="openEdit('${id}')">Edit</button>
+      <button class="btn btn-red btn-sm" onclick="deleteCreative('${id}')">Delete</button>
     </div>`;
   ov('cardOv');
 }
-function closeCard(){ cv('cardOv'); }
-async function addOneToQueue(id){ try{ await api({action:'pushToQueue',ids:[id]}); toast('Added to queue'); closeCard(); await loadData(); }catch(e){ toast('Error'); } }
-async function markLive(id){ const d=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); try{ await api({action:'markLaunched',id,launchDate:d}); toast('Launched 🎉'); closeCard(); await loadData(); }catch(e){ toast('Error'); } }
-async function doUnlaunch(id){ try{ await api({action:'unlaunch',id}); toast('Moved back to queue'); closeCard(); await loadData(); }catch(e){ toast('Error'); } }
-async function doDelete(id){ if(!confirm('Delete this creative?')) return; try{ await api({action:'deleteRow',id}); toast('Deleted'); closeCard(); await loadData(); }catch(e){ toast('Error'); } }
+function closeCard() { cv('cardOv'); }
+
+function markLive(id) {
+  const r = creatives.find(x => x.id === id); if (!r) return;
+  r.status = 'launched';
+  r.launchDate = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  save(); render(); closeCard(); toast('Launched 🎉');
+}
+function unlaunch(id) {
+  const r = creatives.find(x => x.id === id); if (!r) return;
+  r.status = 'queued'; r.launchDate = '';
+  save(); render(); closeCard(); toast('Moved back to queue');
+}
+function deleteCreative(id) {
+  if (!confirm('Delete this creative?')) return;
+  creatives = creatives.filter(x => x.id !== id);
+  save(); render(); closeCard(); toast('Deleted');
+}
 
 // ── ADD / EDIT ────────────────────────────────────────
-function openAdd(){ editId=null; g('addTitle').textContent='Add creative'; ['f_name','f_prod','f_45','f_916'].forEach(i=>gs(i,'')); ov('addOv'); }
-function openEdit(id){
-  const r=rows.find(x=>x.id===id); if(!r) return;
-  editId=id; g('addTitle').textContent='Edit creative';
-  gs('f_name',r.adName||''); gs('f_prod',r.product||''); gs('f_45',r.link45||''); gs('f_916',r.link916||'');
+function openAdd() {
+  editId = null;
+  g('addTitle').textContent = 'Add creative';
+  ['f_name', 'f_prod', 'f_45', 'f_916'].forEach(i => g(i).value = '');
+  ov('addOv');
+}
+function openEdit(id) {
+  const r = creatives.find(x => x.id === id); if (!r) return;
+  editId = id;
+  g('addTitle').textContent = 'Edit creative';
+  g('f_name').value = r.adName || '';
+  g('f_prod').value = r.product || '';
+  g('f_45').value = r.link45 || '';
+  g('f_916').value = r.link916 || '';
   closeCard(); ov('addOv');
 }
-function closeAdd(){ cv('addOv'); }
-async function saveCreative(){
-  const name=gv('f_name'),prod=gv('f_prod');
-  if(!name){ toast('Ad name is required'); return; }
-  const btn=g('saveBtn'); btn.disabled=true; btn.innerHTML='<div class="spin"></div> Saving…';
-  try{
-    await api({action:editId?'updateRow':'addRow', id:editId||uid(), adName:name, product:prod||'Uncategorized', link45:gv('f_45'), link916:gv('f_916')});
-    toast(editId?'Updated!':'Creative added!'); closeAdd(); await loadData();
-  }catch(e){ toast('Error — check Apps Script'); }
-  finally{ btn.disabled=false; btn.textContent='Save creative'; }
+function closeAdd() { cv('addOv'); }
+
+function saveCreative() {
+  const name = gv('f_name'), prod = gv('f_prod');
+  if (!name) { toast('Ad name is required'); return; }
+  if (editId) {
+    const r = creatives.find(x => x.id === editId);
+    if (r) { r.adName = name; r.product = prod || 'Uncategorized'; r.link45 = gv('f_45'); r.link916 = gv('f_916'); }
+  } else {
+    creatives.push({ id: uid(), adName: name, product: prod || 'Uncategorized', link45: gv('f_45'), link916: gv('f_916'), status: 'none', inQueue: false, launchDate: '', primaryText: '', headline: '', cta: '', url: '', urlParams: '' });
+  }
+  save(); render(); closeAdd(); toast(editId ? 'Updated!' : 'Creative added!');
+}
+
+// ── PUSH TO QUEUE ─────────────────────────────────────
+function openSinglePush(id) {
+  pushingId = id;
+  sel.clear(); updateFAB();
+  ['q_copy', 'q_headline', 'q_cta', 'q_url', 'q_params'].forEach(i => g(i).value = '');
+  closeCard(); ov('pushOv');
+}
+function openMultiPush() {
+  pushingId = null;
+  ['q_copy', 'q_headline', 'q_cta', 'q_url', 'q_params'].forEach(i => g(i).value = '');
+  ov('pushOv');
+}
+function closePush() { cv('pushOv'); }
+
+async function confirmPush() {
+  const details = {
+    primaryText: gv('q_copy'), headline: gv('q_headline'),
+    cta: gv('q_cta'), url: gv('q_url'), urlParams: gv('q_params')
+  };
+  const ids = pushingId ? [pushingId] : [...sel];
+  ids.forEach(id => {
+    const r = creatives.find(x => x.id === id); if (!r) return;
+    r.inQueue = true; r.status = 'queued';
+    Object.assign(r, details);
+  });
+  save(); render();
+  // Write to Google Sheet
+  await writeQueueToSheet();
+  sel.clear(); updateFAB();
+  closePush(); toast(`${ids.length} creative${ids.length > 1 ? 's' : ''} added to queue`);
+}
+
+// ── WRITE QUEUE TO SHEET ──────────────────────────────
+// Uses Google Sheets API v4 (public append via gviz won't work for writes)
+// We write via a publicly deployed Apps Script — but minimal: just one function
+// Actually for Option C we use Google Forms trick — BUT simplest free write
+// is via the gviz/tq endpoint which is READ ONLY.
+// 
+// REAL SOLUTION for Option C: We generate a CSV the intern can import,
+// OR we use a tiny Apps Script just for writing (no complex logic needed).
+// The Apps Script here is just ONE simple append function — much simpler than before.
+
+async function writeQueueToSheet() {
+  if (!cfg?.scriptUrl) return; // no script = skip silently
+  const queuedRows = creatives.filter(r => r.inQueue || r.status === 'launched');
+  try {
+    await fetch(cfg.scriptUrl, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'writeQueue', rows: queuedRows })
+    });
+  } catch(e) { /* silent fail — CSV export is backup */ }
+}
+
+// ── SYNC LAUNCHES FROM SHEET ──────────────────────────
+async function syncSheet() {
+  if (!cfg?.sheetId) { toast('No sheet connected'); return; }
+  toast('Syncing...');
+  try {
+    const url = `https://docs.google.com/spreadsheets/d/${cfg.sheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(cfg.sheetName || 'Queue')}&t=${Date.now()}`;
+    const res = await fetch(url);
+    const txt = await res.text();
+    const json = JSON.parse(txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+    const rows = json.table.rows;
+    // Sheet columns: A=ID, B=AdName, C=Product, D=PrimaryText, E=Headline,
+    //                F=CTA, G=URL, H=URLParams, I=Link45, J=Link916, K=Status, L=LaunchDate
+    let synced = 0;
+    rows.slice(1).forEach(row => {
+      const id = rc(row, 0);
+      const status = (rc(row, 10) || '').toLowerCase();
+      const launchDate = rc(row, 11);
+      if (!id) return;
+      const r = creatives.find(x => x.id === id);
+      if (r && status === 'launched' && r.status !== 'launched') {
+        r.status = 'launched';
+        r.launchDate = launchDate || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        synced++;
+      }
+    });
+    save(); render();
+    toast(synced > 0 ? `${synced} creative${synced > 1 ? 's' : ''} marked launched!` : 'Already up to date');
+  } catch(e) {
+    console.error(e);
+    toast('Could not read sheet — make sure it is shared publicly');
+  }
+}
+
+function rc(row, idx) {
+  const c = row.c && row.c[idx];
+  if (!c || c.v === null || c.v === undefined) return '';
+  return String(c.v);
 }
 
 // ── QUEUE TABLE ───────────────────────────────────────
-function renderQueue(){
-  const tbody=g('qbody');
-  if(!qrows.length){ tbody.innerHTML='<tr><td colspan="12" class="empty">No ads in queue yet. Go to the visual board and add creatives to the queue.</td></tr>'; return; }
-  tbody.innerHTML=qrows.map(r=>{
-    const st=r.status==='launched'?'launched':r.inQueue?'queued':'none';
-    const thumb=driveThumb(r.link45);
-    const thumbEl=thumb?`<img src="${thumb}" style="width:36px;height:45px;object-fit:cover;border-radius:4px" onerror="this.style.display='none'"/>`:'';
-    return `<tr data-id="${r.id}">
-      <td>${thumbEl}</td>
-      <td>${ec(r.id,'adName',r.adName,'text')}</td>
-      <td>${ec(r.id,'product',r.product,'text')}</td>
-      <td style="max-width:220px">${ec(r.id,'primaryText',r.primaryText,'textarea')}</td>
-      <td>${ec(r.id,'headline',r.headline,'text')}</td>
-      <td>${ec(r.id,'cta',r.cta,'text')}</td>
-      <td>${ec(r.id,'url',r.url,'text')}</td>
-      <td class="tmono">${ec(r.id,'urlParams',r.urlParams,'text')}</td>
-      <td class="tlink">${r.link45?`<a href="${r.link45}" target="_blank">4×5 ↗</a>`:'—'}</td>
-      <td class="tlink">${r.link916?`<a href="${r.link916}" target="_blank">9×16 ↗</a>`:'—'}</td>
-      <td><span class="badge b-${st}"><span class="bdot"></span>${st==='launched'?'Launched':st==='queued'?'In queue':'—'}</span>${r.launchDate?`<div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);margin-top:3px">${r.launchDate}</div>`:''}</td>
-      <td style="white-space:nowrap">
-        ${st==='queued'?`<button class="btn btn-green btn-sm" onclick="markLiveQueue('${r.id}')">✓ Launched</button>`:''}
-        ${st!=='launched'?`<button class="btn btn-danger btn-sm" style="margin-top:4px" onclick="removeQueue('${r.id}')">Remove</button>`:''}
+function renderQueue() {
+  const qrows = creatives.filter(r => r.inQueue || r.status === 'launched');
+  const tbody = g('qbody');
+  const tdStyle = 'padding:10px 12px;border-bottom:1px solid var(--bor);vertical-align:middle';
+  if (!qrows.length) {
+    tbody.innerHTML = `<tr><td colspan="11" style="${tdStyle};text-align:center;color:var(--mu);padding:2.5rem">No ads in queue yet. Go to the visual board and add creatives to the queue.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = qrows.map(r => {
+    const st = r.status === 'launched' ? 'launched' : r.inQueue ? 'queued' : 'none';
+    const thumb = driveThumb(r.link45);
+    return `<tr>
+      <td style="${tdStyle}">${thumb ? `<img src="${thumb}" style="width:36px;height:45px;object-fit:cover;border-radius:4px" onerror="this.style.display='none'"/>` : ''}</td>
+      <td style="${tdStyle};font-weight:500;font-size:12px;max-width:160px">${r.adName || '—'}</td>
+      <td style="${tdStyle};font-size:11px;color:var(--mu)">${r.product || '—'}</td>
+      <td style="${tdStyle};font-size:11px;color:var(--mu);max-width:220px;line-height:1.5">${r.primaryText || '—'}</td>
+      <td style="${tdStyle};font-size:12px">${r.headline || '—'}</td>
+      <td style="${tdStyle};font-size:12px">${r.cta || '—'}</td>
+      <td style="${tdStyle}"><a href="${r.url}" target="_blank" style="color:var(--gn);font-size:11px;text-decoration:none">${r.url ? trunc(r.url, 28) : '—'}</a></td>
+      <td style="${tdStyle};font-family:'DM Mono',monospace;font-size:10px;color:var(--mu);max-width:150px;word-break:break-all">${r.urlParams || '—'}</td>
+      <td style="${tdStyle}">${r.link45 ? `<a href="${r.link45}" target="_blank" style="color:var(--gn);font-size:11px;text-decoration:none">4×5 ↗</a>` : '—'}</td>
+      <td style="${tdStyle}">${r.link916 ? `<a href="${r.link916}" target="_blank" style="color:var(--gn);font-size:11px;text-decoration:none">9×16 ↗</a>` : '—'}</td>
+      <td style="${tdStyle}">
+        <span class="badge b-${st}"><span class="bdot"></span>${st === 'launched' ? 'Launched' : 'In queue'}</span>
+        ${r.launchDate ? `<div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--mu);margin-top:3px">${r.launchDate}</div>` : ''}
       </td>
     </tr>`;
   }).join('');
 }
 
-function ec(id,field,val,type){
-  const isTa=type==='textarea';
-  const display=val?`<span class="ecell">${val}</span>`:`<span class="ecell mt">—</span>`;
-  return `<div onclick="startEdit(this,'${id}','${field}','${type}')">${display}</div>`;
-}
-function startEdit(wrap,id,field,type){
-  if(wrap.querySelector('input,textarea')) return;
-  const cur=wrap.querySelector('.ecell');
-  const curVal=cur&&!cur.classList.contains('mt')?cur.textContent:'';
-  const inp=document.createElement(type==='textarea'?'textarea':'input');
-  inp.className='einput'; inp.value=curVal;
-  wrap.innerHTML=''; wrap.appendChild(inp); inp.focus();
-  inp.addEventListener('blur',()=>commitEdit(wrap,id,field,type,inp.value));
-  inp.addEventListener('keydown',e=>{ if(e.key==='Enter'&&type!=='textarea'){e.preventDefault();inp.blur();} if(e.key==='Escape') renderQueue(); });
-}
-async function commitEdit(wrap,id,field,type,val){
-  const r=qrows.find(x=>x.id===id); if(r) r[field]=val;
-  wrap.innerHTML=val?`<span class="ecell">${val}</span>`:`<span class="ecell mt">—</span>`;
-  wrap.onclick=()=>startEdit(wrap,id,field,type);
-  try{ await api({action:'updateField',id,field,value:val}); }
-  catch(e){ toast('Save failed'); }
-}
-async function markLiveQueue(id){ const d=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); try{ await api({action:'markLaunched',id,launchDate:d}); toast('Launched 🎉'); await loadData(); }catch(e){ toast('Error'); } }
-async function removeQueue(id){ try{ await api({action:'removeFromQueue',id}); toast('Removed from queue'); await loadData(); }catch(e){ toast('Error'); } }
-
-function exportCSV(){
-  const h=['Ad Name','Product','Primary Text','Headline','CTA','Website URL','URL Parameters','4×5 Link','9×16 Link','Status','Launch Date'];
-  const d=qrows.map(r=>[r.adName,r.product,r.primaryText,r.headline,r.cta,r.url,r.urlParams,r.link45,r.link916,r.status,r.launchDate].map(x=>`"${(x||'').replace(/"/g,'""')}"`).join(','));
-  const blob=new Blob([[h.join(','),...d].join('\n')],{type:'text/csv'});
-  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='upload-queue.csv'; a.click();
+function exportCSV() {
+  const qrows = creatives.filter(r => r.inQueue || r.status === 'launched');
+  const h = ['ID', 'Ad Name', 'Product', 'Primary Text', 'Headline', 'CTA', 'Website URL', 'URL Parameters', 'Link 4x5', 'Link 9x16', 'Status', 'Launch Date'];
+  const d = qrows.map(r => [r.id, r.adName, r.product, r.primaryText, r.headline, r.cta, r.url, r.urlParams, r.link45, r.link916, r.status, r.launchDate].map(x => `"${(x || '').replace(/"/g, '""')}"`).join(','));
+  const blob = new Blob([[h.join(','), ...d].join('\n')], { type: 'text/csv' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'upload-queue.csv'; a.click();
 }
 
-async function api(payload){
-  const res=await fetch(cfg.scriptUrl,{method:'POST',body:JSON.stringify(payload)});
-  const txt=await res.text();
-  try{ const d=JSON.parse(txt); if(d.error) throw new Error(d.error); return d; }catch{ return {status:'ok'}; }
+// ── PROD DATALIST ─────────────────────────────────────
+function refreshProdList() {
+  const p = [...new Set(creatives.map(r => r.product).filter(Boolean))];
+  g('prodList').innerHTML = p.map(x => `<option value="${x}"/>`).join('');
 }
 
-function refreshProdList(){
-  const p=[...new Set(rows.map(r=>r.product).filter(Boolean))];
-  g('prodList').innerHTML=p.map(x=>`<option value="${x}"/>`).join('');
+// ── TABS ──────────────────────────────────────────────
+function goTab(t) {
+  document.querySelectorAll('.tab').forEach((el, i) => el.classList.toggle('active', (i === 0 && t === 'board') || (i === 1 && t === 'queue')));
+  g('boardEl').style.display = t === 'board' ? 'block' : 'none';
+  g('queueEl').style.display = t === 'queue' ? 'block' : 'none';
 }
 
-function goTab(t){
-  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',(i===0&&t==='board')||(i===1&&t==='queue')));
-  g('boardEl').style.display=t==='board'?'block':'none';
-  g('queueEl').style.display=t==='queue'?'block':'none';
-}
-
-const g=id=>document.getElementById(id);
-const gv=id=>g(id).value.trim();
-const gs=(id,v)=>{g(id).value=v;};
-const ov=id=>g(id).classList.add('open');
-const cv=id=>g(id).classList.remove('open');
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-function toast(msg){ const t=g('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2800); }
+// ── UTILS ─────────────────────────────────────────────
+const g = id => document.getElementById(id);
+const gv = id => g(id).value.trim();
+const ov = id => g(id).classList.add('open');
+const cv = id => g(id).classList.remove('open');
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const trunc = (s, n) => s.length > n ? s.slice(0, n) + '…' : s;
+function toast(msg) { const t = g('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2800); }
 </script>
 </body>
 </html>
