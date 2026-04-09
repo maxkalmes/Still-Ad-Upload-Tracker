@@ -594,11 +594,14 @@ function removeFromQueue(id){
 }
 function markLiveQ(id){const r=data.find(x=>x.id===id);if(!r)return;r.status='launched';r.launchDate=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});save();render();toast('Launched 🎉');}
 function exportCSV(){
-  const qrows=data.filter(r=>r.inQueue||r.status==='launched');
-  const h=['Ad Name','Product','Primary Text','Headline','CTA','Website URL','URL Parameters','4x5 Link','9x16 Link','Status','Launch Date'];
-  const rows=qrows.map(r=>[r.adName,r.product,r.primaryText,r.headline,r.cta,r.url,r.urlParams,r.link45,r.link916,r.status,r.launchDate].map(x=>`"${(x||'').replace(/"/g,'""')}"`).join(','));
+  // Only export ads that are queued but NOT yet launched
+  const qrows=data.filter(r=>r.inQueue&&r.status!=='launched');
+  if(!qrows.length){toast('No pending ads to export — everything has been launched!');return;}
+  const h=['Ad Name','Product','Primary Text','Headline','CTA','Website URL','URL Parameters','4x5 Link','9x16 Link'];
+  const rows=qrows.map(r=>[r.adName,r.product,r.primaryText,r.headline,r.cta,r.url,r.urlParams,r.link45,r.link916].map(x=>`"${(x||'').replace(/"/g,'""')}"`).join(','));
   const blob=new Blob([[h.join(','),...rows].join('\n')],{type:'text/csv'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='upload-queue.csv';a.click();
+  toast(`Exported ${qrows.length} pending ad${qrows.length>1?'s':''}`);
 }
 function refreshProdList(){
   const p=[...new Set(data.map(r=>r.product).filter(Boolean))];
