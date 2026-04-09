@@ -109,6 +109,9 @@ tr:hover td{background:var(--sur2)}
 .info{background:var(--blb);border:1px solid #b5d4f4;border-radius:var(--rs);padding:10px 13px;font-size:12px;color:var(--bl);line-height:1.6;margin-bottom:14px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(0,0,0,.15);border-top-color:var(--mu);border-radius:50%;animation:spin .7s linear infinite}
+.ecell{cursor:pointer;border-radius:4px;padding:3px 5px;font-size:12px;line-height:1.4;transition:background .12s;min-height:22px}
+.ecell:hover{background:var(--sur2)}
+.ecell-empty{color:var(--fa);font-style:italic;font-size:11px}
 .chip{border:1px solid var(--bor);background:var(--sur);border-radius:100px;padding:5px 13px;font-size:12px;font-weight:500;color:var(--mu);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
 .chip:hover{border-color:var(--bor2);color:var(--tx)}.chip-on{background:var(--tx);color:#fff;border-color:var(--tx)}
 </style>
@@ -142,7 +145,7 @@ tr:hover td{background:var(--sur2)}
         <thead><tr>
           <th style="width:48px"></th><th>Ad Name</th><th>Product</th><th>Primary Text</th>
           <th>Headline</th><th>CTA</th><th>Website URL</th><th>URL Parameters</th>
-          <th>4×5</th><th>9×16</th><th>Status</th>
+          <th>4×5</th><th>9×16</th><th>Status</th><th></th><th></th>
         </tr></thead>
         <tbody id="qbody"></tbody>
       </table>
@@ -180,7 +183,13 @@ tr:hover td{background:var(--sur2)}
   <div class="modal mw">
     <div class="mhead"><div class="mtitle">Add to upload queue</div><button class="mclose" onclick="closePush()">✕</button></div>
     <div class="mbody">
-      <div style="font-size:12px;color:var(--mu);margin-bottom:14px">Fill in what your intern needs to upload this ad to Meta.</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px;flex-wrap:wrap">
+        <div style="font-size:12px;color:var(--mu)">Fill in what your intern needs to upload this ad to Meta.</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:11px;color:var(--mu);white-space:nowrap">Fill all from saved:</span>
+          <select class="fi" id="q_fill_all" onchange="fillAllFromSaved()" style="font-size:11px;padding:4px 8px;width:auto;max-width:200px"><option value="">— pick a previous set —</option></select>
+        </div>
+      </div>
       <div class="fg"><div class="flabel">Ad Name *</div><input class="fi" id="q_adname" placeholder="e.g. SummerShield_BeachScene_v1"/></div>
       <div class="fg">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
@@ -493,6 +502,35 @@ function populateSavedDropdowns(){
   g('q_headline_saved').innerHTML=makeOpts(uniq('headline'));
   g('q_url_saved').innerHTML=makeOpts(uniq('url'));
   g('q_params_saved').innerHTML=makeOpts(uniq('urlParams'));
+  // Fill-all dropdown: group by product, dedupe by copy fingerprint
+  const seen=new Set();
+  const sets=[];
+  qd.forEach(r=>{
+    const key=(r.primaryText||'')+'|'+(r.headline||'')+'|'+(r.cta||'')+'|'+(r.url||'')+'|'+(r.urlParams||'');
+    if(key==='||||') return;
+    if(!seen.has(key)){
+      seen.add(key);
+      sets.push({label:r.product||r.adName||'Saved set',primaryText:r.primaryText||'',headline:r.headline||'',cta:r.cta||'',url:r.url||'',urlParams:r.urlParams||''});
+    }
+  });
+  g('q_fill_all').innerHTML='<option value="">— pick a previous set —</option>'+
+    sets.map((s,i)=>`<option value="${i}">${s.label}: ${s.headline||s.primaryText||'(no headline)'}</option>`).join('');
+  g('q_fill_all')._sets=sets;
+}
+function fillAllFromSaved(){
+  const sel=g('q_fill_all');
+  const idx=sel.value;
+  if(idx==='') return;
+  const sets=sel._sets||[];
+  const s=sets[parseInt(idx)];
+  if(!s) return;
+  if(s.primaryText) g('q_copy').value=s.primaryText;
+  if(s.headline) g('q_headline').value=s.headline;
+  if(s.cta) g('q_cta').value=s.cta;
+  if(s.url) g('q_url').value=s.url;
+  if(s.urlParams) g('q_params').value=s.urlParams;
+  sel.value='';
+  toast('All fields filled from saved set');
 }
 function applySaved(inputId,selectId){
   const val=g(selectId).value;
@@ -515,27 +553,44 @@ function confirmPush(){
 function renderQueue(){
   const qrows=data.filter(r=>r.inQueue||r.status==='launched');
   const tbody=g('qbody');
-  if(!qrows.length){tbody.innerHTML=`<tr><td colspan="11" style="text-align:center;color:var(--mu);padding:2.5rem">No ads in queue yet.</td></tr>`;return;}
+  if(!qrows.length){tbody.innerHTML='<tr><td colspan="12" style="text-align:center;color:var(--mu);padding:2.5rem">No ads in queue yet.</td></tr>';return;}
   tbody.innerHTML=qrows.map(r=>{
     const st=r.status==='launched'?'launched':'queued';
     const t=thumb(r.link45);
-    return `<tr>
-      <td>${t?`<img src="${t}" style="width:36px;height:45px;object-fit:cover;border-radius:4px" onerror="this.style.display='none'"/>`:''}</td>
-      <td style="font-weight:500;max-width:160px">${r.adName||'—'}</td>
-      <td style="color:var(--mu)">${r.product||'—'}</td>
-      <td style="color:var(--mu);max-width:200px;line-height:1.5;font-size:11px">${r.primaryText||'—'}</td>
-      <td>${r.headline||'—'}</td><td>${r.cta||'—'}</td>
-      <td>${r.url?`<a href="${r.url}" target="_blank" style="color:var(--gn);text-decoration:none;font-size:11px">${trunc(r.url,28)}</a>`:'—'}</td>
-      <td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--mu);max-width:140px;word-break:break-all">${r.urlParams||'—'}</td>
-      <td>${r.link45?`<a href="${r.link45}" target="_blank" style="color:var(--gn);text-decoration:none">4×5 ↗</a>`:'—'}</td>
-      <td>${r.link916?`<a href="${r.link916}" target="_blank" style="color:var(--gn);text-decoration:none">9×16 ↗</a>`:'—'}</td>
-      <td>
-        <span class="badge b-${st}"><span class="bdot"></span>${st==='launched'?'Launched':'In queue'}</span>
-        ${r.launchDate?`<div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--mu);margin-top:3px">${r.launchDate}</div>`:''}
-        ${st==='queued'?`<button class="btn btn-green btn-sm" style="margin-top:6px" onclick="markLiveQ('${r.id}')">✓ Mark launched</button>`:''}
-      </td>
-    </tr>`;
+    const ec=(field,val,ta)=>'<div class="ecell'+(val?'':' ecell-empty')+'" onclick="startEdit(this,\''+r.id+'\',\''+field+'\','+!!ta+')">'+String(val||'click to edit')+'</div>';
+    return '<tr>'
+      +'<td>'+(t?'<img src="'+t+'" style="width:36px;height:45px;object-fit:cover;border-radius:4px" onerror="this.style.display=none"/>':'')+'</td>'
+      +'<td style="min-width:130px">'+ec('adName',r.adName)+'</td>'
+      +'<td style="min-width:110px">'+ec('product',r.product)+'</td>'
+      +'<td style="min-width:180px">'+ec('primaryText',r.primaryText,true)+'</td>'
+      +'<td style="min-width:110px">'+ec('headline',r.headline)+'</td>'
+      +'<td style="min-width:80px">'+ec('cta',r.cta)+'</td>'
+      +'<td style="min-width:140px">'+ec('url',r.url)+'</td>'
+      +'<td style="min-width:140px">'+ec('urlParams',r.urlParams)+'</td>'
+      +'<td>'+(r.link45?'<a href="'+r.link45+'" target="_blank" style="color:var(--gn);text-decoration:none">4x5 ↗</a>':'—')+'</td>'
+      +'<td>'+(r.link916?'<a href="'+r.link916+'" target="_blank" style="color:var(--gn);text-decoration:none">9x16 ↗</a>':'—')+'</td>'
+      +'<td><span class="badge b-'+st+'"><span class="bdot"></span>'+(st==='launched'?'Launched':'In queue')+'</span>'+(r.launchDate?'<div style="font-size:10px;font-family:DM Mono,monospace;color:var(--mu);margin-top:3px">'+r.launchDate+'</div>':'')+'</td>'
+      +'<td style="white-space:nowrap">'+(st==='queued'?'<button class="btn btn-green btn-sm" onclick="markLiveQ(\''+r.id+'\')">✓ Launched</button>':'')+'<button class="btn btn-red btn-sm" style="margin-top:4px" onclick="removeFromQueue(\''+r.id+'\')">✕ Remove</button></td>'
+      +'</tr>';
   }).join('');
+}
+function startEdit(cell,id,field,isTextarea){
+  if(cell.querySelector('input,textarea'))return;
+  const cur=cell.classList.contains('ecell-empty')?'':cell.textContent;
+  const el=document.createElement(isTextarea?'textarea':'input');
+  el.value=cur;
+  el.style.cssText='width:100%;padding:4px 6px;border:1.5px solid var(--bor2);border-radius:4px;font-size:12px;font-family:DM Sans,sans-serif;background:var(--sur);color:var(--tx);outline:none;'+(isTextarea?'min-height:64px;resize:vertical;line-height:1.4;':'');
+  cell.innerHTML='';
+  cell.appendChild(el);
+  el.focus();
+  const commit=()=>{ const val=el.value.trim(); const r=data.find(x=>x.id===id); if(r){r[field]=val;save();} renderQueue(); };
+  el.addEventListener('blur',commit);
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'&&!isTextarea){e.preventDefault();el.blur();}if(e.key==='Escape'){renderQueue();}});
+}
+function removeFromQueue(id){
+  const r=data.find(x=>x.id===id);if(!r)return;
+  r.inQueue=false;r.status='none';
+  save();render();toast('Removed from queue');
 }
 function markLiveQ(id){const r=data.find(x=>x.id===id);if(!r)return;r.status='launched';r.launchDate=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});save();render();toast('Launched 🎉');}
 function exportCSV(){
