@@ -764,6 +764,20 @@ function renderViewMode(publishedAt){
   window.renderView=renderView;
 }
 
+function showShareModal(url){
+  g('shareTitle').textContent='Board published!';
+  const escaped=url.replace(/'/g,"\'");
+  g('shareBody').innerHTML='<div style="font-size:13px;color:var(--mu);margin-bottom:16px;line-height:1.6">Your board is now live. Anyone with this link can view your creatives — read only. Re-publish any time after making changes.</div>'
+    +'<div style="background:var(--sur2);border:1px solid var(--bor);border-radius:var(--rs);padding:10px 12px;font-family:DM Mono,monospace;font-size:11px;word-break:break-all;margin-bottom:12px">'+url+'</div>'
+    +'<div style="display:flex;gap:8px"><button class="btn btn-dark btn-sm" onclick="copyShareUrl(\''+escaped+'\')">Copy link</button><button class="btn btn-out btn-sm" onclick="closeShare()">Done</button></div>';
+  ov('shareOv');
+}
+function copyShareUrl(url){
+  navigator.clipboard.writeText(url).then(()=>toast('Link copied!')).catch(()=>{
+    const inp=document.createElement('input');inp.value=url;document.body.appendChild(inp);inp.select();document.execCommand('copy');document.body.removeChild(inp);toast('Link copied!');
+  });
+}
+function closeShare(){cv('shareOv');}
 function backupData(){
   if(!data.length){toast('Nothing to backup yet');return;}
   const blob=new Blob([JSON.stringify({version:1,date:new Date().toISOString(),creatives:data},null,2)],{type:'application/json'});
