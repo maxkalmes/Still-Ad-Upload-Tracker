@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Creative Launch Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --surface2: #f0efe9;
+    --border: #e2e0d8;
+    --text: #1a1916;
+    --text-muted: #8a8880;
+    --text-faint: #b8b6b0;
+    --green: #2d6a4f;
+    --green-bg: #d8f3dc;
+    --green-dot: #52b788;
+    --amber: #92400e;
+    --amber-bg: #fef3c7;
+    --amber-dot: #f59e0b;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .header-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .refresh-btn {
+    background: var(--text);
+    color: var(--surface);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 7px 14px;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: opacity 0.15s;
+  }
+  .refresh-btn:hover { opacity: 0.8; }
+  .refresh-btn.loading { opacity: 0.5; pointer-events: none; }
+
+  /* LAYOUT */
+  .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 2rem;
+    background: var(--surface2);
+    border-radius: var(--radius);
+    padding: 4px;
+    width: fit-content;
+  }
+  .tab {
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.15s;
+    border: none;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .tab.active {
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  /* SUMMARY PILLS */
+  .summary {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  .pill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .pill strong { color: var(--text); font-weight: 600; }
+  .pill-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .pill-dot.live { background: var(--green-dot); }
+  .pill-dot.queued { background: var(--text-faint); }
+  .pill-dot.all { background: var(--text); }
+
+  /* FILTERS */
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  .filter-label { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+  .filter-chip {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 100px;
+    padding: 5px 13px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .filter-chip:hover { border-color: var(--text-muted); color: var(--text); }
+  .filter-chip.active { background: var(--text); color: #fff; border-color: var(--text); }
+
+  /* PRODUCT GROUP */
+  .product-group { margin-bottom: 2.5rem; }
+  .product-group.hidden { display: none; }
+
+  .group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .group-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .group-count {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-muted);
+    background: var(--surface2);
+    border-radius: 100px;
+    padding: 2px 8px;
+  }
+  .group-progress {
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .progress-bar {
+    width: 80px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--green-dot);
+    border-radius: 100px;
+    transition: width 0.4s ease;
+  }
+
+  /* GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.15s, box-shadow 0.15s;
+    cursor: pointer;
+    position: relative;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+  .card.hidden { display: none; }
+
+  .card-thumb {
+    width: 100%;
+    aspect-ratio: 4/5;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .card-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .card-thumb.no-img {
+    background: var(--surface2);
+  }
+  .card-thumb .img-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .card-thumb .img-placeholder svg { opacity: 0.3; }
+  .card-thumb .img-placeholder span { font-size: 10px; color: var(--text-faint); }
+
+  .status-stripe {
+    height: 3px;
+    width: 100%;
+  }
+  .status-stripe.live { background: var(--green-dot); }
+  .status-stripe.queued { background: var(--border); }
+  .status-stripe.assigned { background: var(--amber-dot); }
+
+  .card-body { padding: 10px; }
+  .card-name {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 5px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 100px;
+  }
+  .badge-dot { width: 5px; height: 5px; border-radius: 50%; }
+  .badge.live { background: var(--green-bg); color: var(--green); }
+  .badge.live .badge-dot { background: var(--green-dot); }
+  .badge.queued { background: var(--surface2); color: var(--text-muted); }
+  .badge.queued .badge-dot { background: var(--text-faint); }
+  .badge.assigned { background: var(--amber-bg); color: var(--amber); }
+  .badge.assigned .badge-dot { background: var(--amber-dot); }
+
+  .card-date {
+    font-size: 10px;
+    color: var(--text-faint);
+    font-family: 'DM Mono', monospace;
+    margin-top: 4px;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,25,22,0.5);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius);
+    width: 100%;
+    max-width: 560px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+  }
+  .modal-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .modal-title { font-size: 15px; font-weight: 600; color: var(--text); }
+  .modal-close {
+    background: var(--surface2);
+    border: none;
+    border-radius: var(--radius-sm);
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 16px;
+    color: var(--text-muted);
+  }
+  .modal-close:hover { background: var(--border); }
+  .modal-body { padding: 20px 24px; }
+  .modal-thumb {
+    width: 100%;
+    max-height: 240px;
+    object-fit: contain;
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    margin-bottom: 16px;
+    display: block;
+  }
+  .modal-field { margin-bottom: 14px; }
+  .modal-field-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .modal-field-value {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+    word-break: break-word;
+  }
+  .modal-field-value a { color: var(--green); text-decoration: none; }
+  .modal-field-value a:hover { text-decoration: underline; }
+
+  /* UPLOAD QUEUE TAB */
+  .upload-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .upload-table th {
+    background: var(--surface2);
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .upload-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+  .upload-table tr:last-child td { border-bottom: none; }
+  .upload-table tr:hover td { background: var(--surface2); }
+  .upload-table .copy-text {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    max-width: 280px;
+  }
+  .upload-table a { color: var(--green); text-decoration: none; font-size: 12px; }
+  .upload-table a:hover { text-decoration: underline; }
+  .mono { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted); }
+
+  /* SETUP SCREEN */
+  .setup-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+    gap: 16px;
+  }
+  .setup-icon { font-size: 40px; margin-bottom: 8px; }
+  .setup-title { font-size: 22px; font-weight: 600; color: var(--text); }
+  .setup-desc { font-size: 14px; color: var(--text-muted); max-width: 440px; line-height: 1.6; }
+  .setup-input {
+    width: 100%;
+    max-width: 440px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+  }
+  .setup-input:focus { border-color: var(--text-muted); }
+  .setup-btn {
+    background: var(--text);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: opacity 0.15s;
+  }
+  .setup-btn:hover { opacity: 0.8; }
+  .setup-hint {
+    font-size: 11px;
+    color: var(--text-faint);
+    font-family: 'DM Mono', monospace;
+    max-width: 440px;
+  }
+
+  /* EMPTY STATE */
+  .empty { text-align: center; padding: 3rem; color: var(--text-muted); font-size: 14px; }
+
+  /* SPINNER */
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Creative Tracker</div>
+  <div id="headerMeta" class="header-meta"></div>
+  <button class="refresh-btn" id="refreshBtn" onclick="loadData()">
+    <span id="refreshIcon">↻</span> Refresh
+  </button>
+</header>
+
+<div class="container">
+
+  <!-- SETUP SCREEN -->
+  <div class="setup-screen" id="setupScreen">
+    <div class="setup-icon">📋</div>
+    <div class="setup-title">Connect your Google Sheet</div>
+    <div class="setup-desc">Paste your Google Sheet ID below. Make sure the sheet is shared publicly (anyone with link can view).</div>
+    <input class="setup-input" id="sheetIdInput" placeholder="e.g. 1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms" />
+    <input class="setup-input" id="sheetNameInput" placeholder='Sheet tab name (e.g. "Sheet1" or "Upload Queue")' style="margin-top:-8px"/>
+    <button class="setup-btn" onclick="saveConfig()">Connect Sheet</button>
+    <div class="setup-hint">Your Sheet ID is in the URL: docs.google.com/spreadsheets/d/<strong>SHEET_ID</strong>/edit</div>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="mainApp" style="display:none">
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('visual')">Visual board</button>
+      <button class="tab" onclick="switchTab('queue')">Upload queue</button>
+    </div>
+
+    <!-- VISUAL BOARD TAB -->
+    <div id="visualTab">
+      <div class="summary" id="summaryPills"></div>
+      <div class="controls" id="filterControls"></div>
+      <div id="productGroups"></div>
+    </div>
+
+    <!-- UPLOAD QUEUE TAB -->
+    <div id="queueTab" style="display:none">
+      <div style="overflow-x:auto">
+        <table class="upload-table" id="uploadTable">
+          <thead>
+            <tr>
+              <th>Creative</th>
+              <th>Ad Name</th>
+              <th>Primary Text</th>
+              <th>Headline</th>
+              <th>CTA</th>
+              <th>URL</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="uploadTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle"></div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────────
+const CONFIG_KEY = 'creative_tracker_config';
+let config = JSON.parse(localStorage.getItem(CONFIG_KEY) || 'null');
+let allRows = [];
+let activeFilter = 'all';
+let activeTab = 'visual';
+
+// ── COLUMN MAP (0-indexed, matches your headers) ──────
+// Creative (link), Ad Name, Primary Text, Headline, Call To Action,
+// Website URL, URL Parameters, Product/Campaign, Status, Launch Date
+const COL = {
+  creative: 0,
+  adName: 1,
+  primaryText: 2,
+  headline: 3,
+  cta: 4,
+  url: 5,
+  urlParams: 6,
+  product: 7,
+  status: 8,
+  launchDate: 9,
+};
+
+// ── INIT ─────────────────────────────────────────────
+window.onload = () => {
+  if (config && config.sheetId) {
+    document.getElementById('setupScreen').style.display = 'none';
+    document.getElementById('mainApp').style.display = 'block';
+    loadData();
+  }
+};
+
+function saveConfig() {
+  const id = document.getElementById('sheetIdInput').value.trim();
+  const name = document.getElementById('sheetNameInput').value.trim() || 'Sheet1';
+  if (!id) { alert('Please enter a Sheet ID'); return; }
+  config = { sheetId: id, sheetName: name };
+  localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
+  document.getElementById('setupScreen').style.display = 'none';
+  document.getElementById('mainApp').style.display = 'block';
+  loadData();
+}
+
+// ── LOAD DATA ────────────────────────────────────────
+async function loadData() {
+  const btn = document.getElementById('refreshBtn');
+  const icon = document.getElementById('refreshIcon');
+  btn.classList.add('loading');
+  icon.innerHTML = '<div class="spinner"></div>';
+
+  try {
+    const url = `https://docs.google.com/spreadsheets/d/${config.sheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(config.sheetName)}`;
+    const res = await fetch(url);
+    const text = await res.text();
+    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+    const rows = json.table.rows;
+
+    allRows = rows.slice(1).map(r => ({
+      creative: cellVal(r, COL.creative),
+      adName: cellVal(r, COL.adName),
+      primaryText: cellVal(r, COL.primaryText),
+      headline: cellVal(r, COL.headline),
+      cta: cellVal(r, COL.cta),
+      url: cellVal(r, COL.url),
+      urlParams: cellVal(r, COL.urlParams),
+      product: cellVal(r, COL.product) || 'Uncategorized',
+      status: (cellVal(r, COL.status) || '').toLowerCase(),
+      launchDate: cellVal(r, COL.launchDate),
+    })).filter(r => r.adName || r.creative);
+
+    document.getElementById('headerMeta').textContent = `Last updated ${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}`;
+    render();
+  } catch(e) {
+    alert('Could not load sheet. Make sure it is shared publicly and the ID is correct.\n\n' + e.message);
+    console.error(e);
+  } finally {
+    btn.classList.remove('loading');
+    icon.textContent = '↻';
+  }
+}
+
+function cellVal(row, idx) {
+  const c = row.c && row.c[idx];
+  if (!c) return '';
+  return c.v !== null && c.v !== undefined ? String(c.v) : '';
+}
+
+// ── STATUS HELPERS ────────────────────────────────────
+function getStatus(row) {
+  const s = row.status;
+  if (s === 'live' || s === 'launched') return 'live';
+  if (s === 'assigned' || s === 'in progress') return 'assigned';
+  return 'queued';
+}
+
+function statusLabel(s) {
+  if (s === 'live') return 'Live';
+  if (s === 'assigned') return 'Assigned';
+  return 'Queued';
+}
+
+// ── RENDER ────────────────────────────────────────────
+function render() {
+  renderSummary();
+  renderFilters();
+  renderGroups();
+  renderQueue();
+}
+
+function renderSummary() {
+  const total = allRows.length;
+  const live = allRows.filter(r => getStatus(r) === 'live').length;
+  const queued = allRows.filter(r => getStatus(r) === 'queued').length;
+  document.getElementById('summaryPills').innerHTML = `
+    <div class="pill"><div class="pill-dot all"></div> <strong>${total}</strong> total</div>
+    <div class="pill"><div class="pill-dot live"></div> <strong>${live}</strong> live</div>
+    <div class="pill"><div class="pill-dot queued"></div> <strong>${queued}</strong> not launched</div>
+  `;
+}
+
+function renderFilters() {
+  const products = [...new Set(allRows.map(r => r.product))].filter(Boolean);
+  let html = `<span class="filter-label">Filter:</span>
+    <button class="filter-chip ${activeFilter==='all'?'active':''}" onclick="setFilter('all')">All</button>
+    <button class="filter-chip ${activeFilter==='live'?'active':''}" onclick="setFilter('live')">Live</button>
+    <button class="filter-chip ${activeFilter==='queued'?'active':''}" onclick="setFilter('queued')">Not launched</button>`;
+  document.getElementById('filterControls').innerHTML = html;
+}
+
+function setFilter(f) {
+  activeFilter = f;
+  renderFilters();
+  renderGroups();
+}
+
+function renderGroups() {
+  const products = [...new Set(allRows.map(r => r.product))];
+  let html = '';
+  products.forEach(product => {
+    let rows = allRows.filter(r => r.product === product);
+    if (activeFilter === 'live') rows = rows.filter(r => getStatus(r) === 'live');
+    if (activeFilter === 'queued') rows = rows.filter(r => getStatus(r) === 'queued');
+    if (rows.length === 0) return;
+
+    const allProductRows = allRows.filter(r => r.product === product);
+    const liveCount = allProductRows.filter(r => getStatus(r) === 'live').length;
+    const pct = allProductRows.length ? Math.round((liveCount / allProductRows.length) * 100) : 0;
+
+    html += `<div class="product-group">
+      <div class="group-header">
+        <div class="group-title">
+          ${product}
+          <span class="group-count">${allProductRows.length} creatives</span>
+        </div>
+        <div class="group-progress">
+          <span>${liveCount}/${allProductRows.length} live</span>
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+        </div>
+      </div>
+      <div class="grid">
+        ${rows.map((r, i) => renderCard(r, allRows.indexOf(r))).join('')}
+      </div>
+    </div>`;
+  });
+  document.getElementById('productGroups').innerHTML = html || '<div class="empty">No creatives match this filter.</div>';
+}
+
+function renderCard(row, idx) {
+  const status = getStatus(row);
+  const hasImg = row.creative && row.creative.startsWith('http');
+  const thumbHtml = hasImg
+    ? `<img src="${row.creative}" loading="lazy" onerror="this.parentElement.classList.add('no-img');this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+       <div class="img-placeholder" style="display:none;flex-direction:column;align-items:center;gap:6px">
+         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+         <span>No preview</span></div>`
+    : `<div class="img-placeholder" style="display:flex;flex-direction:column;align-items:center;gap:6px">
+         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+         <span>No preview</span></div>`;
+
+  return `<div class="card" onclick="openModal(${idx})">
+    <div class="card-thumb ${hasImg ? '' : 'no-img'}">${thumbHtml}</div>
+    <div class="status-stripe ${status}"></div>
+    <div class="card-body">
+      <div class="card-name">${row.adName || '—'}</div>
+      <span class="badge ${status}"><span class="badge-dot"></span>${statusLabel(status)}</span>
+      ${row.launchDate ? `<div class="card-date">${row.launchDate}</div>` : ''}
+    </div>
+  </div>`;
+}
+
+// ── UPLOAD QUEUE TABLE ────────────────────────────────
+function renderQueue() {
+  const tbody = document.getElementById('uploadTableBody');
+  if (!allRows.length) { tbody.innerHTML = '<tr><td colspan="7" class="empty">No rows found.</td></tr>'; return; }
+  tbody.innerHTML = allRows.map(row => {
+    const status = getStatus(row);
+    return `<tr>
+      <td>${row.creative ? `<a href="${row.creative}" target="_blank">View ↗</a>` : '—'}</td>
+      <td style="font-weight:500;font-size:12px">${row.adName || '—'}</td>
+      <td><div class="copy-text">${row.primaryText || '—'}</div></td>
+      <td style="font-size:12px">${row.headline || '—'}</td>
+      <td style="font-size:12px">${row.cta || '—'}</td>
+      <td>${row.url ? `<a href="${row.url}" target="_blank" class="mono">${truncate(row.url, 30)}</a>` : '—'}</td>
+      <td><span class="badge ${status}"><span class="badge-dot"></span>${statusLabel(status)}</span>${row.launchDate ? `<div class="card-date" style="margin-top:4px">${row.launchDate}</div>` : ''}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── MODAL ─────────────────────────────────────────────
+function openModal(idx) {
+  const row = allRows[idx];
+  const status = getStatus(row);
+  document.getElementById('modalTitle').textContent = row.adName || 'Creative detail';
+  document.getElementById('modalBody').innerHTML = `
+    ${row.creative && row.creative.startsWith('http') ? `<img class="modal-thumb" src="${row.creative}" onerror="this.style.display='none'"/>` : ''}
+    <div style="display:flex;gap:8px;margin-bottom:16px;align-items:center">
+      <span class="badge ${status}"><span class="badge-dot"></span>${statusLabel(status)}</span>
+      ${row.launchDate ? `<span style="font-size:12px;color:var(--text-muted)">Launched ${row.launchDate}</span>` : ''}
+    </div>
+    ${field('Product', row.product)}
+    ${field('Primary text', row.primaryText)}
+    ${field('Headline', row.headline)}
+    ${field('Call to action', row.cta)}
+    ${field('Website URL', row.url ? `<a href="${row.url}" target="_blank">${row.url}</a>` : '')}
+    ${field('URL parameters', row.urlParams ? `<span class="mono">${row.urlParams}</span>` : '')}
+    ${row.creative ? `<div class="modal-field"><div class="modal-field-label">Air link</div><div class="modal-field-value"><a href="${row.creative}" target="_blank">${row.creative}</a></div></div>` : ''}
+  `;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function field(label, val) {
+  if (!val) return '';
+  return `<div class="modal-field"><div class="modal-field-label">${label}</div><div class="modal-field-value">${val}</div></div>`;
+}
+
+function closeModal(e) { if (e.target === document.getElementById('modalOverlay')) closeModalDirect(); }
+function closeModalDirect() { document.getElementById('modalOverlay').classList.remove('open'); }
+
+// ── TABS ──────────────────────────────────────────────
+function switchTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', (i === 0 && tab === 'visual') || (i === 1 && tab === 'queue')));
+  document.getElementById('visualTab').style.display = tab === 'visual' ? 'block' : 'none';
+  document.getElementById('queueTab').style.display = tab === 'queue' ? 'block' : 'none';
+}
+
+// ── UTILS ─────────────────────────────────────────────
+function truncate(str, n) { return str.length > n ? str.slice(0, n) + '…' : str; }
+</script>
+</body>
+</html>
