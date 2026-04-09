@@ -120,6 +120,10 @@ tr:hover td{background:var(--sur2)}
 <header>
   <div class="logo">Creative Tracker</div>
   <div class="hright">
+    <button class="btn btn-ghost btn-sm" onclick="backupData()" title="Save all your data as a backup file">↓ Backup</button>
+    <button class="btn btn-ghost btn-sm" onclick="g('restoreFile').click()" title="Restore from a backup file">↑ Restore</button>
+    <input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreData(event)"/>
+    <button class="btn btn-ghost btn-sm" onclick="publishShare()" id="shareBtn">⬡ Share board</button>
     <button class="btn btn-blue btn-sm" onclick="openImport()">↑ Import folder</button>
     <button class="btn btn-dark btn-sm" onclick="openAdd()">+ Add manually</button>
   </div>
@@ -240,6 +244,14 @@ tr:hover td{background:var(--sur2)}
   </div>
 </div>
 
+<!-- SHARE MODAL -->
+<div class="overlay" id="shareOv" onclick="if(event.target===this)closeShare()">
+  <div class="modal mw">
+    <div class="mhead"><div class="mtitle" id="shareTitle">Share board</div><button class="mclose" onclick="closeShare()">✕</button></div>
+    <div class="mbody" id="shareBody"></div>
+  </div>
+</div>
+
 <!-- FAB -->
 <div class="fab" id="fab">
   <span style="font-size:13px;font-weight:500">Push to queue</span>
@@ -258,7 +270,7 @@ let allFiles=[], pairs=[], pending45=null, impProduct='';
 let activeProd='all';
 
 function save(){localStorage.setItem(STORE,JSON.stringify(data));}
-window.onload=()=>{render();};
+window.onload=async()=>{const isView=await checkViewMode();if(!isView)render();};
 
 // ── BOARD ─────────────────────────────────────────────
 function render(){renderBoard();renderQueue();refreshProdList();}
@@ -612,6 +624,213 @@ function goTab(t){
   document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',(i===0&&t==='board')||(i===1&&t==='queue')));
   g('boardEl').style.display=t==='board'?'block':'none';
   g('queueEl').style.display=t==='queue'?'block':'none';
+}
+async function publishShare(){
+  if(!data.length){toast('No creatives to share yet');return;}
+  const btn=g('shareBtn');
+  btn.textContent='Publishing...';btn.disabled=true;
+  try{
+    // Check if we already have a blob ID stored
+    const existingId=localStorage.getItem('ct_blob_id');
+    let blobId=existingId;
+    const payload=JSON.stringify({creatives:data,publishedAt:new Date().toISOString()});
+    if(existingId){
+      // Update existing blob
+      const res=await fetch('https://jsonblob.com/api/jsonBlob/'+existingId,{
+        method:'PUT',
+        headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body:payload
+      });
+      if(!res.ok) blobId=null; // if update fails, create new
+    }
+    if(!blobId){
+      // Create new blob
+      const res=await fetch('https://jsonblob.com/api/jsonBlob',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body:payload
+      });
+      if(!res.ok) throw new Error('Could not publish');
+      const loc=res.headers.get('Location')||'';
+      blobId=loc.split('/').pop();
+      localStorage.setItem('ct_blob_id',blobId);
+    }
+    const shareUrl=window.location.origin+window.location.pathname+'?view='+blobId;
+    showShareModal(shareUrl,blobId);
+  }catch(e){
+    toast('Could not publish — check your connection');
+    console.error(e);
+  }finally{
+    btn.textContent='⬡ Share board';btn.disabled=false;
+  }
+}
+
+function showShareModal(url,blobId){
+  g('shareTitle').textContent='Board published!';
+  g('shareBody').innerHTML=`
+    <div style="font-size:13px;color:var(--mu);margin-bottom:16px;line-height:1.6">
+      Your board is now live. Anyone with this link can view your creatives and their launch status — read only.
+      <br/><br/><strong style="color:var(--tx)">Re-publish any time</strong> after making changes to update what they see.
+    </div>
+    <div style="background:var(--sur2);border:1px solid var(--bor);border-radius:var(--rs);padding:10px 12px;font-family:'DM Mono',monospace;font-size:11px;word-break:break-all;margin-bottom:12px;color:var(--tx)">${url}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-dark btn-sm" onclick="copyShareUrl('${url}')">Copy link</button>
+      <button class="btn btn-out btn-sm" onclick="closeShare()">Done</button>
+    </div>`;
+  ov('shareOv');
+}
+
+function copyShareUrl(url){
+  navigator.clipboard.writeText(url).then(()=>toast('Link copied!')).catch(()=>{
+    const inp=document.createElement('input');inp.value=url;document.body.appendChild(inp);inp.select();document.execCommand('copy');document.body.removeChild(inp);toast('Link copied!');
+  });
+}
+
+function closeShare(){cv('shareOv');}
+
+// ── VIEW MODE (read-only shared board) ────────────────
+async function checkViewMode(){
+  const params=new URLSearchParams(window.location.search);
+  const blobId=params.get('view');
+  if(!blobId) return false;
+  // Show loading
+  document.body.innerHTML=`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:12px;font-family:DM Sans,sans-serif;color:#78766e">
+    <div style="font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#161510;margin-bottom:8px">Creative Tracker</div>
+    <div style="display:inline-block;width:16px;height:16px;border:2px solid #e0ddd4;border-top-color:#78766e;border-radius:50%;animation:spin .7s linear infinite"></div>
+    <div style="font-size:13px">Loading shared board...</div>
+    <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+  </div>`;
+  try{
+    const res=await fetch('https://jsonblob.com/api/jsonBlob/'+blobId);
+    if(!res.ok) throw new Error('Not found');
+    const json=await res.json();
+    data=json.creatives||[];
+    renderViewMode(json.publishedAt);
+  }catch(e){
+    document.body.innerHTML=`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:12px;font-family:DM Sans,sans-serif">
+      <div style="font-size:20px;font-weight:600;color:#161510">Board not found</div>
+      <div style="font-size:13px;color:#78766e">This share link may have expired or been removed.</div>
+      <a href="${window.location.pathname}" style="color:#1b5c38;font-size:13px">Go to my tracker →</a>
+    </div>`;
+  }
+  return true;
+}
+
+function renderViewMode(publishedAt){
+  const date=publishedAt?new Date(publishedAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'}):'';
+  document.body.innerHTML=`
+    <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#f5f4f0;--sur:#fff;--sur2:#eeecea;--bor:#e0ddd4;--bor2:#c8c5ba;--tx:#161510;--mu:#78766e;--gn:#1b5c38;--gnb:#d0eedd;--gnm:#3fad6a;--am:#7a4800;--amb:#fde4b0;--amm:#f5a000;--r:12px;--rs:8px;}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap');
+    header{background:var(--sur);border-bottom:1px solid var(--bor);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100}
+    .logo{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+    .badge{display:inline-flex;align-items:center;gap:5px;background:#ddeaff;color:#1a3a6e;border-radius:100px;padding:4px 10px;font-size:11px;font-weight:500}
+    .wrap{max-width:1400px;margin:0 auto;padding:1.5rem}
+    .pills{display:flex;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
+    .pill{background:var(--sur);border:1px solid var(--bor);border-radius:100px;padding:5px 13px;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mu)}
+    .pill strong{color:var(--tx);font-weight:600}
+    .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+    .d-all{background:var(--tx)}.d-live{background:var(--gnm)}.d-q{background:#bbb}.d-inq{background:var(--amm)}
+    .ptabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem}
+    .chip{border:1px solid var(--bor);background:var(--sur);border-radius:100px;padding:5px 13px;font-size:12px;font-weight:500;color:var(--mu);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+    .chip:hover{border-color:var(--bor2);color:var(--tx)}.chip-on{background:var(--tx);color:#fff;border-color:var(--tx)}
+    .group{margin-bottom:2.5rem}
+    .gh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--bor)}
+    .gtitle{font-size:15px;font-weight:600}.gtag{font-size:11px;font-family:'DM Mono',monospace;color:var(--mu);background:var(--sur2);border-radius:100px;padding:2px 8px;margin-left:8px}
+    .gprog{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--mu)}
+    .pbar{width:64px;height:3px;background:var(--bor);border-radius:100px;overflow:hidden}
+    .pfill{height:100%;background:var(--gnm);border-radius:100px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+    .card{background:var(--sur);border:1.5px solid var(--bor);border-radius:var(--r);overflow:hidden}
+    .card.live{border-color:var(--gnm)}.card.queued{border-color:var(--amm)}
+    .cimg{width:100%;aspect-ratio:4/5;background:var(--sur2);overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative}
+    .cimg img{width:100%;height:100%;object-fit:cover;display:block}
+    .stamp{position:absolute;bottom:0;left:0;right:0;padding:5px 4px;text-align:center;font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+    .s-live{background:rgba(27,92,56,.88);color:#fff}.s-queued{background:rgba(122,72,0,.82);color:#fff}
+    .sbar{height:4px}.sb-live{background:var(--gnm)}.sb-queued{background:var(--amm)}.sb-none{background:var(--bor)}
+    .noimg{display:flex;flex-direction:column;align-items:center;gap:4px;opacity:.25}
+    .noimg svg{width:22px;height:22px}.noimg span{font-size:9px}
+    </style>
+    <header>
+      <div class="logo">Creative Tracker</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="badge">👁 View only</span>
+        ${date?`<span style="font-size:11px;color:var(--mu)">Updated ${date}</span>`:''}
+      </div>
+    </header>
+    <div class="wrap">
+      <div class="pills" id="vPills"></div>
+      <div id="vTabs" class="ptabs"></div>
+      <div id="vGroups"></div>
+    </div>`;
+
+  let vProd='all';
+  const prods=[...new Set(data.map(r=>r.product))];
+
+  function thumbUrl(url){
+    if(!url)return'';
+    const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/)||url.match(/id=([a-zA-Z0-9_-]+)/);
+    return m?'https://drive.google.com/thumbnail?id='+m[1]+'&sz=w400':url;
+  }
+
+  function renderView(){
+    const total=data.length,live=data.filter(r=>r.status==='launched').length,
+          inq=data.filter(r=>r.inQueue&&r.status!=='launched').length,
+          none=data.filter(r=>!r.inQueue&&r.status!=='launched').length;
+    document.getElementById('vPills').innerHTML=
+      '<div class="pill"><div class="dot d-all"></div><strong>'+total+'</strong> total</div>'+
+      '<div class="pill"><div class="dot d-live"></div><strong>'+live+'</strong> launched</div>'+
+      '<div class="pill"><div class="dot d-inq"></div><strong>'+inq+'</strong> in queue</div>'+
+      '<div class="pill"><div class="dot d-q"></div><strong>'+none+'</strong> not queued</div>';
+    document.getElementById('vTabs').innerHTML=
+      '<button class="chip '+(vProd==='all'?'chip-on':'')+'" onclick="vProd=\'all\';renderView()">All products</button>'+
+      prods.map(p=>'<button class="chip '+(vProd===p?'chip-on':'')+'" onclick="vProd=\''+p+'\';renderView()">'+p+'</button>').join('');
+    const vis=vProd==='all'?prods:[vProd];
+    document.getElementById('vGroups').innerHTML=vis.map(prod=>{
+      const pr=data.filter(r=>r.product===prod);
+      const liveN=pr.filter(r=>r.status==='launched').length;
+      const pct=pr.length?Math.round(liveN/pr.length*100):0;
+      return '<div class="group"><div class="gh"><div><span class="gtitle">'+prod+'</span><span class="gtag">'+pr.length+'</span></div><div class="gprog"><span>'+liveN+'/'+pr.length+' launched</span><div class="pbar"><div class="pfill" style="width:'+pct+'%"></div></div></div></div><div class="grid">'+
+        pr.map(r=>{
+          const st=r.status==='launched'?'launched':r.inQueue?'queued':'none';
+          const t=thumbUrl(r.link45);
+          const img=t?'<img src="'+t+'" loading="lazy" onerror="this.style.display=\'none\'"/><div class="noimg" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>No preview</span></div>':'<div class="noimg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>No preview</span></div>';
+          const stamp=st==='launched'?'<div class="stamp s-live">✓ Launched</div>':st==='queued'?'<div class="stamp s-queued">In queue</div>':'';
+          return '<div class="card '+(st==='launched'?'live':st==='queued'?'queued':'')+'"><div class="cimg">'+img+stamp+'</div><div class="sbar sb-'+st+'"></div></div>';
+        }).join('')+'</div></div>';
+    }).join('');
+  }
+  renderView();
+  window.renderView=renderView;
+}
+
+function backupData(){
+  if(!data.length){toast('Nothing to backup yet');return;}
+  const blob=new Blob([JSON.stringify({version:1,date:new Date().toISOString(),creatives:data},null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='creative-tracker-backup-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+  toast('Backup downloaded!');
+}
+function restoreData(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const parsed=JSON.parse(ev.target.result);
+      const creatives=parsed.creatives||parsed;
+      if(!Array.isArray(creatives)){toast('Invalid backup file');return;}
+      if(!confirm(`Restore ${creatives.length} creatives? This will replace your current data.`))return;
+      data=creatives;
+      save();render();
+      toast(`Restored ${creatives.length} creatives!`);
+    }catch(err){toast('Could not read backup file');}
+  };
+  reader.readAsText(file);
+  e.target.value='';
 }
 const g=id=>document.getElementById(id);
 const gv=id=>g(id).value.trim();
