@@ -269,6 +269,7 @@ let data=JSON.parse(localStorage.getItem(STORE)||'[]');
 let sel=new Set(), editId=null, pushingIds=[];
 let allFiles=[], pairs=[], pending45=null, impProduct='';
 let activeProd='all';
+let activeStatus='all';
 
 function save(){localStorage.setItem(STORE,JSON.stringify(data));}
 window.onload=async()=>{const isView=await checkViewMode();if(!isView)render();};
@@ -289,12 +290,24 @@ function renderBoard(){
   // render product tabs
   if(!prods.includes(activeProd)&&activeProd!=='all') activeProd='all';
   g('prodTabsEl').innerHTML=
-    `<button class="chip ${activeProd==='all'?'chip-on':''}" onclick="setProd('all')">All products</button>`+
-    prods.map(p=>`<button class="chip ${activeProd===p?'chip-on':''}" onclick="setProd('${p.replace(/'/g,"\'")}')">${p}</button>`).join('');
-  // filter by active product
+    '<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px">'
+    +'<span style="font-size:11px;font-weight:500;color:var(--mu);text-transform:uppercase;letter-spacing:.06em">Product:</span>'
+    +`<button class="chip ${activeProd==='all'?'chip-on':''}" onclick="setProd('all')">All</button>`
+    +prods.map(p=>`<button class="chip ${activeProd===p?'chip-on':''}" onclick="setProd('${p.replace(/'/g,"\'")}')">${p}</button>`).join('')
+    +'</div>'
+    +'<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">'
+    +'<span style="font-size:11px;font-weight:500;color:var(--mu);text-transform:uppercase;letter-spacing:.06em">Status:</span>'
+    +`<button class="chip ${activeStatus==='all'?'chip-on':''}" onclick="setStatus('all')">All</button>`
+    +`<button class="chip ${activeStatus==='none'?'chip-on':''}" onclick="setStatus('none')" style="${activeStatus==='none'?'':''}">Not launched</button>`
+    +`<button class="chip ${activeStatus==='queued'?'chip-on':''}" onclick="setStatus('queued')">In queue</button>`
+    +`<button class="chip ${activeStatus==='launched'?'chip-on':''}" onclick="setStatus('launched')" style="${activeStatus==='launched'?'':''}">Launched</button>`
+    +'</div>';
+  // filter by active product and status
   const visibleProds=activeProd==='all'?prods:[activeProd];
   g('groupsEl').innerHTML=visibleProds.map(prod=>{
-    const pr=data.filter(r=>r.product===prod);
+    let pr=data.filter(r=>r.product===prod);
+    if(activeStatus!=='all') pr=pr.filter(r=>(activeStatus==='launched'?r.status==='launched':activeStatus==='queued'?(r.inQueue&&r.status!=='launched'):(r.status!=='launched'&&!r.inQueue)));
+    if(!pr.length) return '';
     const liveN=pr.filter(r=>r.status==='launched').length;
     const pct=pr.length?Math.round(liveN/pr.length*100):0;
     return `<div class="group">
@@ -307,6 +320,7 @@ function renderBoard(){
   }).join('');
 }
 function setProd(p){activeProd=p;renderBoard();}
+function setStatus(s){activeStatus=s;renderBoard();}
 function thumb(url){
   if(!url)return'';
   if(url.includes('thumbnail')||url.includes('/uc?'))return url;
@@ -437,6 +451,21 @@ function loadLinks(){
   impProduct=prod;
   pairs=[];
   pending45=null;
+  // Auto-match by stripping size identifiers from name and comparing base names
+  const baseName=name=>name
+    .replace(/\.(jpg|jpeg|png|gif|webp)$/i,'')
+    .replace(/[_\-\s]*(4x5|45|4_5|1080x1350|square)\s*$/i,'')
+    .replace(/[_\-\s]*(9x16|916|9_16|1080x1920|story|tall)\s*$/i,'')
+    .toLowerCase().trim();
+  const used45=new Set(), used916=new Set();
+  files45.forEach(f45=>{
+    const base45=baseName(f45.name);
+    if(!base45) return;
+    const match=files916.find(f916=>!used916.has(f916.id)&&baseName(f916.name)===base45);
+    if(match){ pairs.push({file45:f45,file916:match}); used45.add(f45.id); used916.add(match.id); }
+  });
+  const autoCount=pairs.length;
+  if(autoCount>0) toast(autoCount+' pair'+(autoCount>1?'s':'')+' auto-matched! Pair the rest manually.');
   showPairingUI();
 }
 
