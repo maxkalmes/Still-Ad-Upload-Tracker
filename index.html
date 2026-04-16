@@ -32,11 +32,16 @@ header{background:var(--sur);border-bottom:1px solid var(--bor);padding:0 1.5rem
 .tabs{display:flex;gap:2px;background:var(--sur2);border-radius:var(--r);padding:4px;width:fit-content;margin-bottom:1.5rem}
 .tab{padding:7px 18px;font-size:13px;font-weight:500;color:var(--mu);border-radius:var(--rs);cursor:pointer;border:none;background:transparent;font-family:'DM Sans',sans-serif;transition:all .15s}
 .tab.active{background:var(--sur);color:var(--tx);box-shadow:0 1px 4px rgba(0,0,0,.07)}
-.pills{display:flex;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
+.pills{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
 .pill{background:var(--sur);border:1px solid var(--bor);border-radius:100px;padding:5px 13px;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mu)}
 .pill strong{color:var(--tx);font-weight:600}
 .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .d-all{background:var(--tx)}.d-live{background:var(--gnm)}.d-q{background:#bbb}.d-inq{background:var(--amm)}
+.filters{display:flex;flex-direction:column;gap:6px;margin-bottom:1.5rem}
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.filter-lbl{font-size:11px;font-weight:500;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;min-width:52px}
+.chip{border:1px solid var(--bor);background:var(--sur);border-radius:100px;padding:5px 13px;font-size:12px;font-weight:500;color:var(--mu);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.chip:hover{border-color:var(--bor2);color:var(--tx)}.chip.on{background:var(--tx);color:#fff;border-color:var(--tx)}
 .group{margin-bottom:2.5rem}
 .gh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--bor)}
 .gtitle{font-size:15px;font-weight:600}
@@ -65,7 +70,7 @@ header{background:var(--sur);border-bottom:1px solid var(--bor);padding:0 1.5rem
 .overlay.open{display:flex}
 .modal{background:var(--sur);border-radius:var(--r);width:100%;max-width:480px;border:1px solid var(--bor);margin:auto}
 .mw{max-width:560px}.mxw{max-width:860px}
-.mhead{padding:16px 20px 12px;border-bottom:1px solid var(--bor);display:flex;align-items:center;justify-content:space-between}
+.mhead{padding:16px 20px 12px;border-bottom:1px solid var(--bor);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--sur);z-index:1}
 .mtitle{font-size:14px;font-weight:600}
 .mclose{background:var(--sur2);border:none;border-radius:6px;width:26px;height:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--mu)}
 .mclose:hover{background:var(--bor)}
@@ -83,6 +88,8 @@ textarea.fi{resize:vertical;min-height:72px;line-height:1.5}
 .sbox-empty{opacity:.35;pointer-events:none}
 .sbox-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--mu);margin-bottom:2px}
 .sbox-url{font-size:11px;color:var(--gn)}
+.ecell{cursor:pointer;border-radius:4px;padding:3px 5px;font-size:12px;line-height:1.5;transition:background .12s;min-height:22px;word-break:break-word}
+.ecell:hover{background:var(--sur2)}.ecell.mt{color:var(--fa);font-style:italic;font-size:11px}
 .fab{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(110px);background:var(--tx);color:#fff;border-radius:100px;padding:11px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 28px rgba(0,0,0,.2);z-index:99;transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
 .fab.up{transform:translateX(-50%) translateY(0)}
 .fab-n{background:rgba(255,255,255,.15);border-radius:100px;padding:2px 9px;font-size:12px;font-weight:600}
@@ -93,38 +100,34 @@ td,th{padding:10px 12px;border-bottom:1px solid var(--bor);vertical-align:middle
 th{background:var(--sur2);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);white-space:nowrap}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:var(--sur2)}
-.pair-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem}
-.pair-col-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);margin-bottom:8px;text-align:center}
-.pair-thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px;min-height:60px}
-.pthumb{border:1.5px solid var(--bor);border-radius:var(--rs);overflow:hidden;cursor:pointer;transition:all .15s;background:var(--sur2)}
-.pthumb:hover{border-color:var(--bor2);transform:translateY(-1px)}
-.pthumb.selected{border-color:var(--tx);border-width:2.5px}
-.pthumb.paired{border-color:var(--gnm);opacity:.45;cursor:default;pointer-events:none}
-.pthumb img{width:100%;aspect-ratio:4/5;object-fit:contain;background:#f0f0f0;display:block}
-.pthumb .pname{font-size:9px;color:var(--mu);padding:3px 4px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;font-family:'DM Mono',monospace}
-.pair-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bor)}
-.pair-item:last-child{border-bottom:none}
-.pair-thumb-sm{width:38px;height:48px;object-fit:cover;border-radius:4px;background:var(--sur2);display:block;flex-shrink:0}
-.pair-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--mu)}
 .info{background:var(--blb);border:1px solid #b5d4f4;border-radius:var(--rs);padding:10px 13px;font-size:12px;color:var(--bl);line-height:1.6;margin-bottom:14px}
+.pthumb{border:1.5px solid var(--bor);border-radius:var(--rs);overflow:hidden;cursor:pointer;transition:all .15s;background:#f5f5f5}
+.pthumb:hover{border-color:var(--bor2)}.pthumb.selected{border:2.5px solid var(--tx)}.pthumb.paired{opacity:.45;cursor:default;pointer-events:none;border-color:var(--gnm)}
+.pthumb img{width:100%;height:120px;object-fit:contain;display:block;background:#f5f5f5}
+.pthumb .pname{font-size:9px;color:var(--mu);padding:3px 4px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-family:'DM Mono',monospace}
+/* PLAN */
+.plan-week{margin-bottom:2.5rem}
+.plan-whead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--bor)}
+.plan-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.plan-card{background:var(--sur);border:1px solid var(--bor);border-radius:var(--r);overflow:hidden}
+.plan-card-img{width:100%;height:140px;object-fit:contain;background:#f5f5f5;display:block}
+.plan-card-body{padding:10px}
+.plan-note{width:100%;margin-top:8px;padding:6px 8px;border:1px solid var(--bor);border-radius:var(--rs);font-size:11px;font-family:'DM Sans',sans-serif;resize:vertical;min-height:52px;color:var(--tx);background:var(--sur);outline:none;line-height:1.4}
+.plan-note:focus{border-color:var(--bor2)}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(0,0,0,.15);border-top-color:var(--mu);border-radius:50%;animation:spin .7s linear infinite}
-.ecell{cursor:pointer;border-radius:4px;padding:3px 5px;font-size:12px;line-height:1.4;transition:background .12s;min-height:22px}
-.ecell:hover{background:var(--sur2)}
-.ecell-empty{color:var(--fa);font-style:italic;font-size:11px}
-.chip{border:1px solid var(--bor);background:var(--sur);border-radius:100px;padding:5px 13px;font-size:12px;font-weight:500;color:var(--mu);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
-.chip:hover{border-color:var(--bor2);color:var(--tx)}.chip-on{background:var(--tx);color:#fff;border-color:var(--tx)}
 </style>
 </head>
 <body>
+
 <header>
   <div class="logo">Creative Tracker</div>
   <div class="hright">
-    <button class="btn btn-ghost btn-sm" onclick="backupData()" title="Save all your data as a backup file">↓ Backup</button>
-    <button class="btn btn-ghost btn-sm" onclick="g('restoreFile').click()" title="Restore from a backup file">↑ Restore</button>
-    <button class="btn btn-ghost btn-sm" style="color:#b91c1c;border-color:#fca5a5" onclick="clearAll()">✕ Clear all</button>
+    <button class="btn btn-ghost btn-sm" onclick="backupData()">↓ Backup</button>
+    <button class="btn btn-ghost btn-sm" onclick="g('restoreFile').click()">↑ Restore</button>
     <input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreData(event)"/>
-    <button class="btn btn-ghost btn-sm" onclick="publishShare()" id="shareBtn">⬡ Share board</button>
+    <button class="btn btn-ghost btn-sm" style="color:#b91c1c;border-color:#fca5a5" onclick="clearAll()">✕ Clear all</button>
+    <button class="btn btn-ghost btn-sm" id="shareBtn" onclick="publishShare()">⬡ Share board</button>
     <button class="btn btn-blue btn-sm" onclick="openImport()">↑ Import folder</button>
     <button class="btn btn-dark btn-sm" onclick="openAdd()">+ Add manually</button>
   </div>
@@ -136,14 +139,18 @@ tr:hover td{background:var(--sur2)}
     <button class="tab" onclick="goTab('queue')">Upload queue</button>
     <button class="tab" onclick="goTab('plan')">Launch plan</button>
   </div>
+
+  <!-- BOARD -->
   <div id="boardEl">
     <div class="pills" id="pillsEl"></div>
-    <div id="prodTabsEl" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem"></div>
+    <div class="filters" id="filtersEl"></div>
     <div id="groupsEl"></div>
   </div>
+
+  <!-- QUEUE -->
   <div id="queueEl" style="display:none">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;gap:10px;flex-wrap:wrap">
-      <div style="font-size:13px;color:var(--mu)">Export CSV to share with your intern.</div>
+      <div style="font-size:13px;color:var(--mu)">Click any cell to edit. Export CSV to share with your intern.</div>
       <button class="btn btn-out btn-sm" onclick="exportCSV()">↓ Export CSV</button>
     </div>
     <div style="overflow-x:auto;border-radius:var(--r);border:1px solid var(--bor)">
@@ -151,43 +158,29 @@ tr:hover td{background:var(--sur2)}
         <thead><tr>
           <th style="width:48px"></th><th>Ad Name</th><th>Product</th><th>Primary Text</th>
           <th>Headline</th><th>CTA</th><th>Website URL</th><th>URL Parameters</th>
-          <th>4×5</th><th>9×16</th><th>Status</th><th></th><th></th>
+          <th>4×5</th><th>9×16</th><th>Status</th><th></th>
         </tr></thead>
         <tbody id="qbody"></tbody>
       </table>
     </div>
   </div>
-</div>
 
-<!-- LAUNCH PLAN TAB -->
-<div id="planEl" style="display:none" class="wrap" style="padding:0">
-</div>
-
-<!-- ADD TO PLAN MODAL -->
-<div class="overlay" id="planAddOv" onclick="if(event.target===this)closePlanAdd()">
-  <div class="modal mxw" style="max-width:700px">
-    <div class="mhead"><div class="mtitle">Add to launch plan</div><button class="mclose" onclick="closePlanAdd()">✕</button></div>
-    <div class="mbody" id="planAddBody"></div>
-  </div>
-</div>
-
-<!-- NEW WEEK MODAL -->
-<div class="overlay" id="weekOv" onclick="if(event.target===this)closeWeek()">
-  <div class="modal" style="max-width:400px">
-    <div class="mhead"><div class="mtitle" id="weekOvTitle">Add week</div><button class="mclose" onclick="closeWeek()">✕</button></div>
-    <div class="mbody">
-      <div class="fg"><div class="flabel">Week label *</div><input class="fi" id="week_label" placeholder="e.g. Week of Apr 21" /></div>
-      <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:14px;border-top:1px solid var(--bor)">
-        <button class="btn btn-ghost" onclick="closeWeek()">Cancel</button>
-        <button class="btn btn-dark" onclick="saveWeek()">Save</button>
-      </div>
+  <!-- LAUNCH PLAN -->
+  <div id="planEl" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:10px">
+      <div style="font-size:13px;color:var(--mu)">Plan your launches week by week. Add notes and push to queue when ready.</div>
+      <button class="btn btn-dark btn-sm" onclick="openNewWeek()">+ Add week</button>
     </div>
+    <div id="planWeeksEl"></div>
   </div>
 </div>
 
 <!-- CARD MODAL -->
 <div class="overlay" id="cardOv" onclick="if(event.target===this)closeCard()">
-  <div class="modal"><div class="mhead"><div class="mtitle" id="cardTitle"></div><button class="mclose" onclick="closeCard()">✕</button></div><div class="mbody" id="cardBody"></div></div>
+  <div class="modal">
+    <div class="mhead"><div class="mtitle" id="cardTitle"></div><button class="mclose" onclick="closeCard()">✕</button></div>
+    <div class="mbody" id="cardBody"></div>
+  </div>
 </div>
 
 <!-- ADD/EDIT MODAL -->
@@ -201,7 +194,6 @@ tr:hover td{background:var(--sur2)}
         <div class="fg"><div class="flabel">4×5 Google Drive link</div><input class="fi fi-mono" id="f_45" placeholder="https://drive.google.com/..."/></div>
         <div class="fg"><div class="flabel">9×16 Google Drive link</div><input class="fi fi-mono" id="f_916" placeholder="https://drive.google.com/..."/></div>
       </div>
-      <div style="font-size:11px;color:var(--mu);margin-top:-4px;margin-bottom:14px">4×5 link is used as the thumbnail on the visual board.</div>
       <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:14px;border-top:1px solid var(--bor)">
         <button class="btn btn-ghost" onclick="closeAdd()">Cancel</button>
         <button class="btn btn-dark" onclick="saveCreative()">Save</button>
@@ -222,7 +214,7 @@ tr:hover td{background:var(--sur2)}
           <select class="fi" id="q_fill_all" onchange="fillAllFromSaved()" style="font-size:11px;padding:4px 8px;width:auto;max-width:200px"><option value="">— pick a previous set —</option></select>
         </div>
       </div>
-      <div class="fg"><div class="flabel">Ad Name *</div><input class="fi" id="q_adname" placeholder="e.g. SummerShield_BeachScene_v1"/></div>
+      <div class="fg"><div class="flabel">Ad Name</div><input class="fi" id="q_adname" placeholder="e.g. SummerShield_BeachScene_v1"/></div>
       <div class="fg">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
           <div class="flabel" style="margin:0">Primary Text</div>
@@ -234,7 +226,7 @@ tr:hover td{background:var(--sur2)}
         <div class="fg">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
             <div class="flabel" style="margin:0">Headline</div>
-            <select class="fi" id="q_headline_saved" onchange="applySaved('q_headline','q_headline_saved')" style="width:auto;font-size:11px;padding:3px 7px;max-width:140px"><option value="">— saved —</option></select>
+            <select class="fi" id="q_headline_saved" onchange="applySaved('q_headline','q_headline_saved')" style="width:auto;font-size:11px;padding:3px 7px;max-width:130px"><option value="">— saved —</option></select>
           </div>
           <input class="fi" id="q_headline"/>
         </div>
@@ -265,10 +257,8 @@ tr:hover td{background:var(--sur2)}
 <!-- IMPORT MODAL -->
 <div class="overlay" id="importOv" onclick="if(event.target===this)closeImport()">
   <div class="modal mxw">
-    <div class="mhead"><div class="mtitle">Import from Google Drive folder</div><button class="mclose" onclick="closeImport()">✕</button></div>
-    <div class="mbody" id="importBody">
-      <!-- filled dynamically -->
-    </div>
+    <div class="mhead"><div class="mtitle">Import from Google Drive</div><button class="mclose" onclick="closeImport()">✕</button></div>
+    <div class="mbody" id="importBody"></div>
   </div>
 </div>
 
@@ -277,6 +267,28 @@ tr:hover td{background:var(--sur2)}
   <div class="modal mw">
     <div class="mhead"><div class="mtitle" id="shareTitle">Share board</div><button class="mclose" onclick="closeShare()">✕</button></div>
     <div class="mbody" id="shareBody"></div>
+  </div>
+</div>
+
+<!-- WEEK MODAL -->
+<div class="overlay" id="weekOv" onclick="if(event.target===this)closeWeek()">
+  <div class="modal" style="max-width:400px">
+    <div class="mhead"><div class="mtitle" id="weekOvTitle">Add week</div><button class="mclose" onclick="closeWeek()">✕</button></div>
+    <div class="mbody">
+      <div class="fg"><div class="flabel">Week label *</div><input class="fi" id="week_label" placeholder="e.g. Week of Apr 21"/></div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:14px;border-top:1px solid var(--bor)">
+        <button class="btn btn-ghost" onclick="closeWeek()">Cancel</button>
+        <button class="btn btn-dark" onclick="saveWeek()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PLAN ADD CREATIVE MODAL -->
+<div class="overlay" id="planAddOv" onclick="if(event.target===this)closePlanAdd()">
+  <div class="modal mxw">
+    <div class="mhead"><div class="mtitle" id="planAddTitle">Add to week</div><button class="mclose" onclick="closePlanAdd()">✕</button></div>
+    <div class="mbody" id="planAddBody"></div>
   </div>
 </div>
 
@@ -291,808 +303,672 @@ tr:hover td{background:var(--sur2)}
 <div class="toast" id="toast"></div>
 
 <script>
-const STORE='ct_v9';
-let data=JSON.parse(localStorage.getItem(STORE)||'[]');
-let sel=new Set(), editId=null, pushingIds=[];
-let allFiles=[], pairs=[], pending45=null, impProduct='';
-let activeProd='all';
-let activeStatus='all';
-let plan=JSON.parse(localStorage.getItem('ct_plan_v1')||'[]'); // [{id,label,items:[{creativeId,note}]}]
-let planEditWeekId=null;
+// ── STATE ─────────────────────────────────────────────
+const STORE = 'ct_v9';
+const PLAN_STORE = 'ct_plan_v1';
+let data = JSON.parse(localStorage.getItem(STORE) || '[]');
+let plan = JSON.parse(localStorage.getItem(PLAN_STORE) || '[]');
+let sel = new Set(), editId = null, pushingIds = [];
+let allFiles45 = [], allFiles916 = [], pairs = [], pending45 = null, impProduct = '';
+let activeProd = 'all', activeStatus = 'all';
+let planEditWeekId = null;
 
-function save(){localStorage.setItem(STORE,JSON.stringify(data));}
-window.onload=async()=>{const isView=await checkViewMode();if(!isView)render();};
+function save() { localStorage.setItem(STORE, JSON.stringify(data)); }
+function savePlan() { localStorage.setItem(PLAN_STORE, JSON.stringify(plan)); }
+window.onload = async () => {
+  const isView = await checkViewMode();
+  if (!isView) render();
+};
 
-// ── BOARD ─────────────────────────────────────────────
-function render(){renderBoard();renderQueue();refreshProdList();}
-function renderBoard(){
-  const total=data.length,live=data.filter(r=>r.status==='launched').length,
-        inq=data.filter(r=>r.inQueue&&r.status!=='launched').length,
-        none=data.filter(r=>!r.inQueue&&r.status!=='launched').length;
-  g('pillsEl').innerHTML=`
-    <div class="pill"><div class="dot d-all"></div><strong>${total}</strong> total</div>
-    <div class="pill"><div class="dot d-live"></div><strong>${live}</strong> launched</div>
-    <div class="pill"><div class="dot d-inq"></div><strong>${inq}</strong> in queue</div>
-    <div class="pill"><div class="dot d-q"></div><strong>${none}</strong> not queued</div>`;
-  const prods=[...new Set(data.map(r=>r.product))];
-  if(!prods.length){g('groupsEl').innerHTML='<div class="empty">No creatives yet — click Import folder or + Add manually.</div>';g('prodTabsEl').innerHTML='';return;}
-  // render product tabs
-  if(!prods.includes(activeProd)&&activeProd!=='all') activeProd='all';
-  g('prodTabsEl').innerHTML=
-    '<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px">'
-    +'<span style="font-size:11px;font-weight:500;color:var(--mu);text-transform:uppercase;letter-spacing:.06em">Product:</span>'
-    +`<button class="chip ${activeProd==='all'?'chip-on':''}" onclick="setProd('all')">All</button>`
-    +prods.map(p=>`<button class="chip ${activeProd===p?'chip-on':''}" onclick="setProd('${p.replace(/'/g,"\'")}')">${p}</button>`).join('')
-    +'</div>'
-    +'<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">'
-    +'<span style="font-size:11px;font-weight:500;color:var(--mu);text-transform:uppercase;letter-spacing:.06em">Status:</span>'
-    +`<button class="chip ${activeStatus==='all'?'chip-on':''}" onclick="setStatus('all')">All</button>`
-    +`<button class="chip ${activeStatus==='none'?'chip-on':''}" onclick="setStatus('none')" style="${activeStatus==='none'?'':''}">Not launched</button>`
-    +`<button class="chip ${activeStatus==='queued'?'chip-on':''}" onclick="setStatus('queued')">In queue</button>`
-    +`<button class="chip ${activeStatus==='launched'?'chip-on':''}" onclick="setStatus('launched')" style="${activeStatus==='launched'?'':''}">Launched</button>`
-    +'</div>';
-  // filter by active product and status
-  const visibleProds=activeProd==='all'?prods:[activeProd];
-  g('groupsEl').innerHTML=visibleProds.map(prod=>{
-    let pr=data.filter(r=>r.product===prod);
-    if(activeStatus!=='all') pr=pr.filter(r=>(activeStatus==='launched'?r.status==='launched':activeStatus==='queued'?(r.inQueue&&r.status!=='launched'):(r.status!=='launched'&&!r.inQueue)));
-    if(!pr.length) return '';
-    const liveN=pr.filter(r=>r.status==='launched').length;
-    const pct=pr.length?Math.round(liveN/pr.length*100):0;
-    return `<div class="group">
-      <div class="gh">
-        <div><span class="gtitle">${prod}</span><span class="gtag">${pr.length}</span></div>
-        <div class="gprog"><span>${liveN}/${pr.length} launched</span><div class="pbar"><div class="pfill" style="width:${pct}%"></div></div></div>
-      </div>
-      <div class="grid">${pr.map(r=>cardHTML(r)).join('')}</div>
-    </div>`;
+// ── UTILS ─────────────────────────────────────────────
+const g = id => document.getElementById(id);
+const gv = id => g(id).value.trim();
+const ov = id => g(id).classList.add('open');
+const cv = id => g(id).classList.remove('open');
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const trunc = (s, n) => s.length > n ? s.slice(0, n) + '…' : s;
+function toast(msg) { const t = g('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2800); }
+function thumb(url) {
+  if (!url) return '';
+  if (url.includes('thumbnail') || url.includes('/uc?')) return url;
+  const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+  return m ? 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w400' : url;
+}
+
+// ── RENDER ────────────────────────────────────────────
+function render() { renderBoard(); renderQueue(); refreshProdList(); }
+
+function renderBoard() {
+  const total = data.length, live = data.filter(r => r.status === 'launched').length,
+    inq = data.filter(r => r.inQueue && r.status !== 'launched').length,
+    none = data.filter(r => !r.inQueue && r.status !== 'launched').length;
+  g('pillsEl').innerHTML =
+    '<div class="pill"><div class="dot d-all"></div><strong>' + total + '</strong> total</div>' +
+    '<div class="pill"><div class="dot d-live"></div><strong>' + live + '</strong> launched</div>' +
+    '<div class="pill"><div class="dot d-inq"></div><strong>' + inq + '</strong> in queue</div>' +
+    '<div class="pill"><div class="dot d-q"></div><strong>' + none + '</strong> not queued</div>';
+
+  const prods = [...new Set(data.map(r => r.product))];
+  if (!prods.includes(activeProd) && activeProd !== 'all') activeProd = 'all';
+
+  g('filtersEl').innerHTML =
+    '<div class="filter-row"><span class="filter-lbl">Product</span>' +
+    '<button class="chip ' + (activeProd === 'all' ? 'on' : '') + '" onclick="setProd(\'all\')">All</button>' +
+    prods.map(p => '<button class="chip ' + (activeProd === p ? 'on' : '') + '" onclick="setProd(\'' + p.replace(/'/g, "\\'") + '\')">' + p + '</button>').join('') +
+    '</div>' +
+    '<div class="filter-row"><span class="filter-lbl">Status</span>' +
+    ['all', 'none', 'queued', 'launched'].map((s, i) => {
+      const labels = ['All', 'Not launched', 'In queue', 'Launched'];
+      return '<button class="chip ' + (activeStatus === s ? 'on' : '') + '" onclick="setStatus(\'' + s + '\')">' + labels[i] + '</button>';
+    }).join('') +
+    '</div>';
+
+  if (!prods.length) { g('groupsEl').innerHTML = '<div class="empty">No creatives yet — click Import folder or + Add manually.</div>'; return; }
+
+  const visibleProds = activeProd === 'all' ? prods : [activeProd];
+  g('groupsEl').innerHTML = visibleProds.map(prod => {
+    let pr = data.filter(r => r.product === prod);
+    if (activeStatus === 'launched') pr = pr.filter(r => r.status === 'launched');
+    else if (activeStatus === 'queued') pr = pr.filter(r => r.inQueue && r.status !== 'launched');
+    else if (activeStatus === 'none') pr = pr.filter(r => !r.inQueue && r.status !== 'launched');
+    if (!pr.length) return '';
+    const all = data.filter(r => r.product === prod);
+    const liveN = all.filter(r => r.status === 'launched').length;
+    const pct = all.length ? Math.round(liveN / all.length * 100) : 0;
+    return '<div class="group">' +
+      '<div class="gh">' +
+      '<div><span class="gtitle">' + prod + '</span><span class="gtag">' + all.length + '</span></div>' +
+      '<div class="gprog"><span>' + liveN + '/' + all.length + ' launched</span><div class="pbar"><div class="pfill" style="width:' + pct + '%"></div></div></div>' +
+      '</div>' +
+      '<div class="grid">' + pr.map(r => cardHTML(r)).join('') + '</div>' +
+      '</div>';
   }).join('');
 }
-function setProd(p){activeProd=p;renderBoard();}
-function setStatus(s){activeStatus=s;renderBoard();}
-function thumb(url){
-  if(!url)return'';
-  if(url.includes('thumbnail')||url.includes('/uc?'))return url;
-  const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/)||url.match(/id=([a-zA-Z0-9_-]+)/);
-  return m?`https://drive.google.com/thumbnail?id=${m[1]}&sz=w400`:url;
+
+function setProd(p) { activeProd = p; renderBoard(); }
+function setStatus(s) { activeStatus = s; renderBoard(); }
+
+function cardHTML(r) {
+  const st = r.status === 'launched' ? 'launched' : r.inQueue ? 'queued' : 'none';
+  const isSel = sel.has(r.id);
+  const t = thumb(r.link45);
+  const img = t
+    ? '<img src="' + t + '" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"/>' +
+      '<div class="noimg" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>No preview</span></div>'
+    : '<div class="noimg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>No preview</span></div>';
+  const stamp = st === 'launched' ? '<div class="stamp s-live">✓ Launched</div>' : st === 'queued' ? '<div class="stamp s-queued">In queue</div>' : '';
+  return '<div class="card ' + (st === 'launched' ? 'live' : st === 'queued' ? 'queued' : '') + (isSel ? ' sel' : '') + '" onclick="handleCard(event,\'' + r.id + '\')">' +
+    '<div class="cimg">' + img + stamp + '</div>' +
+    '<div class="sbar sb-' + st + '"></div>' +
+    '</div>';
 }
-function cardHTML(r){
-  const st=r.status==='launched'?'launched':r.inQueue?'queued':'none';
-  const isSel=sel.has(r.id);
-  const t=thumb(r.link45);
-  const img=t
-    ?`<img src="${t}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
-       <div class="noimg" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>No preview</span></div>`
-    :`<div class="noimg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>No preview</span></div>`;
-  const stamp=st==='launched'?`<div class="stamp s-live">✓ Launched</div>`:st==='queued'?`<div class="stamp s-queued">In queue</div>`:'';
-  return `<div class="card ${st==='launched'?'live':st==='queued'?'queued':''} ${isSel?'sel':''}" onclick="handleCard(event,'${r.id}')">
-    <div class="cimg">${img}${stamp}</div><div class="sbar sb-${st}"></div>
-  </div>`;
+
+function handleCard(e, id) { if (sel.size > 0) { toggleSel(id); return; } openCard(id); }
+function toggleSel(id) {
+  const r = data.find(x => x.id === id); if (!r) return;
+  if (r.status === 'launched') { toast('Already launched'); return; }
+  if (r.inQueue) { toast('Already in queue'); return; }
+  sel.has(id) ? sel.delete(id) : sel.add(id);
+  updateFAB(); renderBoard();
 }
-function handleCard(e,id){if(sel.size>0){toggleSel(id);return;}openCard(id);}
-function toggleSel(id){
-  const r=data.find(x=>x.id===id);if(!r)return;
-  if(r.status==='launched'){toast('Already launched');return;}
-  if(r.inQueue){toast('Already in queue');return;}
-  sel.has(id)?sel.delete(id):sel.add(id);
-  updateFAB();renderBoard();
-}
-function clearSel(){sel.clear();updateFAB();renderBoard();}
-function updateFAB(){g('fabN').textContent=sel.size;g('fab').classList.toggle('up',sel.size>0);}
+function clearSel() { sel.clear(); updateFAB(); renderBoard(); }
+function updateFAB() { g('fabN').textContent = sel.size; g('fab').classList.toggle('up', sel.size > 0); }
 
 // ── CARD MODAL ────────────────────────────────────────
-function openCard(id){
-  const r=data.find(x=>x.id===id);if(!r)return;
-  const st=r.status==='launched'?'launched':r.inQueue?'queued':'none';
-  const t=thumb(r.link45);
-  g('cardTitle').textContent=r.adName||'Creative';
-  g('cardBody').innerHTML=`
-    ${t?`<img src="${t}" style="width:100%;max-height:200px;object-fit:contain;background:var(--sur2);border-radius:var(--rs);margin-bottom:14px;display:block" onerror="this.style.display='none'"/>`:''}
-    <div style="margin-bottom:14px;display:flex;align-items:center;gap:8px">
-      <span class="badge b-${st}"><span class="bdot"></span>${st==='launched'?'Launched':st==='queued'?'In upload queue':'Not queued'}</span>
-      ${r.launchDate?`<span style="font-size:11px;color:var(--mu)">${r.launchDate}</span>`:''}
-    </div>
-    <div class="size-row">
-      ${r.link45?`<a class="sbox" href="${r.link45}" target="_blank"><div class="sbox-lbl">4×5</div><div class="sbox-url">Open in Drive ↗</div></a>`:`<div class="sbox sbox-empty"><div class="sbox-lbl">4×5</div><div class="sbox-url">No link</div></div>`}
-      ${r.link916?`<a class="sbox" href="${r.link916}" target="_blank"><div class="sbox-lbl">9×16</div><div class="sbox-url">Open in Drive ↗</div></a>`:`<div class="sbox sbox-empty"><div class="sbox-lbl">9×16</div><div class="sbox-url">No link</div></div>`}
-    </div>
-    <div class="mactions">
-      ${st!=='launched'?`<button class="btn btn-green btn-sm" onclick="markLive('${id}')">✓ Mark as launched</button>`:''}
-      ${st==='none'?`<button class="btn btn-dark btn-sm" onclick="openSinglePush('${id}')">+ Add to queue</button>`:''}
-      ${st==='launched'?`<button class="btn btn-out btn-sm" onclick="unlaunch('${id}')">↩ Unlaunch</button>`:''}
-      <button class="btn btn-out btn-sm" onclick="openEdit('${id}')">Edit</button>
-      <button class="btn btn-red btn-sm" onclick="del('${id}')">Delete</button>
-    </div>`;
+function openCard(id) {
+  const r = data.find(x => x.id === id); if (!r) return;
+  const st = r.status === 'launched' ? 'launched' : r.inQueue ? 'queued' : 'none';
+  const t = thumb(r.link45);
+  g('cardTitle').textContent = r.adName || 'Creative';
+  g('cardBody').innerHTML =
+    (t ? '<img src="' + t + '" style="width:100%;max-height:200px;object-fit:contain;background:var(--sur2);border-radius:var(--rs);margin-bottom:14px;display:block" onerror="this.style.display=\'none\'"/>' : '') +
+    '<div style="margin-bottom:14px;display:flex;align-items:center;gap:8px">' +
+    '<span class="badge b-' + st + '"><span class="bdot"></span>' + (st === 'launched' ? 'Launched' : st === 'queued' ? 'In upload queue' : 'Not queued') + '</span>' +
+    (r.launchDate ? '<span style="font-size:11px;color:var(--mu)">' + r.launchDate + '</span>' : '') +
+    '</div>' +
+    '<div class="size-row">' +
+    (r.link45 ? '<a class="sbox" href="' + r.link45 + '" target="_blank"><div class="sbox-lbl">4×5</div><div class="sbox-url">Open in Drive ↗</div></a>' : '<div class="sbox sbox-empty"><div class="sbox-lbl">4×5</div><div class="sbox-url">No link</div></div>') +
+    (r.link916 ? '<a class="sbox" href="' + r.link916 + '" target="_blank"><div class="sbox-lbl">9×16</div><div class="sbox-url">Open in Drive ↗</div></a>' : '<div class="sbox sbox-empty"><div class="sbox-lbl">9×16</div><div class="sbox-url">No link</div></div>') +
+    '</div>' +
+    '<div class="mactions">' +
+    (st !== 'launched' ? '<button class="btn btn-green btn-sm" onclick="markLive(\'' + id + '\')">✓ Mark as launched</button>' : '') +
+    (st === 'none' ? '<button class="btn btn-dark btn-sm" onclick="openSinglePush(\'' + id + '\')">+ Add to queue</button>' : '') +
+    (st === 'launched' ? '<button class="btn btn-out btn-sm" onclick="unlaunch(\'' + id + '\')">↩ Unlaunch</button>' : '') +
+    '<button class="btn btn-out btn-sm" onclick="openEdit(\'' + id + '\')">Edit</button>' +
+    '<button class="btn btn-red btn-sm" onclick="del(\'' + id + '\')">Delete</button>' +
+    '</div>';
   ov('cardOv');
 }
-function closeCard(){cv('cardOv');}
-function markLive(id){const r=data.find(x=>x.id===id);if(!r)return;r.status='launched';r.launchDate=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});save();render();closeCard();toast('Launched 🎉');}
-function unlaunch(id){const r=data.find(x=>x.id===id);if(!r)return;r.status=r.inQueue?'queued':'none';r.launchDate='';save();render();closeCard();toast('Moved back to queue');}
-function del(id){if(!confirm('Delete?'))return;data=data.filter(x=>x.id!==id);save();render();closeCard();toast('Deleted');}
+function closeCard() { cv('cardOv'); }
+function markLive(id) { const r = data.find(x => x.id === id); if (!r) return; r.status = 'launched'; r.launchDate = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); save(); render(); closeCard(); toast('Launched 🎉'); }
+function unlaunch(id) { const r = data.find(x => x.id === id); if (!r) return; r.status = r.inQueue ? 'queued' : 'none'; r.launchDate = ''; save(); render(); closeCard(); toast('Moved back'); }
+function del(id) { if (!confirm('Delete?')) return; data = data.filter(x => x.id !== id); save(); render(); closeCard(); toast('Deleted'); }
 
 // ── ADD / EDIT ────────────────────────────────────────
-function openAdd(){editId=null;g('addTitle').textContent='Add creative';['f_name','f_prod','f_45','f_916'].forEach(i=>g(i).value='');ov('addOv');}
-function openEdit(id){
-  const r=data.find(x=>x.id===id);if(!r)return;
-  editId=id;g('addTitle').textContent='Edit creative';
-  g('f_name').value=r.adName||'';g('f_prod').value=r.product||'';g('f_45').value=r.link45||'';g('f_916').value=r.link916||'';
-  closeCard();ov('addOv');
+function openAdd() { editId = null; g('addTitle').textContent = 'Add creative'; ['f_name', 'f_prod', 'f_45', 'f_916'].forEach(i => g(i).value = ''); ov('addOv'); }
+function openEdit(id) {
+  const r = data.find(x => x.id === id); if (!r) return;
+  editId = id; g('addTitle').textContent = 'Edit creative';
+  g('f_name').value = r.adName || ''; g('f_prod').value = r.product || ''; g('f_45').value = r.link45 || ''; g('f_916').value = r.link916 || '';
+  closeCard(); ov('addOv');
 }
-function closeAdd(){cv('addOv');}
-function saveCreative(){
-  const name=gv('f_name'),prod=gv('f_prod');
-  if(!name){toast('Ad name is required');return;}
-  if(editId){const r=data.find(x=>x.id===editId);if(r){r.adName=name;r.product=prod||'Uncategorized';r.link45=gv('f_45');r.link916=gv('f_916');}}
-  else{data.push({id:uid(),adName:name,product:prod||'Uncategorized',link45:gv('f_45'),link916:gv('f_916'),status:'none',inQueue:false,launchDate:'',primaryText:'',headline:'',cta:'',url:'',urlParams:''});}
-  save();render();closeAdd();toast(editId?'Updated!':'Creative added!');
-}
-
-// ── IMPORT FOLDER ─────────────────────────────────────
-function openImport(){
-  pairs=[];pending45=null;allFiles=[];impProduct='';
-  showStep1();
-  ov('importOv');
-}
-function closeImport(){cv('importOv');}
-
-function showStep1(){
-  g('importBody').innerHTML=`
-    <div class="info">Paste your 4×5 links in the left box and 9×16 links in the right box. Then you'll pair them visually.</div>
-    <div class="fg"><div class="flabel">Product / Campaign name *</div><input class="fi" id="imp_prod" placeholder="e.g. Summer Shield Vault" list="prodList"/></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-      <div class="fg" style="margin:0">
-        <div class="flabel" style="margin-bottom:5px">4×5 links *</div>
-        <textarea class="fi" id="imp_links45" style="min-height:100px;font-size:11px" placeholder="Paste 4×5 Drive links here..."></textarea>
-      </div>
-      <div class="fg" style="margin:0">
-        <div class="flabel" style="margin-bottom:5px">9×16 links *</div>
-        <textarea class="fi" id="imp_links916" style="min-height:100px;font-size:11px" placeholder="Paste 9×16 Drive links here..."></textarea>
-      </div>
-    </div>
-    <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:14px;border-top:1px solid var(--bor)">
-      <button class="btn btn-ghost" onclick="closeImport()">Cancel</button>
-      <button class="btn btn-dark" onclick="loadLinks()">Load thumbnails →</button>
-    </div>`;
+function closeAdd() { cv('addOv'); }
+function saveCreative() {
+  const name = gv('f_name'), prod = gv('f_prod');
+  if (!name) { toast('Ad name is required'); return; }
+  if (editId) { const r = data.find(x => x.id === editId); if (r) { r.adName = name; r.product = prod || 'Uncategorized'; r.link45 = gv('f_45'); r.link916 = gv('f_916'); } }
+  else { data.push({ id: uid(), adName: name, product: prod || 'Uncategorized', link45: gv('f_45'), link916: gv('f_916'), status: 'none', inQueue: false, launchDate: '', primaryText: '', headline: '', cta: '', url: '', urlParams: '' }); }
+  save(); render(); closeAdd(); toast(editId ? 'Updated!' : 'Creative added!');
 }
 
-function extractLinks(raw){
-  const matches=(raw||'').match(/https:\/\/drive\.google\.com\/file\/d\/[a-zA-Z0-9_-]+[^\s,"']*/g)||[];
-  return matches.map((url,i)=>{
-    const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    const id=m?m[1]:null;
-    return {id:id||('f'+i),name:'Image '+(i+1),url:'https://drive.google.com/file/d/'+id+'/view',thumbUrl:id?'https://drive.google.com/thumbnail?id='+id+'&sz=w400':''};
+// ── IMPORT ────────────────────────────────────────────
+function openImport() { allFiles45 = []; allFiles916 = []; pairs = []; pending45 = null; impProduct = ''; showStep1(); ov('importOv'); }
+function closeImport() { cv('importOv'); }
+
+function showStep1() {
+  g('importBody').innerHTML =
+    '<div class="info">Paste your 4×5 links in the left box and 9×16 links in the right box. Paste them in the same order (sorted A-Z in Drive) and the app will auto-pair them. You can also pair manually.</div>' +
+    '<div class="fg"><div class="flabel">Product / Campaign name *</div><input class="fi" id="imp_prod" placeholder="e.g. Summer Shield Vault" list="prodList"/></div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">' +
+    '<div class="fg" style="margin:0"><div class="flabel" style="margin-bottom:5px">4×5 links *</div><textarea class="fi" id="imp_links45" style="min-height:100px;font-size:11px" placeholder="Paste 4×5 Drive links here..."></textarea></div>' +
+    '<div class="fg" style="margin:0"><div class="flabel" style="margin-bottom:5px">9×16 links *</div><textarea class="fi" id="imp_links916" style="min-height:100px;font-size:11px" placeholder="Paste 9×16 Drive links here..."></textarea></div>' +
+    '</div>' +
+    '<div style="display:flex;justify-content:flex-end;gap:8px;padding-top:14px;border-top:1px solid var(--bor)">' +
+    '<button class="btn btn-ghost" onclick="closeImport()">Cancel</button>' +
+    '<button class="btn btn-dark" onclick="loadLinks()">Load thumbnails →</button>' +
+    '</div>';
+}
+
+function extractLinks(raw) {
+  const matches = (raw || '').match(/https:\/\/drive\.google\.com\/file\/d\/[a-zA-Z0-9_-]+[^\s,"']*/g) || [];
+  return matches.map((url, i) => {
+    const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    const id = m ? m[1] : null;
+    return { id: id || ('f' + i), name: 'Image ' + (i + 1), url: 'https://drive.google.com/file/d/' + id + '/view', thumbUrl: id ? 'https://drive.google.com/thumbnail?id=' + id + '&sz=w400' : '' };
   });
 }
 
-let files45=[], files916=[];
-
-function loadLinks(){
-  const prod=document.getElementById('imp_prod').value.trim();
-  const raw45=document.getElementById('imp_links45').value.trim();
-  const raw916=document.getElementById('imp_links916').value.trim();
-  if(!prod){toast('Enter a product name');return;}
-  if(!raw45){toast('Paste your 4×5 links');return;}
-  if(!raw916){toast('Paste your 9×16 links');return;}
-  files45=extractLinks(raw45);
-  files916=extractLinks(raw916);
-  if(!files45.length){toast('No valid Drive links found in 4×5 box');return;}
-  if(!files916.length){toast('No valid Drive links found in 9×16 box');return;}
-  impProduct=prod;
-  pairs=[];
-  pending45=null;
-  // Auto-match by stripping size identifiers from name and comparing base names
-  // Extract the base identifier by removing size suffix anywhere in the name
-  // Handles: v1_4x5, v1_9x16, ad1_45, ad1_916, name_4x5_final, etc.
-  const baseName=name=>name
-    .replace(/\.(jpg|jpeg|png|gif|webp)$/i,'')  // strip extension
-    .replace(/[_\-](4x5|45|4_5|1080x1350|square)/gi,'')   // remove 4x5 identifier
-    .replace(/[_\-](9x16|916|9_16|1080x1920|story|tall)/gi,'') // remove 9x16 identifier
-    .toLowerCase().trim();
-  const used45=new Set(), used916=new Set();
-  files45.forEach(f45=>{
-    const base45=baseName(f45.name);
-    if(!base45) return;
-    const match=files916.find(f916=>!used916.has(f916.id)&&baseName(f916.name)===base45);
-    if(match){ pairs.push({file45:f45,file916:match}); used45.add(f45.id); used916.add(match.id); }
-  });
-  const autoCount=pairs.length;
-  if(autoCount>0) toast(autoCount+' pair'+(autoCount>1?'s':'')+' auto-matched! Pair the rest manually.');
+function loadLinks() {
+  const prod = document.getElementById('imp_prod').value.trim();
+  const raw45 = document.getElementById('imp_links45').value.trim();
+  const raw916 = document.getElementById('imp_links916').value.trim();
+  if (!prod) { toast('Enter a product name'); return; }
+  if (!raw45) { toast('Paste your 4×5 links'); return; }
+  if (!raw916) { toast('Paste your 9×16 links'); return; }
+  allFiles45 = extractLinks(raw45);
+  allFiles916 = extractLinks(raw916);
+  if (!allFiles45.length) { toast('No valid Drive links found in 4×5 box'); return; }
+  if (!allFiles916.length) { toast('No valid Drive links found in 9×16 box'); return; }
+  impProduct = prod;
+  pairs = [];
+  pending45 = null;
+  // Auto-pair by position
+  const count = Math.min(allFiles45.length, allFiles916.length);
+  for (let i = 0; i < count; i++) pairs.push({ file45: allFiles45[i], file916: allFiles916[i] });
+  toast(count + ' pair' + (count > 1 ? 's' : '') + ' auto-matched! Adjust if needed.');
   showPairingUI();
 }
 
-function showPairingUI(){
-  const paired45=new Set(pairs.map(p=>p.file45.id));
-  const paired916=new Set(pairs.map(p=>p.file916.id));
+function showPairingUI() {
+  const paired45 = new Set(pairs.map(p => p.file45.id));
+  const paired916 = new Set(pairs.map(p => p.file916.id));
 
-  const makeThumb=(file,side)=>{
-    const isPaired=(side==='45'?paired45:paired916).has(file.id);
-    const isSel=pending45&&file.id===pending45.id&&side==='45';
-    const cls='position:relative;border-radius:var(--rs);overflow:hidden;cursor:'+(isPaired?'default':'pointer')+';opacity:'+(isPaired?'.4':'1')+';border:'+(isSel?'2.5px solid var(--tx)':isPaired?'1.5px solid var(--gnm)':'1.5px solid var(--bor)')+';background:#f5f5f5';
-    const click=isPaired?'':' onclick="pickFile2(\''+side+'\',\''+file.id+'\''+')"';
-    return '<div style="'+cls+'"'+click+'>'
-      +'<img src="'+file.thumbUrl+'" style="width:100%;height:120px;object-fit:contain;display:block;background:#f5f5f5"/>'
-      +(isPaired?'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(27,92,56,.15)"><span style="background:var(--gn);color:#fff;font-size:9px;font-weight:600;padding:2px 7px;border-radius:100px">Paired</span></div>':'')
-      +(isSel?'<div style="position:absolute;inset:0;background:rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center"><span style="background:var(--tx);color:#fff;font-size:9px;font-weight:600;padding:2px 7px;border-radius:100px">Selected</span></div>':'')
-      +'</div>';
-  };
+  function makeThumb(file, side) {
+    const isPaired = (side === '45' ? paired45 : paired916).has(file.id);
+    const isSel = pending45 && file.id === pending45.id && side === '45';
+    let cls = 'pthumb' + (isPaired ? ' paired' : '') + (isSel ? ' selected' : '');
+    let click = isPaired ? '' : ' onclick="pickFile(\'' + side + '\',\'' + file.id + '\')"';
+    return '<div class="' + cls + '"' + click + '><img src="' + file.thumbUrl + '" onerror="this.style.opacity=.15"/><div class="pname">' + file.name + '</div></div>';
+  }
 
-  const pairsHTML=pairs.length?
-    '<div style="border-top:1px solid var(--bor);padding-top:12px;margin-top:12px">'
-    +'<div style="font-size:12px;font-weight:600;margin-bottom:10px;color:var(--tx)">'+pairs.length+' paired</div>'
-    +'<div style="display:flex;flex-direction:column;gap:8px;max-height:160px;overflow-y:auto">'
-    +pairs.map((p,i)=>'<div style="display:flex;align-items:center;gap:8px;background:var(--sur2);border-radius:var(--rs);padding:6px 8px">'
-      +'<img src="'+p.file45.thumbUrl+'" style="width:32px;height:40px;object-fit:contain;border-radius:3px;background:#f0f0f0"/>'
-      +'<span style="font-size:11px;color:var(--mu)">4×5</span>'
-      +'<span style="color:var(--bor2)">↔</span>'
-      +'<img src="'+p.file916.thumbUrl+'" style="width:23px;height:40px;object-fit:contain;border-radius:3px;background:#f0f0f0"/>'
-      +'<span style="font-size:11px;color:var(--mu)">9×16</span>'
-      +'<button onclick="removePair2('+i+')" style="margin-left:auto;background:none;border:none;cursor:pointer;color:var(--mu);font-size:13px">✕</button>'
-      +'</div>').join('')
-    +'</div></div>':' ';
+  const pairsHTML = pairs.length ?
+    '<div style="border-top:1px solid var(--bor);padding-top:12px;margin-top:12px">' +
+    '<div style="font-size:12px;font-weight:600;margin-bottom:10px">' + pairs.length + ' paired</div>' +
+    '<div style="display:flex;flex-direction:column;gap:6px;max-height:160px;overflow-y:auto">' +
+    pairs.map((p, i) =>
+      '<div style="display:flex;align-items:center;gap:8px;background:var(--sur2);border-radius:var(--rs);padding:6px 8px">' +
+      '<img src="' + p.file45.thumbUrl + '" style="width:30px;height:38px;object-fit:contain;border-radius:3px;background:#f0f0f0"/>' +
+      '<span style="font-size:11px;color:var(--mu)">4×5</span>' +
+      '<span style="color:var(--bor2)">↔</span>' +
+      '<img src="' + p.file916.thumbUrl + '" style="width:22px;height:38px;object-fit:contain;border-radius:3px;background:#f0f0f0"/>' +
+      '<span style="font-size:11px;color:var(--mu)">9×16</span>' +
+      '<button onclick="removePair(' + i + ')" style="margin-left:auto;background:none;border:none;cursor:pointer;color:var(--mu);font-size:13px">✕</button>' +
+      '</div>'
+    ).join('') + '</div></div>' : '';
 
-  g('importBody').innerHTML=
-    '<div style="font-size:13px;color:var(--mu);margin-bottom:12px">'
-    +(pending45?'<span style="color:var(--am);font-weight:500">4×5 selected — now click its matching 9×16 →</span>':'Click a <strong style="color:var(--tx)">4×5</strong>, then its matching <strong style="color:var(--tx)">9×16</strong>.')
-    +' <span style="color:var(--bor2)">'+pairs.length+' paired, '+(files45.length-pairs.length)+' remaining</span>'
-    +'</div>'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">'
-    +'<div><div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);margin-bottom:8px;text-align:center">4×5</div>'
-    +'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;max-height:340px;overflow-y:auto">'
-    +files45.map(f=>makeThumb(f,'45')).join('')+'</div></div>'
-    +'<div><div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);margin-bottom:8px;text-align:center">9×16</div>'
-    +'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;max-height:340px;overflow-y:auto">'
-    +files916.map(f=>makeThumb(f,'916')).join('')+'</div></div>'
-    +'</div>'
-    +pairsHTML
-    +'<div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid var(--bor);margin-top:14px">'
-    +'<button class="btn btn-ghost btn-sm" onclick="showStep1()">← Back</button>'
-    +(pairs.length?'<button class="btn btn-dark" onclick="addPairsToBoard()">Add '+pairs.length+' creative'+(pairs.length!==1?'s':'')+' to board →</button>':'<span style="font-size:12px;color:var(--mu)">Pair at least one to continue</span>')
-    +'</div>';
+  g('importBody').innerHTML =
+    '<div style="font-size:13px;color:var(--mu);margin-bottom:12px">' +
+    (pending45 ? '<span style="color:var(--am);font-weight:500">4×5 selected — now click its matching 9×16 →</span>' : 'Pairs are auto-matched by order. Click any thumbnail to re-pair manually.') +
+    ' <span style="color:var(--bor2)">' + pairs.length + ' paired, ' + (allFiles45.length - pairs.length) + ' remaining</span></div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">' +
+    '<div><div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);margin-bottom:8px;text-align:center">4×5</div>' +
+    '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;max-height:340px;overflow-y:auto">' + allFiles45.map(f => makeThumb(f, '45')).join('') + '</div></div>' +
+    '<div><div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);margin-bottom:8px;text-align:center">9×16</div>' +
+    '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;max-height:340px;overflow-y:auto">' + allFiles916.map(f => makeThumb(f, '916')).join('') + '</div></div>' +
+    '</div>' + pairsHTML +
+    '<div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid var(--bor);margin-top:14px">' +
+    '<button class="btn btn-ghost btn-sm" onclick="showStep1()">← Back</button>' +
+    (pairs.length ? '<button class="btn btn-dark" onclick="addPairsToBoard()">Add ' + pairs.length + ' creative' + (pairs.length !== 1 ? 's' : '') + ' to board →</button>' : '<span style="font-size:12px;color:var(--mu)">Pair at least one to continue</span>') +
+    '</div>';
 }
 
-function pickFile2(side,fileId){
-  if(side==='45'){
-    pending45=files45.find(f=>f.id===fileId)||null;
-    showPairingUI();
-    toast('Now click the matching 9×16');
+function pickFile(side, fileId) {
+  if (side === '45') {
+    pending45 = allFiles45.find(f => f.id === fileId) || null;
+    showPairingUI(); toast('Now click the matching 9×16');
   } else {
-    if(!pending45){toast('Select a 4×5 first');return;}
-    pairs.push({file45:pending45,file916:files916.find(f=>f.id===fileId)});
-    pending45=null;
-    showPairingUI();
+    if (!pending45) { toast('Select a 4×5 first'); return; }
+    // Remove any existing pair with these files
+    pairs = pairs.filter(p => p.file45.id !== pending45.id && p.file916.id !== fileId);
+    pairs.push({ file45: pending45, file916: allFiles916.find(f => f.id === fileId) });
+    pending45 = null; showPairingUI();
   }
 }
-
-function removePair2(i){pairs.splice(i,1);showPairingUI();}
-
-function showPairStep(){
-  const paired45Ids=new Set(pairs.map(p=>p.file45.id));
-  const paired916Ids=new Set(pairs.map(p=>p.file916.id));
-  const thumbHTML=(file,side)=>{
-    const isPaired=(side==='45'?paired45Ids:paired916Ids).has(file.id);
-    const isSel=pending45&&file.id===pending45.id&&side==='45';
-    const cls='pthumb'+(isPaired?' paired':'')+(isSel?' selected':'');
-    const click=isPaired?'':' onclick="pickFile(\x27'+side+'\x27,\x27'+file.id+'\x27)"';
-    return '<div class="'+cls+'"'+click+'><img src="'+file.thumbUrl+'" onerror="this.style.opacity=.15"/><div class="pname">'+file.name+'</div></div>';
-  };
-  const pairsHTML=pairs.length?`
-    <div style="border-top:1px solid var(--bor);padding-top:14px;margin-top:14px">
-      <div style="font-size:12px;font-weight:600;margin-bottom:10px">Paired (${pairs.length})</div>
-      ${pairs.map((p,i)=>`
-        <div class="pair-item">
-          <img class="pair-thumb-sm" src="${p.file45.thumbUrl}" onerror="this.style.opacity='.2'"/>
-          <div style="flex:1;min-width:0"><div class="pair-lbl">4×5</div><div style="font-size:10px;color:var(--mu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.file45.name}</div></div>
-          <span style="color:var(--bor2);font-size:16px">↔</span>
-          <img class="pair-thumb-sm" src="${p.file916.thumbUrl}" onerror="this.style.opacity='.2'"/>
-          <div style="flex:1;min-width:0"><div class="pair-lbl">9×16</div><div style="font-size:10px;color:var(--mu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.file916.name}</div></div>
-          <button class="btn btn-red btn-sm" onclick="removePair(${i})">✕</button>
-        </div>`).join('')}
-    </div>`:' ';
-  g('importBody').innerHTML=`
-    <div style="background:var(--sur2);border:1px solid var(--bor);border-radius:var(--rs);padding:10px 13px;margin-bottom:1rem;font-size:12px;line-height:1.6;color:var(--mu)">
-      <strong style="color:var(--tx)">How to pair:</strong> Click a thumbnail on the <strong style="color:var(--tx)">left (4×5)</strong> first — these are your square-ish ads. Then click its matching image on the <strong style="color:var(--tx)">right (9×16)</strong> — these are your tall story-format ads. They pair into one card.
-      ${pending45?'<br/><span style="color:var(--am);font-weight:500">✓ 4×5 selected — now click its matching 9×16 on the right</span>':''}
-    </div>
-    <div class="pair-grid">
-      <div><div class="pair-col-title">4×5 images (square-ish)</div><div class="pair-thumbs">${allFiles.map(f=>thumbHTML(f,'45')).join('')}</div></div>
-      <div><div class="pair-col-title">9×16 images (tall/story)</div><div class="pair-thumbs">${allFiles.map(f=>thumbHTML(f,'916')).join('')}</div></div>
-    </div>
-    ${pairsHTML}
-    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid var(--bor);margin-top:16px">
-      <button class="btn btn-ghost btn-sm" onclick="showStep1()">← Back</button>
-      <button class="btn btn-dark" onclick="addPairsToBoard()" ${pairs.length?'':'disabled'}>Add ${pairs.length||''} creative${pairs.length!==1?'s':''} to board →</button>
-    </div>`;
-}
-
-function pickFile(side,fileId){
-  const file=allFiles.find(f=>f.id===fileId);if(!file)return;
-  if(side==='45'){
-    pending45=file;
-    showPairStep();
-    toast('Now click the matching 9×16');
-  } else {
-    if(!pending45){toast('Select the 4×5 version first');return;}
-    pairs.push({file45:pending45,file916:file});
-    pending45=null;
-    showPairStep();
-    toast('Paired! Select next pair or add to board.');
-  }
-}
-function removePair(i){pairs.splice(i,1);showPairStep();}
-function addPairsToBoard(){
-  if(!pairs.length)return;
-  pairs.forEach(p=>{
-    data.push({
-      id:uid(),adName:p.file45.name.replace(/\.[^.]+$/,''),
-      product:impProduct,
-      link45:p.file45.url,link916:p.file916.url,
-      status:'none',inQueue:false,launchDate:'',
-      primaryText:'',headline:'',cta:'',url:'',urlParams:''
-    });
+function removePair(i) { pairs.splice(i, 1); showPairingUI(); }
+function addPairsToBoard() {
+  if (!pairs.length) return;
+  pairs.forEach(p => {
+    data.push({ id: uid(), adName: p.file45.name.replace(/\.[^.]+$/, ''), product: impProduct, link45: p.file45.url, link916: p.file916.url, status: 'none', inQueue: false, launchDate: '', primaryText: '', headline: '', cta: '', url: '', urlParams: '' });
   });
-  save();render();closeImport();
-  toast(`${pairs.length} creative${pairs.length>1?'s':''} added!`);
+  save(); render(); closeImport(); toast(pairs.length + ' creative' + (pairs.length > 1 ? 's' : '') + ' added!');
 }
 
 // ── PUSH TO QUEUE ─────────────────────────────────────
-function openSinglePush(id){
-  pushingIds=[id];
-  ['q_adname','q_copy','q_headline','q_cta','q_url','q_params'].forEach(i=>g(i).value='');
-  // pre-fill ad name if single creative
-  const r=data.find(x=>x.id===id);
-  if(r&&r.adName) g('q_adname').value=r.adName;
-  populateSavedDropdowns();
-  closeCard();ov('pushOv');
+function openSinglePush(id) {
+  pushingIds = [id];
+  ['q_adname', 'q_copy', 'q_headline', 'q_cta', 'q_url', 'q_params'].forEach(i => g(i).value = '');
+  const r = data.find(x => x.id === id); if (r && r.adName) g('q_adname').value = r.adName;
+  populateSavedDropdowns(); closeCard(); ov('pushOv');
 }
-function openMultiPush(){
-  pushingIds=[...sel];
-  ['q_adname','q_copy','q_headline','q_cta','q_url','q_params'].forEach(i=>g(i).value='');
-  populateSavedDropdowns();
-  ov('pushOv');
+function openMultiPush() {
+  pushingIds = [...sel];
+  ['q_adname', 'q_copy', 'q_headline', 'q_cta', 'q_url', 'q_params'].forEach(i => g(i).value = '');
+  populateSavedDropdowns(); ov('pushOv');
 }
-function populateSavedDropdowns(){
-  const qd=data.filter(r=>r.inQueue||r.status==='launched');
-  const uniq=(field)=>[...new Set(qd.map(r=>r[field]).filter(Boolean))];
-  const makeOpts=(vals)=>'<option value="">— use saved —</option>'+vals.map(v=>`<option value="${v.replace(/"/g,'&quot;')}">${v.length>50?v.slice(0,50)+'…':v}</option>`).join('');
-  g('q_copy_saved').innerHTML=makeOpts(uniq('primaryText'));
-  g('q_headline_saved').innerHTML=makeOpts(uniq('headline'));
-  g('q_url_saved').innerHTML=makeOpts(uniq('url'));
-  g('q_params_saved').innerHTML=makeOpts(uniq('urlParams'));
-  // Fill-all dropdown: group by product, dedupe by copy fingerprint
-  const seen=new Set();
-  const sets=[];
-  qd.forEach(r=>{
-    const key=(r.primaryText||'')+'|'+(r.headline||'')+'|'+(r.cta||'')+'|'+(r.url||'')+'|'+(r.urlParams||'');
-    if(key==='||||') return;
-    if(!seen.has(key)){
-      seen.add(key);
-      sets.push({label:r.product||r.adName||'Saved set',primaryText:r.primaryText||'',headline:r.headline||'',cta:r.cta||'',url:r.url||'',urlParams:r.urlParams||''});
-    }
+function closePush() { cv('pushOv'); }
+function populateSavedDropdowns() {
+  const qd = data.filter(r => r.inQueue || r.status === 'launched');
+  const uniq = field => [...new Set(qd.map(r => r[field]).filter(Boolean))];
+  const makeOpts = vals => '<option value="">— use saved —</option>' + vals.map(v => '<option value="' + v.replace(/"/g, '&quot;') + '">' + (v.length > 50 ? v.slice(0, 50) + '…' : v) + '</option>').join('');
+  g('q_copy_saved').innerHTML = makeOpts(uniq('primaryText'));
+  g('q_headline_saved').innerHTML = makeOpts(uniq('headline'));
+  g('q_url_saved').innerHTML = makeOpts(uniq('url'));
+  g('q_params_saved').innerHTML = makeOpts(uniq('urlParams'));
+  const seen = new Set(), sets = [];
+  qd.forEach(r => {
+    const key = (r.primaryText || '') + '|' + (r.headline || '') + '|' + (r.cta || '') + '|' + (r.url || '') + '|' + (r.urlParams || '');
+    if (key === '||||') return;
+    if (!seen.has(key)) { seen.add(key); sets.push({ label: r.product || r.adName || 'Saved set', primaryText: r.primaryText || '', headline: r.headline || '', cta: r.cta || '', url: r.url || '', urlParams: r.urlParams || '' }); }
   });
-  g('q_fill_all').innerHTML='<option value="">— pick a previous set —</option>'+
-    sets.map((s,i)=>`<option value="${i}">${s.label}: ${s.headline||s.primaryText||'(no headline)'}</option>`).join('');
-  g('q_fill_all')._sets=sets;
+  g('q_fill_all').innerHTML = '<option value="">— pick a previous set —</option>' + sets.map((s, i) => '<option value="' + i + '">' + s.label + ': ' + (s.headline || s.primaryText || '(no headline)').slice(0, 40) + '</option>').join('');
+  g('q_fill_all')._sets = sets;
 }
-function fillAllFromSaved(){
-  const sel=g('q_fill_all');
-  const idx=sel.value;
-  if(idx==='') return;
-  const sets=sel._sets||[];
-  const s=sets[parseInt(idx)];
-  if(!s) return;
-  if(s.primaryText) g('q_copy').value=s.primaryText;
-  if(s.headline) g('q_headline').value=s.headline;
-  if(s.cta) g('q_cta').value=s.cta;
-  if(s.url) g('q_url').value=s.url;
-  if(s.urlParams) g('q_params').value=s.urlParams;
-  sel.value='';
-  toast('All fields filled from saved set');
+function fillAllFromSaved() {
+  const sel = g('q_fill_all'), idx = sel.value;
+  if (idx === '') return;
+  const s = (sel._sets || [])[parseInt(idx)]; if (!s) return;
+  if (s.primaryText) g('q_copy').value = s.primaryText;
+  if (s.headline) g('q_headline').value = s.headline;
+  if (s.cta) g('q_cta').value = s.cta;
+  if (s.url) g('q_url').value = s.url;
+  if (s.urlParams) g('q_params').value = s.urlParams;
+  sel.value = ''; toast('All fields filled from saved set');
 }
-function applySaved(inputId,selectId){
-  const val=g(selectId).value;
-  if(val) g(inputId).value=val;
-}
-function closePush(){cv('pushOv');}
-function confirmPush(){
-  const adName=gv('q_adname');
-  pushingIds.forEach(id=>{
-    const r=data.find(x=>x.id===id);if(!r)return;
-    r.inQueue=true;r.status='queued';
-    if(adName) r.adName=adName;
-    r.primaryText=gv('q_copy');r.headline=gv('q_headline');r.cta=gv('q_cta');r.url=gv('q_url');r.urlParams=gv('q_params');
+function applySaved(inputId, selectId) { const val = g(selectId).value; if (val) g(inputId).value = val; }
+function confirmPush() {
+  const adName = gv('q_adname');
+  pushingIds.forEach(id => {
+    const r = data.find(x => x.id === id); if (!r) return;
+    r.inQueue = true; r.status = 'queued';
+    if (adName) r.adName = adName;
+    r.primaryText = gv('q_copy'); r.headline = gv('q_headline'); r.cta = gv('q_cta'); r.url = gv('q_url'); r.urlParams = gv('q_params');
   });
-  save();render();sel.clear();updateFAB();closePush();
-  toast(`${pushingIds.length} creative${pushingIds.length>1?'s':''} added to queue`);
+  save(); render(); sel.clear(); updateFAB(); closePush();
+  toast(pushingIds.length + ' creative' + (pushingIds.length > 1 ? 's' : '') + ' added to queue');
 }
 
 // ── QUEUE TABLE ───────────────────────────────────────
-function renderQueue(){
-  const qrows=data.filter(r=>r.inQueue);
-  const tbody=g('qbody');
-  if(!qrows.length){tbody.innerHTML='<tr><td colspan="12" style="text-align:center;color:var(--mu);padding:2.5rem">No ads in queue yet.</td></tr>';return;}
-  tbody.innerHTML=qrows.map(r=>{
-    const st=r.status==='launched'?'launched':'queued';
-    const t=thumb(r.link45);
-    const ec=(field,val,ta)=>'<div class="ecell'+(val?'':' ecell-empty')+'" onclick="startEdit(this,\''+r.id+'\',\''+field+'\','+!!ta+')">'+String(val||'click to edit')+'</div>';
-    return '<tr>'
-      +'<td>'+(t?'<img src="'+t+'" style="width:36px;height:45px;object-fit:cover;border-radius:4px" onerror="this.style.display=none"/>':'')+'</td>'
-      +'<td style="min-width:130px">'+ec('adName',r.adName)+'</td>'
-      +'<td style="min-width:110px">'+ec('product',r.product)+'</td>'
-      +'<td style="min-width:180px">'+ec('primaryText',r.primaryText,true)+'</td>'
-      +'<td style="min-width:110px">'+ec('headline',r.headline)+'</td>'
-      +'<td style="min-width:80px">'+ec('cta',r.cta)+'</td>'
-      +'<td style="min-width:140px">'+ec('url',r.url)+'</td>'
-      +'<td style="min-width:140px">'+ec('urlParams',r.urlParams)+'</td>'
-      +'<td>'+(r.link45?'<a href="'+r.link45+'" target="_blank" style="color:var(--gn);text-decoration:none">4x5 ↗</a>':'—')+'</td>'
-      +'<td>'+(r.link916?'<a href="'+r.link916+'" target="_blank" style="color:var(--gn);text-decoration:none">9x16 ↗</a>':'—')+'</td>'
-      +'<td><span class="badge b-'+st+'"><span class="bdot"></span>'+(st==='launched'?'Launched':'In queue')+'</span>'+(r.launchDate?'<div style="font-size:10px;font-family:DM Mono,monospace;color:var(--mu);margin-top:3px">'+r.launchDate+'</div>':'')+'</td>'
-      +'<td style="white-space:nowrap">'+(st==='queued'?'<button class="btn btn-green btn-sm" onclick="markLiveQ(\''+r.id+'\')">✓ Launched</button>':'')+'<button class="btn btn-red btn-sm" style="margin-top:4px" onclick="removeFromQueue(\''+r.id+'\')">✕ Remove</button></td>'
-      +'</tr>';
+function renderQueue() {
+  const qrows = data.filter(r => r.inQueue);
+  const tbody = g('qbody');
+  if (!qrows.length) { tbody.innerHTML = '<tr><td colspan="12" style="text-align:center;color:var(--mu);padding:2.5rem">No ads in queue yet.</td></tr>'; return; }
+  tbody.innerHTML = qrows.map(r => {
+    const st = r.status === 'launched' ? 'launched' : 'queued';
+    const t = thumb(r.link45);
+    const ec = (field, val, ta) => '<div class="ecell ' + (val ? '' : 'mt') + '" onclick="startEdit(this,\'' + r.id + '\',\'' + field + '\',' + !!ta + ')">' + (val || 'click to edit') + '</div>';
+    return '<tr>' +
+      '<td>' + (t ? '<img src="' + t + '" style="width:36px;height:45px;object-fit:cover;border-radius:4px" onerror="this.style.display=\'none\'"/>' : '') + '</td>' +
+      '<td style="min-width:130px">' + ec('adName', r.adName) + '</td>' +
+      '<td style="min-width:110px">' + ec('product', r.product) + '</td>' +
+      '<td style="min-width:180px">' + ec('primaryText', r.primaryText, true) + '</td>' +
+      '<td style="min-width:110px">' + ec('headline', r.headline) + '</td>' +
+      '<td style="min-width:80px">' + ec('cta', r.cta) + '</td>' +
+      '<td style="min-width:140px">' + ec('url', r.url) + '</td>' +
+      '<td style="min-width:140px">' + ec('urlParams', r.urlParams) + '</td>' +
+      '<td>' + (r.link45 ? '<a href="' + r.link45 + '" target="_blank" style="color:var(--gn);text-decoration:none">4×5 ↗</a>' : '—') + '</td>' +
+      '<td>' + (r.link916 ? '<a href="' + r.link916 + '" target="_blank" style="color:var(--gn);text-decoration:none">9×16 ↗</a>' : '—') + '</td>' +
+      '<td><span class="badge b-' + st + '"><span class="bdot"></span>' + (st === 'launched' ? 'Launched' : 'In queue') + '</span>' +
+      (r.launchDate ? '<div style="font-size:10px;font-family:DM Mono,monospace;color:var(--mu);margin-top:3px">' + r.launchDate + '</div>' : '') + '</td>' +
+      '<td style="white-space:nowrap">' +
+      (st === 'queued' ? '<button class="btn btn-green btn-sm" onclick="markLiveQ(\'' + r.id + '\')">✓ Launched</button>' : '') +
+      '<button class="btn btn-red btn-sm" style="margin-top:4px" onclick="removeFromQueue(\'' + r.id + '\')">Remove</button>' +
+      '</td></tr>';
   }).join('');
 }
-function startEdit(cell,id,field,isTextarea){
-  if(cell.querySelector('input,textarea'))return;
-  const cur=cell.classList.contains('ecell-empty')?'':cell.textContent;
-  const el=document.createElement(isTextarea?'textarea':'input');
-  el.value=cur;
-  el.style.cssText='width:100%;padding:4px 6px;border:1.5px solid var(--bor2);border-radius:4px;font-size:12px;font-family:DM Sans,sans-serif;background:var(--sur);color:var(--tx);outline:none;'+(isTextarea?'min-height:64px;resize:vertical;line-height:1.4;':'');
-  cell.innerHTML='';
-  cell.appendChild(el);
-  el.focus();
-  const commit=()=>{ const val=el.value.trim(); const r=data.find(x=>x.id===id); if(r){r[field]=val;save();} renderQueue(); };
-  el.addEventListener('blur',commit);
-  el.addEventListener('keydown',e=>{if(e.key==='Enter'&&!isTextarea){e.preventDefault();el.blur();}if(e.key==='Escape'){renderQueue();}});
-}
-function removeFromQueue(id){
-  const r=data.find(x=>x.id===id);if(!r)return;
-  if(r.status==='launched'){toast("Can't remove a launched ad from queue");return;}
-  r.inQueue=false;r.status='none';
-  save();render();toast('Removed from queue');
-}
-function markLiveQ(id){const r=data.find(x=>x.id===id);if(!r)return;r.status='launched';r.launchDate=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});save();render();toast('Launched 🎉');}
-function exportCSV(){
-  // Only export ads that are queued but NOT yet launched
-  const qrows=data.filter(r=>r.inQueue&&r.status!=='launched');
-  if(!qrows.length){toast('No pending ads to export — everything has been launched!');return;}
-  const h=['Ad Name','Product','Primary Text','Headline','CTA','Website URL','URL Parameters','4x5 Link','9x16 Link'];
-  const rows=qrows.map(r=>[r.adName,r.product,r.primaryText,r.headline,r.cta,r.url,r.urlParams,r.link45,r.link916].map(x=>`"${(x||'').replace(/"/g,'""')}"`).join(','));
-  const blob=new Blob([[h.join(','),...rows].join('\n')],{type:'text/csv'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='upload-queue.csv';a.click();
-  toast(`Exported ${qrows.length} pending ad${qrows.length>1?'s':''}`);
-}
-function refreshProdList(){
-  const p=[...new Set(data.map(r=>r.product).filter(Boolean))];
-  const opts=p.map(x=>`<option value="${x}"/>`).join('');
-  g('prodList').innerHTML=opts;
-}
-// ── LAUNCH PLAN ───────────────────────────────────────
-function savePlan(){localStorage.setItem('ct_plan_v1',JSON.stringify(plan));}
 
-function renderPlan(){
-  const el=document.getElementById('planEl');
-  if(!plan.length){
-    el.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;gap:14px;text-align:center">'
-      +'<div style="font-size:20px;font-weight:600;color:var(--tx)">No weeks yet</div>'
-      +'<div style="font-size:13px;color:var(--mu)">Create your first week to start planning launches.</div>'
-      +'<button class="btn btn-dark" onclick="openNewWeek()">+ Add week</button>'
-      +'</div>';
+function startEdit(cell, id, field, isTextarea) {
+  if (cell.querySelector('input,textarea')) return;
+  const cur = cell.classList.contains('mt') ? '' : cell.textContent;
+  const el = document.createElement(isTextarea ? 'textarea' : 'input');
+  el.value = cur;
+  el.style.cssText = 'width:100%;padding:4px 6px;border:1.5px solid var(--bor2);border-radius:4px;font-size:12px;font-family:DM Sans,sans-serif;background:var(--sur);color:var(--tx);outline:none;' + (isTextarea ? 'min-height:64px;resize:vertical;line-height:1.4;' : '');
+  cell.innerHTML = ''; cell.appendChild(el); el.focus();
+  const commit = () => { const val = el.value.trim(); const r = data.find(x => x.id === id); if (r) { r[field] = val; save(); } renderQueue(); };
+  el.addEventListener('blur', commit);
+  el.addEventListener('keydown', e => { if (e.key === 'Enter' && !isTextarea) { e.preventDefault(); el.blur(); } if (e.key === 'Escape') renderQueue(); });
+}
+function markLiveQ(id) { const r = data.find(x => x.id === id); if (!r) return; r.status = 'launched'; r.launchDate = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); save(); render(); toast('Launched 🎉'); }
+function removeFromQueue(id) { const r = data.find(x => x.id === id); if (!r) return; if (r.status === 'launched') { toast("Can't remove a launched ad"); return; } r.inQueue = false; r.status = 'none'; save(); render(); toast('Removed from queue'); }
+function exportCSV() {
+  const qrows = data.filter(r => r.inQueue && r.status !== 'launched');
+  if (!qrows.length) { toast('No pending ads to export'); return; }
+  const h = ['Ad Name', 'Product', 'Primary Text', 'Headline', 'CTA', 'Website URL', 'URL Parameters', '4x5 Link', '9x16 Link'];
+  const rows = qrows.map(r => [r.adName, r.product, r.primaryText, r.headline, r.cta, r.url, r.urlParams, r.link45, r.link916].map(x => '"' + (x || '').replace(/"/g, '""') + '"').join(','));
+  const blob = new Blob([[h.join(','), ...rows].join('\n')], { type: 'text/csv' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'upload-queue.csv'; a.click();
+  toast('Exported ' + qrows.length + ' pending ads');
+}
+
+// ── LAUNCH PLAN ───────────────────────────────────────
+function renderPlan() {
+  const el = g('planWeeksEl');
+  if (!plan.length) {
+    el.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;gap:14px;text-align:center">' +
+      '<div style="font-size:20px;font-weight:600">No weeks yet</div>' +
+      '<div style="font-size:13px;color:var(--mu)">Create your first week to start planning.</div>' +
+      '<button class="btn btn-dark" onclick="openNewWeek()">+ Add week</button></div>';
     return;
   }
-  el.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:10px">'
-    +'<div style="font-size:13px;color:var(--mu)">Plan your launches by week. Add creatives and leave notes for context.</div>'
-    +'<button class="btn btn-dark btn-sm" onclick="openNewWeek()">+ Add week</button>'
-    +'</div>'
-    +plan.map(week=>{
-      const items=week.items||[];
-      return '<div style="margin-bottom:2.5rem">'
-        +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--bor)">'
-        +'<div style="display:flex;align-items:center;gap:10px">'
-        +'<div style="font-size:15px;font-weight:600;color:var(--tx)">'+week.label+'</div>'
-        +'<span style="font-size:11px;font-family:DM Mono,monospace;color:var(--mu);background:var(--sur2);border-radius:100px;padding:2px 8px">'+items.length+' ads</span>'
-        +'</div>'
-        +'<div style="display:flex;gap:8px">'
-        +'<button class="btn btn-out btn-sm" onclick="openPlanAdd(''+week.id+'')">+ Add creatives</button>'
-        +'<button class="btn btn-ghost btn-sm" onclick="openEditWeek(''+week.id+'')">Rename</button>'
-        +'<button class="btn btn-red btn-sm" onclick="deleteWeek(''+week.id+'')">Delete week</button>'
-        +'</div>'
-        +'</div>'
-        +(items.length?'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px">'
-          +items.map((item,idx)=>{
-            const cr=data.find(x=>x.id===item.creativeId);
-            const t=cr?thumb(cr.link45):'';
-            const st=cr?(cr.status==='launched'?'launched':cr.inQueue?'queued':'none'):'none';
-            const badge=st==='launched'?'<span style="background:var(--gnb);color:var(--gn);font-size:9px;font-weight:600;padding:2px 7px;border-radius:100px">Launched</span>'
-              :st==='queued'?'<span style="background:var(--amb);color:var(--am);font-size:9px;font-weight:600;padding:2px 7px;border-radius:100px">In queue</span>'
-              :'<span style="background:var(--sur2);color:var(--mu);font-size:9px;font-weight:600;padding:2px 7px;border-radius:100px">Not queued</span>';
-            return '<div style="background:var(--sur);border:1px solid var(--bor);border-radius:var(--r);overflow:hidden">'
-              +'<div style="position:relative">'
-              +(t?'<img src="'+t+'" style="width:100%;height:140px;object-fit:contain;background:#f5f5f5;display:block" onerror="this.style.opacity=.2"/>'
-                :'<div style="width:100%;height:140px;background:var(--sur2);display:flex;align-items:center;justify-content:center;color:var(--faint);font-size:12px">No preview</div>')
-              +'<button onclick="removePlanItem(''+week.id+'','+idx+')" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center">✕</button>'
-              +'</div>'
-              +'<div style="padding:10px">'
-              +'<div style="font-size:11px;font-weight:500;color:var(--tx);margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(cr?cr.adName||'Untitled':'Deleted creative')+'</div>'
-              +badge
-              +'<textarea placeholder="Add a note..." style="width:100%;margin-top:8px;padding:6px 8px;border:1px solid var(--bor);border-radius:var(--rs);font-size:11px;font-family:DM Sans,sans-serif;resize:vertical;min-height:52px;color:var(--tx);background:var(--sur);outline:none;line-height:1.4" onchange="updatePlanNote(''+week.id+'','+idx+',this.value)">'+item.note+'</textarea>'
-              +(st!=='launched'&&st!=='queued'&&cr?'<button class="btn btn-dark btn-sm" style="width:100%;margin-top:8px;justify-content:center" onclick="planPushToQueue(''+cr.id+'')">+ Add to queue</button>':'')
-              +'</div>'
-              +'</div>';
-          }).join('')
-          +'</div>'
-          :'<div style="border:1.5px dashed var(--border2);border-radius:var(--r);padding:2rem;text-align:center;color:var(--mu);font-size:13px">No ads yet — click + Add creatives</div>')
-        +'</div>';
-    }).join('');
+  el.innerHTML = plan.map(week => {
+    const items = week.items || [];
+    const cardsHTML = items.length ? items.map((item, idx) => {
+      const cr = data.find(x => x.id === item.creativeId);
+      const t = cr ? thumb(cr.link45) : '';
+      const st = cr ? (cr.status === 'launched' ? 'launched' : cr.inQueue ? 'queued' : 'none') : 'none';
+      const badgeHTML = st === 'launched' ? '<span class="badge b-live"><span class="bdot"></span>Launched</span>' :
+        st === 'queued' ? '<span class="badge b-queued"><span class="bdot"></span>In queue</span>' :
+        '<span class="badge b-none"><span class="bdot"></span>Not queued</span>';
+      return '<div class="plan-card">' +
+        '<div style="position:relative">' +
+        (t ? '<img class="plan-card-img" src="' + t + '" onerror="this.style.opacity=.2"/>' : '<div style="width:100%;height:140px;background:var(--sur2);display:flex;align-items:center;justify-content:center;color:var(--fa);font-size:12px">No preview</div>') +
+        '<button onclick="removePlanItem(\'' + week.id + '\',' + idx + ')" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:11px;line-height:1">✕</button>' +
+        '</div>' +
+        '<div class="plan-card-body">' +
+        '<div style="font-size:11px;font-weight:500;margin-bottom:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (cr ? cr.adName || 'Untitled' : 'Deleted') + '</div>' +
+        badgeHTML +
+        '<textarea class="plan-note" placeholder="Add a note..." onchange="updatePlanNote(\'' + week.id + '\',' + idx + ',this.value)">' + (item.note || '') + '</textarea>' +
+        (st === 'none' && cr ? '<button class="btn btn-dark btn-sm" style="width:100%;margin-top:8px;justify-content:center" onclick="planPushToQueue(\'' + cr.id + '\')">+ Add to queue</button>' : '') +
+        '</div></div>';
+    }).join('') :
+      '<div style="border:1.5px dashed var(--bor2);border-radius:var(--r);padding:2rem;text-align:center;color:var(--mu);font-size:13px;grid-column:1/-1">No ads yet — click + Add creatives</div>';
+
+    return '<div class="plan-week">' +
+      '<div class="plan-whead">' +
+      '<div style="display:flex;align-items:center;gap:10px">' +
+      '<div class="gtitle">' + week.label + '</div>' +
+      '<span class="gtag">' + items.length + ' ads</span>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px">' +
+      '<button class="btn btn-out btn-sm" onclick="openPlanAdd(\'' + week.id + '\')">+ Add creatives</button>' +
+      '<button class="btn btn-ghost btn-sm" onclick="openEditWeek(\'' + week.id + '\')">Rename</button>' +
+      '<button class="btn btn-red btn-sm" onclick="deleteWeek(\'' + week.id + '\')">Delete week</button>' +
+      '</div></div>' +
+      '<div class="plan-grid">' + cardsHTML + '</div>' +
+      '</div>';
+  }).join('');
 }
 
-function openNewWeek(){planEditWeekId=null;document.getElementById('weekOvTitle').textContent='Add week';document.getElementById('week_label').value='';document.getElementById('weekOv').classList.add('open');}
-function openEditWeek(id){planEditWeekId=id;const w=plan.find(x=>x.id===id);document.getElementById('weekOvTitle').textContent='Rename week';document.getElementById('week_label').value=w?w.label:'';document.getElementById('weekOv').classList.add('open');}
-function closeWeek(){document.getElementById('weekOv').classList.remove('open');}
-function saveWeek(){
-  const label=document.getElementById('week_label').value.trim();
-  if(!label){toast('Enter a label');return;}
-  if(planEditWeekId){const w=plan.find(x=>x.id===planEditWeekId);if(w)w.label=label;}
-  else plan.push({id:uid(),label,items:[]});
-  savePlan();renderPlan();closeWeek();
+function openNewWeek() { planEditWeekId = null; g('weekOvTitle').textContent = 'Add week'; g('week_label').value = ''; ov('weekOv'); }
+function openEditWeek(id) { planEditWeekId = id; const w = plan.find(x => x.id === id); g('weekOvTitle').textContent = 'Rename week'; g('week_label').value = w ? w.label : ''; ov('weekOv'); }
+function closeWeek() { cv('weekOv'); }
+function saveWeek() {
+  const label = g('week_label').value.trim(); if (!label) { toast('Enter a label'); return; }
+  if (planEditWeekId) { const w = plan.find(x => x.id === planEditWeekId); if (w) w.label = label; }
+  else plan.push({ id: uid(), label, items: [] });
+  savePlan(); renderPlan(); closeWeek();
 }
-function deleteWeek(id){if(!confirm('Delete this week?'))return;plan=plan.filter(x=>x.id!==id);savePlan();renderPlan();}
+function deleteWeek(id) { if (!confirm('Delete this week?')) return; plan = plan.filter(x => x.id !== id); savePlan(); renderPlan(); }
 
-function openPlanAdd(weekId){
-  planEditWeekId=weekId;
-  const week=plan.find(x=>x.id===weekId);
-  const alreadyIn=new Set((week?.items||[]).map(i=>i.creativeId));
-  const el=document.getElementById('planAddBody');
-  el.innerHTML='<div style="font-size:13px;color:var(--mu);margin-bottom:14px">Select creatives to add to <strong style="color:var(--tx)">'+(week?.label||'this week')+'</strong>.</div>'
-    +'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;max-height:400px;overflow-y:auto">'
-    +data.map(cr=>{
-      const t=thumb(cr.link45);
-      const inPlan=alreadyIn.has(cr.id);
-      return '<div style="border:1.5px solid '+(inPlan?'var(--gnm)':'var(--bor)')+';border-radius:var(--rs);overflow:hidden;cursor:'+(inPlan?'default':'pointer')+';opacity:'+(inPlan?'.5':'1')+'" '+(inPlan?'':' onclick="togglePlanCreative(''+cr.id+'')"')+'  id="plancr_'+cr.id+'">'
-        +(t?'<img src="'+t+'" style="width:100%;height:90px;object-fit:contain;background:#f5f5f5;display:block"/>':'<div style="width:100%;height:90px;background:var(--sur2)"></div>')
-        +'<div style="padding:4px 5px;font-size:9px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--tx)">'+(cr.adName||'Untitled')+'</div>'
-        +(inPlan?'<div style="background:var(--gnb);text-align:center;font-size:9px;font-weight:600;color:var(--gn);padding:2px">Added</div>':'')
-        +'</div>';
-    }).join('')
-    +'</div>'
-    +'<div style="display:flex;justify-content:flex-end;gap:8px;padding-top:14px;border-top:1px solid var(--bor);margin-top:14px">'
-    +'<button class="btn btn-ghost" onclick="closePlanAdd()">Done</button>'
-    +'</div>';
-  document.getElementById('planAddOv').classList.add('open');
+function openPlanAdd(weekId) {
+  planEditWeekId = weekId;
+  const week = plan.find(x => x.id === weekId);
+  const alreadyIn = new Set((week?.items || []).map(i => i.creativeId));
+  g('planAddTitle').textContent = 'Add to ' + (week?.label || 'week');
+  g('planAddBody').innerHTML =
+    '<div style="font-size:13px;color:var(--mu);margin-bottom:14px">Click creatives to add or remove them from this week.</div>' +
+    '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;max-height:420px;overflow-y:auto">' +
+    data.map(cr => {
+      const t = thumb(cr.link45);
+      const inPlan = alreadyIn.has(cr.id);
+      return '<div style="border:1.5px solid ' + (inPlan ? 'var(--gnm)' : 'var(--bor)') + ';border-radius:var(--rs);overflow:hidden;cursor:pointer;opacity:1;position:relative" onclick="togglePlanCreative(\'' + cr.id + '\')">' +
+        (t ? '<img src="' + t + '" style="width:100%;height:90px;object-fit:contain;background:#f5f5f5;display:block"/>' : '<div style="width:100%;height:90px;background:var(--sur2)"></div>') +
+        '<div style="padding:4px 5px;font-size:9px;font-weight:500;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">' + (cr.adName || 'Untitled') + '</div>' +
+        (inPlan ? '<div style="background:var(--gnb);text-align:center;font-size:9px;font-weight:600;color:var(--gn);padding:2px">✓ Added</div>' : '') +
+        '</div>';
+    }).join('') + '</div>' +
+    '<div style="display:flex;justify-content:flex-end;padding-top:14px;border-top:1px solid var(--bor);margin-top:14px">' +
+    '<button class="btn btn-dark" onclick="closePlanAdd()">Done</button></div>';
+  ov('planAddOv');
 }
-
-function togglePlanCreative(creativeId){
-  const week=plan.find(x=>x.id===planEditWeekId);if(!week)return;
-  const idx=week.items.findIndex(i=>i.creativeId===creativeId);
-  if(idx>-1){week.items.splice(idx,1);}
-  else{week.items.push({creativeId,note:''});}
-  savePlan();
-  // update the card visually
-  openPlanAdd(planEditWeekId);
+function togglePlanCreative(creativeId) {
+  const week = plan.find(x => x.id === planEditWeekId); if (!week) return;
+  const idx = week.items.findIndex(i => i.creativeId === creativeId);
+  if (idx > -1) week.items.splice(idx, 1);
+  else week.items.push({ creativeId, note: '' });
+  savePlan(); openPlanAdd(planEditWeekId);
 }
-
-function closePlanAdd(){document.getElementById('planAddOv').classList.remove('open');renderPlan();}
-
-function removePlanItem(weekId,idx){
-  const week=plan.find(x=>x.id===weekId);if(!week)return;
-  week.items.splice(idx,1);savePlan();renderPlan();
+function closePlanAdd() { cv('planAddOv'); renderPlan(); }
+function removePlanItem(weekId, idx) { const week = plan.find(x => x.id === weekId); if (!week) return; week.items.splice(idx, 1); savePlan(); renderPlan(); }
+function updatePlanNote(weekId, idx, val) { const week = plan.find(x => x.id === weekId); if (!week) return; if (week.items[idx]) week.items[idx].note = val; savePlan(); }
+function planPushToQueue(creativeId) {
+  pushingIds = [creativeId];
+  ['q_adname', 'q_copy', 'q_headline', 'q_cta', 'q_url', 'q_params'].forEach(i => g(i).value = '');
+  const r = data.find(x => x.id === creativeId); if (r && r.adName) g('q_adname').value = r.adName;
+  populateSavedDropdowns(); ov('pushOv');
 }
 
-function updatePlanNote(weekId,idx,val){
-  const week=plan.find(x=>x.id===weekId);if(!week)return;
-  if(week.items[idx])week.items[idx].note=val;
-  savePlan();
-}
-
-function planPushToQueue(creativeId){
-  const r=data.find(x=>x.id===creativeId);if(!r)return;
-  pushingIds=[creativeId];
-  ['q_adname','q_copy','q_headline','q_cta','q_url','q_params'].forEach(i=>document.getElementById(i).value='');
-  if(r.adName)document.getElementById('q_adname').value=r.adName;
-  populateSavedDropdowns();
-  document.getElementById('pushOv').classList.add('open');
-}
-
-function goTab(t){
-  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',(i===0&&t==='board')||(i===1&&t==='queue')||(i===2&&t==='plan')));
-  g('boardEl').style.display=t==='board'?'block':'none';
-  g('queueEl').style.display=t==='queue'?'block':'none';
-  g('planEl').style.display=t==='plan'?'block':'none';
-  if(t==='plan')renderPlan();
-}
-async function publishShare(){
-  if(!data.length){toast('No creatives to share yet');return;}
-  const btn=g('shareBtn');
-  btn.textContent='Publishing...';btn.disabled=true;
-  const DB='https://still-ad-tracker-default-rtdb.firebaseio.com/board.json';
-  try{
-    const res=await fetch(DB,{
-      method:'PUT',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({creatives:data,plan:plan,publishedAt:new Date().toISOString()})
-    });
-    if(!res.ok) throw new Error('Firebase write failed: '+res.status);
-    const shareUrl=window.location.origin+window.location.pathname+'?view=1';
+// ── SHARE ─────────────────────────────────────────────
+async function publishShare() {
+  if (!data.length) { toast('No creatives to share yet'); return; }
+  const btn = g('shareBtn'); btn.textContent = 'Publishing...'; btn.disabled = true;
+  const DB = 'https://still-ad-tracker-default-rtdb.firebaseio.com/board.json';
+  try {
+    const res = await fetch(DB, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ creatives: data, plan: plan, publishedAt: new Date().toISOString() }) });
+    if (!res.ok) throw new Error('Firebase write failed: ' + res.status);
+    const shareUrl = window.location.origin + window.location.pathname + '?view=1';
     showShareModal(shareUrl);
-  }catch(e){
-    toast('Could not publish — check Firebase rules are set to public');
-    console.error(e);
-  }finally{
-    btn.textContent='⬡ Share board';btn.disabled=false;
-  }
+  } catch (e) { toast('Could not publish — check Firebase rules'); console.error(e); }
+  finally { btn.textContent = '⬡ Share board'; btn.disabled = false; }
 }
+function showShareModal(url) {
+  g('shareTitle').textContent = 'Board published!';
+  g('shareBody').innerHTML =
+    '<div style="font-size:13px;color:var(--mu);margin-bottom:16px;line-height:1.6">Your board is now live. Anyone with this link can view your creatives and launch plan — read only. Re-publish any time after making changes.</div>' +
+    '<div style="background:var(--sur2);border:1px solid var(--bor);border-radius:var(--rs);padding:10px 12px;font-family:DM Mono,monospace;font-size:11px;word-break:break-all;margin-bottom:12px">' + url + '</div>' +
+    '<div style="display:flex;gap:8px"><button class="btn btn-dark btn-sm" onclick="copyShareUrl(\'' + url + '\')">Copy link</button><button class="btn btn-out btn-sm" onclick="closeShare()">Done</button></div>';
+  ov('shareOv');
+}
+function copyShareUrl(url) { navigator.clipboard.writeText(url).then(() => toast('Link copied!')).catch(() => { const inp = document.createElement('input'); inp.value = url; document.body.appendChild(inp); inp.select(); document.execCommand('copy'); document.body.removeChild(inp); toast('Link copied!'); }); }
+function closeShare() { cv('shareOv'); }
 
-async function checkViewMode(){
-  const params=new URLSearchParams(window.location.search);
-  if(!params.get('view')) return false;
-  document.body.innerHTML=`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:12px;font-family:DM Sans,sans-serif;color:#78766e">
-    <div style="font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#161510;margin-bottom:8px">Creative Tracker</div>
-    <div style="display:inline-block;width:16px;height:16px;border:2px solid #e0ddd4;border-top-color:#78766e;border-radius:50%;animation:spin .7s linear infinite"></div>
-    <div style="font-size:13px">Loading shared board...</div>
-    <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
-  </div>`;
-  try{
-    const DB='https://still-ad-tracker-default-rtdb.firebaseio.com/board.json';
-    const res=await fetch(DB);
-    if(!res.ok) throw new Error('not found');
-    const json=await res.json();
-    if(!json||!json.creatives) throw new Error('empty');
-    data=json.creatives||[];
+async function checkViewMode() {
+  const params = new URLSearchParams(window.location.search);
+  if (!params.get('view')) return false;
+  document.body.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:12px;font-family:DM Sans,sans-serif;color:#78766e"><div style="font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#161510;margin-bottom:8px">Creative Tracker</div><div style="display:inline-block;width:16px;height:16px;border:2px solid #e0ddd4;border-top-color:#78766e;border-radius:50%;animation:spin .7s linear infinite"></div><div style="font-size:13px">Loading shared board...</div><style>@keyframes spin{to{transform:rotate(360deg)}}</style></div>';
+  try {
+    const res = await fetch('https://still-ad-tracker-default-rtdb.firebaseio.com/board.json');
+    if (!res.ok) throw new Error('not found');
+    const json = await res.json();
+    if (!json || !json.creatives) throw new Error('empty');
+    data = json.creatives || [];
+    plan = json.plan || [];
     renderViewMode(json.publishedAt);
-  }catch(e){
-    document.body.innerHTML=`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:12px;font-family:DM Sans,sans-serif">
-      <div style="font-size:20px;font-weight:600;color:#161510">Board not found</div>
-      <div style="font-size:13px;color:#78766e">The shared board could not be loaded.</div>
-      <a href="${window.location.pathname}" style="color:#1b5c38;font-size:13px">Go to my tracker</a>
-    </div>`;
+  } catch (e) {
+    document.body.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:12px;font-family:DM Sans,sans-serif"><div style="font-size:20px;font-weight:600;color:#161510">Board not found</div><div style="font-size:13px;color:#78766e">The shared board could not be loaded.</div><a href="' + window.location.pathname + '" style="color:#1b5c38;font-size:13px">Go to my tracker</a></div>';
   }
   return true;
 }
 
-function renderViewMode(publishedAt){
-  const date=publishedAt?new Date(publishedAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'}):'';
-  document.body.innerHTML=`
-    <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    :root{--bg:#f5f4f0;--sur:#fff;--sur2:#eeecea;--bor:#e0ddd4;--bor2:#c8c5ba;--tx:#161510;--mu:#78766e;--gn:#1b5c38;--gnb:#d0eedd;--gnm:#3fad6a;--am:#7a4800;--amb:#fde4b0;--amm:#f5a000;--r:12px;--rs:8px;}
-    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
-    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap');
-    header{background:var(--sur);border-bottom:1px solid var(--bor);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100}
-    .logo{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
-    .badge{display:inline-flex;align-items:center;gap:5px;background:#ddeaff;color:#1a3a6e;border-radius:100px;padding:4px 10px;font-size:11px;font-weight:500}
-    .wrap{max-width:1400px;margin:0 auto;padding:1.5rem}
-    .pills{display:flex;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
-    .pill{background:var(--sur);border:1px solid var(--bor);border-radius:100px;padding:5px 13px;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mu)}
-    .pill strong{color:var(--tx);font-weight:600}
-    .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-    .d-all{background:var(--tx)}.d-live{background:var(--gnm)}.d-q{background:#bbb}.d-inq{background:var(--amm)}
-    .ptabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem}
-    .chip{border:1px solid var(--bor);background:var(--sur);border-radius:100px;padding:5px 13px;font-size:12px;font-weight:500;color:var(--mu);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
-    .chip:hover{border-color:var(--bor2);color:var(--tx)}.chip-on{background:var(--tx);color:#fff;border-color:var(--tx)}
-    .group{margin-bottom:2.5rem}
-    .gh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--bor)}
-    .gtitle{font-size:15px;font-weight:600}.gtag{font-size:11px;font-family:'DM Mono',monospace;color:var(--mu);background:var(--sur2);border-radius:100px;padding:2px 8px;margin-left:8px}
-    .gprog{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--mu)}
-    .pbar{width:64px;height:3px;background:var(--bor);border-radius:100px;overflow:hidden}
-    .pfill{height:100%;background:var(--gnm);border-radius:100px}
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
-    .card{background:var(--sur);border:1.5px solid var(--bor);border-radius:var(--r);overflow:hidden}
-    .card.live{border-color:var(--gnm)}.card.queued{border-color:var(--amm)}
-    .cimg{width:100%;aspect-ratio:4/5;background:var(--sur2);overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative}
-    .cimg img{width:100%;height:100%;object-fit:cover;display:block}
-    .stamp{position:absolute;bottom:0;left:0;right:0;padding:5px 4px;text-align:center;font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
-    .s-live{background:rgba(27,92,56,.88);color:#fff}.s-queued{background:rgba(122,72,0,.82);color:#fff}
-    .sbar{height:4px}.sb-live{background:var(--gnm)}.sb-queued{background:var(--amm)}.sb-none{background:var(--bor)}
-    .noimg{display:flex;flex-direction:column;align-items:center;gap:4px;opacity:.25}
-    .noimg svg{width:22px;height:22px}.noimg span{font-size:9px}
-    </style>
-    <header>
-      <div class="logo">Creative Tracker</div>
-      <div style="display:flex;align-items:center;gap:10px">
-        <span class="badge">👁 View only</span>
-        ${date?`<span style="font-size:11px;color:var(--mu)">Updated ${date}</span>`:''}
-      </div>
-    </header>
-    <div class="wrap">
-      <div class="pills" id="vPills"></div>
-      <div id="vTabs" class="ptabs"></div>
-      <div id="vGroups"></div>
-    </div>`;
+function renderViewMode(publishedAt) {
+  const date = publishedAt ? new Date(publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+  // Inject full view-mode UI
+  document.head.innerHTML += '<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>';
+  document.body.innerHTML =
+    '<header style="background:#fff;border-bottom:1px solid #e0ddd4;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100">' +
+    '<div style="font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase">Creative Tracker</div>' +
+    '<div style="display:flex;align-items:center;gap:10px">' +
+    '<span style="background:#ddeaff;color:#1a3a6e;border-radius:100px;padding:4px 12px;font-size:11px;font-weight:500">👁 View only</span>' +
+    (date ? '<span style="font-size:11px;color:#78766e">Updated ' + date + '</span>' : '') +
+    '</div></header>' +
+    '<div style="max-width:1400px;margin:0 auto;padding:1.5rem" id="vRoot"></div>';
 
-  let vProd='all';
-  const prods=[...new Set(data.map(r=>r.product))];
+  let vProd = 'all', vStatus = 'all', vTab = 'board';
+  const prods = [...new Set(data.map(r => r.product))];
 
-  function thumbUrl(url){
-    if(!url)return'';
-    const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/)||url.match(/id=([a-zA-Z0-9_-]+)/);
-    return m?'https://drive.google.com/thumbnail?id='+m[1]+'&sz=w400':url;
+  function vThumb(url) {
+    if (!url) return '';
+    const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+    return m ? 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w400' : url;
   }
 
-  function renderView(){
-    const total=data.length,live=data.filter(r=>r.status==='launched').length,
-          inq=data.filter(r=>r.inQueue&&r.status!=='launched').length,
-          none=data.filter(r=>!r.inQueue&&r.status!=='launched').length;
-    document.getElementById('vPills').innerHTML=
-      '<div class="pill"><div class="dot d-all"></div><strong>'+total+'</strong> total</div>'+
-      '<div class="pill"><div class="dot d-live"></div><strong>'+live+'</strong> launched</div>'+
-      '<div class="pill"><div class="dot d-inq"></div><strong>'+inq+'</strong> in queue</div>'+
-      '<div class="pill"><div class="dot d-q"></div><strong>'+none+'</strong> not queued</div>';
-    document.getElementById('vTabs').innerHTML=
-      '<button class="chip '+(vProd==='all'?'chip-on':'')+'" onclick="vProd=\'all\';renderView()">All products</button>'+
-      prods.map(p=>'<button class="chip '+(vProd===p?'chip-on':'')+'" onclick="vProd=\''+p+'\';renderView()">'+p+'</button>').join('');
-    const vis=vProd==='all'?prods:[vProd];
-    document.getElementById('vGroups').innerHTML=vis.map(prod=>{
-      const pr=data.filter(r=>r.product===prod);
-      const liveN=pr.filter(r=>r.status==='launched').length;
-      const pct=pr.length?Math.round(liveN/pr.length*100):0;
-      return '<div class="group"><div class="gh"><div><span class="gtitle">'+prod+'</span><span class="gtag">'+pr.length+'</span></div><div class="gprog"><span>'+liveN+'/'+pr.length+' launched</span><div class="pbar"><div class="pfill" style="width:'+pct+'%"></div></div></div></div><div class="grid">'+
-        pr.map(r=>{
-          const st=r.status==='launched'?'launched':r.inQueue?'queued':'none';
-          const t=thumbUrl(r.link45);
-          const img=t?'<img src="'+t+'" loading="lazy" onerror="this.style.display=\'none\'"/><div class="noimg" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>No preview</span></div>':'<div class="noimg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span>No preview</span></div>';
-          const stamp=st==='launched'?'<div class="stamp s-live">✓ Launched</div>':st==='queued'?'<div class="stamp s-queued">In queue</div>':'';
-          return '<div class="card '+(st==='launched'?'live':st==='queued'?'queued':'')+'"><div class="cimg">'+img+stamp+'</div><div class="sbar sb-'+st+'"></div></div>';
-        }).join('')+'</div></div>';
-    }).join('');
+  function renderView() {
+    const root = document.getElementById('vRoot');
+    const total = data.length, live = data.filter(r => r.status === 'launched').length,
+      inq = data.filter(r => r.inQueue && r.status !== 'launched').length,
+      none = data.filter(r => !r.inQueue && r.status !== 'launched').length;
+
+    root.innerHTML =
+      '<div style="display:flex;gap:2px;background:#eeecea;border-radius:12px;padding:4px;width:fit-content;margin-bottom:1.5rem">' +
+      '<button onclick="vTab=\'board\';renderView()" style="padding:7px 18px;font-size:13px;font-weight:500;border-radius:8px;cursor:pointer;border:none;font-family:DM Sans,sans-serif;' + (vTab === 'board' ? 'background:#fff;color:#161510;box-shadow:0 1px 4px rgba(0,0,0,.07)' : 'background:transparent;color:#78766e') + '">Visual board</button>' +
+      '<button onclick="vTab=\'plan\';renderView()" style="padding:7px 18px;font-size:13px;font-weight:500;border-radius:8px;cursor:pointer;border:none;font-family:DM Sans,sans-serif;' + (vTab === 'plan' ? 'background:#fff;color:#161510;box-shadow:0 1px 4px rgba(0,0,0,.07)' : 'background:transparent;color:#78766e') + '">Launch plan</button>' +
+      '</div>';
+
+    if (vTab === 'board') {
+      root.innerHTML +=
+        '<div style="display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap">' +
+        ['total:' + total + ':d-all', 'launched:' + live + ':d-live', 'in queue:' + inq + ':d-inq', 'not queued:' + none + ':d-q'].map(x => {
+          const [lbl, n] = x.split(':');
+          return '<div style="background:#fff;border:1px solid #e0ddd4;border-radius:100px;padding:5px 13px;display:flex;align-items:center;gap:6px;font-size:12px;color:#78766e"><div style="width:6px;height:6px;border-radius:50%;background:' + (lbl === 'total' ? '#161510' : lbl === 'launched' ? '#3fad6a' : lbl === 'in queue' ? '#f5a000' : '#bbb') + '"></div><strong style="color:#161510">' + n + '</strong> ' + lbl + '</div>';
+        }).join('') + '</div>' +
+        '<div style="display:flex;flex-direction:column;gap:6px;margin-bottom:1.5rem">' +
+        '<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><span style="font-size:11px;font-weight:500;color:#78766e;text-transform:uppercase;letter-spacing:.06em;min-width:52px">Product</span>' +
+        ['all', ...prods].map(p => '<button onclick="vProd=\'' + p + '\';renderView()" style="border:1px solid ' + (vProd === p ? '#161510' : '#e0ddd4') + ';background:' + (vProd === p ? '#161510' : '#fff') + ';color:' + (vProd === p ? '#fff' : '#78766e') + ';border-radius:100px;padding:5px 13px;font-size:12px;cursor:pointer;font-family:DM Sans,sans-serif">' + (p === 'all' ? 'All' : p) + '</button>').join('') + '</div>' +
+        '<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><span style="font-size:11px;font-weight:500;color:#78766e;text-transform:uppercase;letter-spacing:.06em;min-width:52px">Status</span>' +
+        [['all', 'All'], ['none', 'Not launched'], ['queued', 'In queue'], ['launched', 'Launched']].map(([s, lbl]) => '<button onclick="vStatus=\'' + s + '\';renderView()" style="border:1px solid ' + (vStatus === s ? '#161510' : '#e0ddd4') + ';background:' + (vStatus === s ? '#161510' : '#fff') + ';color:' + (vStatus === s ? '#fff' : '#78766e') + ';border-radius:100px;padding:5px 13px;font-size:12px;cursor:pointer;font-family:DM Sans,sans-serif">' + lbl + '</button>').join('') + '</div></div>';
+
+      const visProd = vProd === 'all' ? prods : [vProd];
+      root.innerHTML += visProd.map(prod => {
+        let pr = data.filter(r => r.product === prod);
+        if (vStatus === 'launched') pr = pr.filter(r => r.status === 'launched');
+        else if (vStatus === 'queued') pr = pr.filter(r => r.inQueue && r.status !== 'launched');
+        else if (vStatus === 'none') pr = pr.filter(r => !r.inQueue && r.status !== 'launched');
+        if (!pr.length) return '';
+        const all = data.filter(r => r.product === prod);
+        const liveN = all.filter(r => r.status === 'launched').length;
+        const pct = all.length ? Math.round(liveN / all.length * 100) : 0;
+        return '<div style="margin-bottom:2.5rem">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #e0ddd4">' +
+          '<div style="display:flex;align-items:center;gap:10px"><span style="font-size:15px;font-weight:600">' + prod + '</span><span style="font-size:11px;font-family:DM Mono,monospace;color:#78766e;background:#eeecea;border-radius:100px;padding:2px 8px">' + all.length + '</span></div>' +
+          '<div style="display:flex;align-items:center;gap:8px;font-size:11px;color:#78766e"><span>' + liveN + '/' + all.length + ' launched</span><div style="width:64px;height:3px;background:#e0ddd4;border-radius:100px;overflow:hidden"><div style="height:100%;width:' + pct + '%;background:#3fad6a;border-radius:100px"></div></div></div>' +
+          '</div>' +
+          '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px">' +
+          pr.map(r => {
+            const st = r.status === 'launched' ? 'launched' : r.inQueue ? 'queued' : 'none';
+            const t = vThumb(r.link45);
+            return '<div style="background:#fff;border:1.5px solid ' + (st === 'launched' ? '#3fad6a' : st === 'queued' ? '#f5a000' : '#e0ddd4') + ';border-radius:12px;overflow:hidden">' +
+              '<div style="width:100%;aspect-ratio:4/5;background:#eeecea;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center">' +
+              (t ? '<img src="' + t + '" style="width:100%;height:100%;object-fit:cover;display:block"/>' : '') +
+              (st === 'launched' ? '<div style="position:absolute;bottom:0;left:0;right:0;padding:5px 4px;text-align:center;font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:rgba(27,92,56,.88);color:#fff">✓ Launched</div>' :
+                st === 'queued' ? '<div style="position:absolute;bottom:0;left:0;right:0;padding:5px 4px;text-align:center;font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:rgba(122,72,0,.82);color:#fff">In queue</div>' : '') +
+              '</div><div style="height:4px;background:' + (st === 'launched' ? '#3fad6a' : st === 'queued' ? '#f5a000' : '#e0ddd4') + '"></div></div>';
+          }).join('') + '</div></div>';
+      }).join('');
+    } else {
+      // Plan view
+      root.innerHTML += plan.length ?
+        plan.map(week => {
+          const items = week.items || [];
+          return '<div style="margin-bottom:2.5rem">' +
+            '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #e0ddd4">' +
+            '<div style="display:flex;align-items:center;gap:10px"><span style="font-size:15px;font-weight:600">' + week.label + '</span><span style="font-size:11px;font-family:DM Mono,monospace;color:#78766e;background:#eeecea;border-radius:100px;padding:2px 8px">' + items.length + ' ads</span></div>' +
+            '</div>' +
+            '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px">' +
+            items.map(item => {
+              const cr = data.find(x => x.id === item.creativeId);
+              const t = cr ? vThumb(cr.link45) : '';
+              const st = cr ? (cr.status === 'launched' ? 'launched' : cr.inQueue ? 'queued' : 'none') : 'none';
+              return '<div style="background:#fff;border:1px solid #e0ddd4;border-radius:12px;overflow:hidden">' +
+                (t ? '<img src="' + t + '" style="width:100%;height:140px;object-fit:contain;background:#f5f5f5;display:block"/>' : '<div style="width:100%;height:140px;background:#eeecea"></div>') +
+                '<div style="padding:10px">' +
+                '<div style="font-size:11px;font-weight:500;margin-bottom:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (cr ? cr.adName || 'Untitled' : 'Deleted') + '</div>' +
+                '<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:500;padding:3px 8px;border-radius:100px;background:' + (st === 'launched' ? '#d0eedd' : st === 'queued' ? '#fde4b0' : '#eeecea') + ';color:' + (st === 'launched' ? '#1b5c38' : st === 'queued' ? '#7a4800' : '#78766e') + '">' + (st === 'launched' ? 'Launched' : st === 'queued' ? 'In queue' : 'Not queued') + '</span>' +
+                (item.note ? '<div style="font-size:11px;color:#78766e;margin-top:8px;line-height:1.5;background:#f5f4f0;border-radius:6px;padding:6px 8px">' + item.note + '</div>' : '') +
+                '</div></div>';
+            }).join('') +
+            '</div></div>';
+        }).join('') :
+        '<div style="text-align:center;padding:3rem;color:#78766e;font-size:13px">No launch plan yet.</div>';
+    }
   }
   renderView();
-  window.renderView=renderView;
+  window.renderView = renderView;
 }
 
-function showShareModal(url){
-  g('shareTitle').textContent='Board published!';
-  const escaped=url.replace(/'/g,"\'");
-  g('shareBody').innerHTML='<div style="font-size:13px;color:var(--mu);margin-bottom:16px;line-height:1.6">Your board is now live. Anyone with this link can view your creatives — read only. Re-publish any time after making changes.</div>'
-    +'<div style="background:var(--sur2);border:1px solid var(--bor);border-radius:var(--rs);padding:10px 12px;font-family:DM Mono,monospace;font-size:11px;word-break:break-all;margin-bottom:12px">'+url+'</div>'
-    +'<div style="display:flex;gap:8px"><button class="btn btn-dark btn-sm" onclick="copyShareUrl(\''+escaped+'\')">Copy link</button><button class="btn btn-out btn-sm" onclick="closeShare()">Done</button></div>';
-  ov('shareOv');
-}
-function copyShareUrl(url){
-  navigator.clipboard.writeText(url).then(()=>toast('Link copied!')).catch(()=>{
-    const inp=document.createElement('input');inp.value=url;document.body.appendChild(inp);inp.select();document.execCommand('copy');document.body.removeChild(inp);toast('Link copied!');
-  });
-}
-function closeShare(){cv('shareOv');}
-function clearAll(){
-  if(!confirm('Delete ALL creatives and start fresh? Make sure you have a backup first.')) return;
-  data=[];
-  localStorage.removeItem(STORE);
-  localStorage.removeItem('ct_blob_id');
-  localStorage.removeItem('ct_jsonbin_id');
-  render();
-  toast('All cleared — ready for fresh import');
-}
-function backupData(){
-  if(!data.length){toast('Nothing to backup yet');return;}
-  const blob=new Blob([JSON.stringify({version:1,date:new Date().toISOString(),creatives:data},null,2)],{type:'application/json'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='creative-tracker-backup-'+new Date().toISOString().slice(0,10)+'.json';
-  a.click();
+// ── BACKUP / RESTORE ──────────────────────────────────
+function backupData() {
+  if (!data.length) { toast('Nothing to backup yet'); return; }
+  const blob = new Blob([JSON.stringify({ version: 1, date: new Date().toISOString(), creatives: data, plan: plan }, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'creative-tracker-backup-' + new Date().toISOString().slice(0, 10) + '.json'; a.click();
   toast('Backup downloaded!');
 }
-function restoreData(e){
-  const file=e.target.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    try{
-      const parsed=JSON.parse(ev.target.result);
-      const creatives=parsed.creatives||parsed;
-      if(!Array.isArray(creatives)){toast('Invalid backup file');return;}
-      if(!confirm(`Restore ${creatives.length} creatives? This will replace your current data.`))return;
-      data=creatives;
-      save();render();
-      toast(`Restored ${creatives.length} creatives!`);
-    }catch(err){toast('Could not read backup file');}
+function restoreData(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const parsed = JSON.parse(ev.target.result);
+      const creatives = parsed.creatives || parsed;
+      if (!Array.isArray(creatives)) { toast('Invalid backup file'); return; }
+      if (!confirm('Restore ' + creatives.length + ' creatives? This will replace your current data.')) return;
+      data = creatives;
+      if (parsed.plan) plan = parsed.plan;
+      save(); savePlan(); render();
+      toast('Restored ' + creatives.length + ' creatives!');
+    } catch (err) { toast('Could not read backup file'); }
   };
-  reader.readAsText(file);
-  e.target.value='';
+  reader.readAsText(file); e.target.value = '';
 }
-const g=id=>document.getElementById(id);
-const gv=id=>g(id).value.trim();
-const ov=id=>g(id).classList.add('open');
-const cv=id=>g(id).classList.remove('open');
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-const trunc=(s,n)=>s.length>n?s.slice(0,n)+'…':s;
-function toast(msg){const t=g('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+function clearAll() {
+  if (!confirm('Delete ALL creatives and start fresh? Make sure you have a backup first.')) return;
+  data = []; plan = [];
+  localStorage.removeItem(STORE); localStorage.removeItem(PLAN_STORE);
+  render(); toast('All cleared');
+}
+
+// ── PROD DATALIST ─────────────────────────────────────
+function refreshProdList() {
+  const p = [...new Set(data.map(r => r.product).filter(Boolean))];
+  g('prodList').innerHTML = p.map(x => '<option value="' + x + '"/>').join('');
+}
+
+// ── TABS ──────────────────────────────────────────────
+function goTab(t) {
+  document.querySelectorAll('.tab').forEach((el, i) => el.classList.toggle('active', (i === 0 && t === 'board') || (i === 1 && t === 'queue') || (i === 2 && t === 'plan')));
+  g('boardEl').style.display = t === 'board' ? 'block' : 'none';
+  g('queueEl').style.display = t === 'queue' ? 'block' : 'none';
+  g('planEl').style.display = t === 'plan' ? 'block' : 'none';
+  if (t === 'plan') renderPlan();
+}
 </script>
 </body>
 </html>
