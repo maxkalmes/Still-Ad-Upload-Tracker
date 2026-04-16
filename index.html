@@ -134,6 +134,7 @@ tr:hover td{background:var(--sur2)}
   <div class="tabs">
     <button class="tab active" onclick="goTab('board')">Visual board</button>
     <button class="tab" onclick="goTab('queue')">Upload queue</button>
+    <button class="tab" onclick="goTab('plan')">Launch plan</button>
   </div>
   <div id="boardEl">
     <div class="pills" id="pillsEl"></div>
@@ -154,6 +155,32 @@ tr:hover td{background:var(--sur2)}
         </tr></thead>
         <tbody id="qbody"></tbody>
       </table>
+    </div>
+  </div>
+</div>
+
+<!-- LAUNCH PLAN TAB -->
+<div id="planEl" style="display:none" class="wrap" style="padding:0">
+</div>
+
+<!-- ADD TO PLAN MODAL -->
+<div class="overlay" id="planAddOv" onclick="if(event.target===this)closePlanAdd()">
+  <div class="modal mxw" style="max-width:700px">
+    <div class="mhead"><div class="mtitle">Add to launch plan</div><button class="mclose" onclick="closePlanAdd()">✕</button></div>
+    <div class="mbody" id="planAddBody"></div>
+  </div>
+</div>
+
+<!-- NEW WEEK MODAL -->
+<div class="overlay" id="weekOv" onclick="if(event.target===this)closeWeek()">
+  <div class="modal" style="max-width:400px">
+    <div class="mhead"><div class="mtitle" id="weekOvTitle">Add week</div><button class="mclose" onclick="closeWeek()">✕</button></div>
+    <div class="mbody">
+      <div class="fg"><div class="flabel">Week label *</div><input class="fi" id="week_label" placeholder="e.g. Week of Apr 21" /></div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:14px;border-top:1px solid var(--bor)">
+        <button class="btn btn-ghost" onclick="closeWeek()">Cancel</button>
+        <button class="btn btn-dark" onclick="saveWeek()">Save</button>
+      </div>
     </div>
   </div>
 </div>
@@ -270,6 +297,8 @@ let sel=new Set(), editId=null, pushingIds=[];
 let allFiles=[], pairs=[], pending45=null, impProduct='';
 let activeProd='all';
 let activeStatus='all';
+let plan=JSON.parse(localStorage.getItem('ct_plan_v1')||'[]'); // [{id,label,items:[{creativeId,note}]}]
+let planEditWeekId=null;
 
 function save(){localStorage.setItem(STORE,JSON.stringify(data));}
 window.onload=async()=>{const isView=await checkViewMode();if(!isView)render();};
@@ -452,10 +481,12 @@ function loadLinks(){
   pairs=[];
   pending45=null;
   // Auto-match by stripping size identifiers from name and comparing base names
+  // Extract the base identifier by removing size suffix anywhere in the name
+  // Handles: v1_4x5, v1_9x16, ad1_45, ad1_916, name_4x5_final, etc.
   const baseName=name=>name
-    .replace(/\.(jpg|jpeg|png|gif|webp)$/i,'')
-    .replace(/[_\-\s]*(4x5|45|4_5|1080x1350|square)\s*$/i,'')
-    .replace(/[_\-\s]*(9x16|916|9_16|1080x1920|story|tall)\s*$/i,'')
+    .replace(/\.(jpg|jpeg|png|gif|webp)$/i,'')  // strip extension
+    .replace(/[_\-](4x5|45|4_5|1080x1350|square)/gi,'')   // remove 4x5 identifier
+    .replace(/[_\-](9x16|916|9_16|1080x1920|story|tall)/gi,'') // remove 9x16 identifier
     .toLowerCase().trim();
   const used45=new Set(), used916=new Set();
   files45.forEach(f45=>{
@@ -734,10 +765,138 @@ function refreshProdList(){
   const opts=p.map(x=>`<option value="${x}"/>`).join('');
   g('prodList').innerHTML=opts;
 }
+// ── LAUNCH PLAN ───────────────────────────────────────
+function savePlan(){localStorage.setItem('ct_plan_v1',JSON.stringify(plan));}
+
+function renderPlan(){
+  const el=document.getElementById('planEl');
+  if(!plan.length){
+    el.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;gap:14px;text-align:center">'
+      +'<div style="font-size:20px;font-weight:600;color:var(--tx)">No weeks yet</div>'
+      +'<div style="font-size:13px;color:var(--mu)">Create your first week to start planning launches.</div>'
+      +'<button class="btn btn-dark" onclick="openNewWeek()">+ Add week</button>'
+      +'</div>';
+    return;
+  }
+  el.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:10px">'
+    +'<div style="font-size:13px;color:var(--mu)">Plan your launches by week. Add creatives and leave notes for context.</div>'
+    +'<button class="btn btn-dark btn-sm" onclick="openNewWeek()">+ Add week</button>'
+    +'</div>'
+    +plan.map(week=>{
+      const items=week.items||[];
+      return '<div style="margin-bottom:2.5rem">'
+        +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--bor)">'
+        +'<div style="display:flex;align-items:center;gap:10px">'
+        +'<div style="font-size:15px;font-weight:600;color:var(--tx)">'+week.label+'</div>'
+        +'<span style="font-size:11px;font-family:DM Mono,monospace;color:var(--mu);background:var(--sur2);border-radius:100px;padding:2px 8px">'+items.length+' ads</span>'
+        +'</div>'
+        +'<div style="display:flex;gap:8px">'
+        +'<button class="btn btn-out btn-sm" onclick="openPlanAdd(''+week.id+'')">+ Add creatives</button>'
+        +'<button class="btn btn-ghost btn-sm" onclick="openEditWeek(''+week.id+'')">Rename</button>'
+        +'<button class="btn btn-red btn-sm" onclick="deleteWeek(''+week.id+'')">Delete week</button>'
+        +'</div>'
+        +'</div>'
+        +(items.length?'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px">'
+          +items.map((item,idx)=>{
+            const cr=data.find(x=>x.id===item.creativeId);
+            const t=cr?thumb(cr.link45):'';
+            const st=cr?(cr.status==='launched'?'launched':cr.inQueue?'queued':'none'):'none';
+            const badge=st==='launched'?'<span style="background:var(--gnb);color:var(--gn);font-size:9px;font-weight:600;padding:2px 7px;border-radius:100px">Launched</span>'
+              :st==='queued'?'<span style="background:var(--amb);color:var(--am);font-size:9px;font-weight:600;padding:2px 7px;border-radius:100px">In queue</span>'
+              :'<span style="background:var(--sur2);color:var(--mu);font-size:9px;font-weight:600;padding:2px 7px;border-radius:100px">Not queued</span>';
+            return '<div style="background:var(--sur);border:1px solid var(--bor);border-radius:var(--r);overflow:hidden">'
+              +'<div style="position:relative">'
+              +(t?'<img src="'+t+'" style="width:100%;height:140px;object-fit:contain;background:#f5f5f5;display:block" onerror="this.style.opacity=.2"/>'
+                :'<div style="width:100%;height:140px;background:var(--sur2);display:flex;align-items:center;justify-content:center;color:var(--faint);font-size:12px">No preview</div>')
+              +'<button onclick="removePlanItem(''+week.id+'','+idx+')" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center">✕</button>'
+              +'</div>'
+              +'<div style="padding:10px">'
+              +'<div style="font-size:11px;font-weight:500;color:var(--tx);margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(cr?cr.adName||'Untitled':'Deleted creative')+'</div>'
+              +badge
+              +'<textarea placeholder="Add a note..." style="width:100%;margin-top:8px;padding:6px 8px;border:1px solid var(--bor);border-radius:var(--rs);font-size:11px;font-family:DM Sans,sans-serif;resize:vertical;min-height:52px;color:var(--tx);background:var(--sur);outline:none;line-height:1.4" onchange="updatePlanNote(''+week.id+'','+idx+',this.value)">'+item.note+'</textarea>'
+              +(st!=='launched'&&st!=='queued'&&cr?'<button class="btn btn-dark btn-sm" style="width:100%;margin-top:8px;justify-content:center" onclick="planPushToQueue(''+cr.id+'')">+ Add to queue</button>':'')
+              +'</div>'
+              +'</div>';
+          }).join('')
+          +'</div>'
+          :'<div style="border:1.5px dashed var(--border2);border-radius:var(--r);padding:2rem;text-align:center;color:var(--mu);font-size:13px">No ads yet — click + Add creatives</div>')
+        +'</div>';
+    }).join('');
+}
+
+function openNewWeek(){planEditWeekId=null;document.getElementById('weekOvTitle').textContent='Add week';document.getElementById('week_label').value='';document.getElementById('weekOv').classList.add('open');}
+function openEditWeek(id){planEditWeekId=id;const w=plan.find(x=>x.id===id);document.getElementById('weekOvTitle').textContent='Rename week';document.getElementById('week_label').value=w?w.label:'';document.getElementById('weekOv').classList.add('open');}
+function closeWeek(){document.getElementById('weekOv').classList.remove('open');}
+function saveWeek(){
+  const label=document.getElementById('week_label').value.trim();
+  if(!label){toast('Enter a label');return;}
+  if(planEditWeekId){const w=plan.find(x=>x.id===planEditWeekId);if(w)w.label=label;}
+  else plan.push({id:uid(),label,items:[]});
+  savePlan();renderPlan();closeWeek();
+}
+function deleteWeek(id){if(!confirm('Delete this week?'))return;plan=plan.filter(x=>x.id!==id);savePlan();renderPlan();}
+
+function openPlanAdd(weekId){
+  planEditWeekId=weekId;
+  const week=plan.find(x=>x.id===weekId);
+  const alreadyIn=new Set((week?.items||[]).map(i=>i.creativeId));
+  const el=document.getElementById('planAddBody');
+  el.innerHTML='<div style="font-size:13px;color:var(--mu);margin-bottom:14px">Select creatives to add to <strong style="color:var(--tx)">'+(week?.label||'this week')+'</strong>.</div>'
+    +'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;max-height:400px;overflow-y:auto">'
+    +data.map(cr=>{
+      const t=thumb(cr.link45);
+      const inPlan=alreadyIn.has(cr.id);
+      return '<div style="border:1.5px solid '+(inPlan?'var(--gnm)':'var(--bor)')+';border-radius:var(--rs);overflow:hidden;cursor:'+(inPlan?'default':'pointer')+';opacity:'+(inPlan?'.5':'1')+'" '+(inPlan?'':' onclick="togglePlanCreative(''+cr.id+'')"')+'  id="plancr_'+cr.id+'">'
+        +(t?'<img src="'+t+'" style="width:100%;height:90px;object-fit:contain;background:#f5f5f5;display:block"/>':'<div style="width:100%;height:90px;background:var(--sur2)"></div>')
+        +'<div style="padding:4px 5px;font-size:9px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--tx)">'+(cr.adName||'Untitled')+'</div>'
+        +(inPlan?'<div style="background:var(--gnb);text-align:center;font-size:9px;font-weight:600;color:var(--gn);padding:2px">Added</div>':'')
+        +'</div>';
+    }).join('')
+    +'</div>'
+    +'<div style="display:flex;justify-content:flex-end;gap:8px;padding-top:14px;border-top:1px solid var(--bor);margin-top:14px">'
+    +'<button class="btn btn-ghost" onclick="closePlanAdd()">Done</button>'
+    +'</div>';
+  document.getElementById('planAddOv').classList.add('open');
+}
+
+function togglePlanCreative(creativeId){
+  const week=plan.find(x=>x.id===planEditWeekId);if(!week)return;
+  const idx=week.items.findIndex(i=>i.creativeId===creativeId);
+  if(idx>-1){week.items.splice(idx,1);}
+  else{week.items.push({creativeId,note:''});}
+  savePlan();
+  // update the card visually
+  openPlanAdd(planEditWeekId);
+}
+
+function closePlanAdd(){document.getElementById('planAddOv').classList.remove('open');renderPlan();}
+
+function removePlanItem(weekId,idx){
+  const week=plan.find(x=>x.id===weekId);if(!week)return;
+  week.items.splice(idx,1);savePlan();renderPlan();
+}
+
+function updatePlanNote(weekId,idx,val){
+  const week=plan.find(x=>x.id===weekId);if(!week)return;
+  if(week.items[idx])week.items[idx].note=val;
+  savePlan();
+}
+
+function planPushToQueue(creativeId){
+  const r=data.find(x=>x.id===creativeId);if(!r)return;
+  pushingIds=[creativeId];
+  ['q_adname','q_copy','q_headline','q_cta','q_url','q_params'].forEach(i=>document.getElementById(i).value='');
+  if(r.adName)document.getElementById('q_adname').value=r.adName;
+  populateSavedDropdowns();
+  document.getElementById('pushOv').classList.add('open');
+}
+
 function goTab(t){
-  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',(i===0&&t==='board')||(i===1&&t==='queue')));
+  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',(i===0&&t==='board')||(i===1&&t==='queue')||(i===2&&t==='plan')));
   g('boardEl').style.display=t==='board'?'block':'none';
   g('queueEl').style.display=t==='queue'?'block':'none';
+  g('planEl').style.display=t==='plan'?'block':'none';
+  if(t==='plan')renderPlan();
 }
 async function publishShare(){
   if(!data.length){toast('No creatives to share yet');return;}
@@ -748,7 +907,7 @@ async function publishShare(){
     const res=await fetch(DB,{
       method:'PUT',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({creatives:data,publishedAt:new Date().toISOString()})
+      body:JSON.stringify({creatives:data,plan:plan,publishedAt:new Date().toISOString()})
     });
     if(!res.ok) throw new Error('Firebase write failed: '+res.status);
     const shareUrl=window.location.origin+window.location.pathname+'?view=1';
