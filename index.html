@@ -262,6 +262,14 @@ tr:hover td{background:var(--sur2)}
   </div>
 </div>
 
+<!-- ADD TO PLAN MODAL (from card) -->
+<div class="overlay" id="addToPlanOv" onclick="if(event.target===this)closeAddToPlan()">
+  <div class="modal" style="max-width:400px">
+    <div class="mhead"><div class="mtitle">Add to launch plan</div><button class="mclose" onclick="closeAddToPlan()">✕</button></div>
+    <div class="mbody" id="addToPlanBody"></div>
+  </div>
+</div>
+
 <!-- SHARE MODAL -->
 <div class="overlay" id="shareOv" onclick="if(event.target===this)closeShare()">
   <div class="modal mw">
@@ -434,6 +442,7 @@ function openCard(id) {
     (st !== 'launched' ? '<button class="btn btn-green btn-sm" onclick="markLive(\'' + id + '\')">✓ Mark as launched</button>' : '') +
     (st === 'none' ? '<button class="btn btn-dark btn-sm" onclick="openSinglePush(\'' + id + '\')">+ Add to queue</button>' : '') +
     (st === 'launched' ? '<button class="btn btn-out btn-sm" onclick="unlaunch(\'' + id + '\')">↩ Unlaunch</button>' : '') +
+    '<button class="btn btn-out btn-sm" onclick="openAddToPlan(\'' + id + '\')">📅 Add to plan</button>' +
     '<button class="btn btn-out btn-sm" onclick="openEdit(\'' + id + '\')">Edit</button>' +
     '<button class="btn btn-red btn-sm" onclick="del(\'' + id + '\')">Delete</button>' +
     '</div>';
@@ -739,37 +748,113 @@ function saveWeek() {
 }
 function deleteWeek(id) { if (!confirm('Delete this week?')) return; plan = plan.filter(x => x.id !== id); savePlan(); renderPlan(); }
 
-function openPlanAdd(weekId) {
+function openPlanAdd(weekId, scrollPos) {
   planEditWeekId = weekId;
   const week = plan.find(x => x.id === weekId);
   const alreadyIn = new Set((week?.items || []).map(i => i.creativeId));
   g('planAddTitle').textContent = 'Add to ' + (week?.label || 'week');
+
+  // Group by product
+  const prods = [...new Set(data.map(r => r.product))];
+  const statusLabel = cr => cr.status === 'launched' ? '<span style="font-size:8px;background:#d0eedd;color:#1b5c38;padding:1px 5px;border-radius:100px;font-weight:600">Launched</span>' :
+    cr.inQueue ? '<span style="font-size:8px;background:#fde4b0;color:#7a4800;padding:1px 5px;border-radius:100px;font-weight:600">In queue</span>' : '';
+
   g('planAddBody').innerHTML =
-    '<div style="font-size:13px;color:var(--mu);margin-bottom:14px">Click creatives to add or remove them from this week.</div>' +
-    '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;max-height:420px;overflow-y:auto">' +
-    data.map(cr => {
-      const t = thumb(cr.link45);
-      const inPlan = alreadyIn.has(cr.id);
-      return '<div style="border:1.5px solid ' + (inPlan ? 'var(--gnm)' : 'var(--bor)') + ';border-radius:var(--rs);overflow:hidden;cursor:pointer;opacity:1;position:relative" onclick="togglePlanCreative(\'' + cr.id + '\')">' +
-        (t ? '<img src="' + t + '" style="width:100%;height:90px;object-fit:contain;background:#f5f5f5;display:block"/>' : '<div style="width:100%;height:90px;background:var(--sur2)"></div>') +
-        '<div style="padding:4px 5px;font-size:9px;font-weight:500;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">' + (cr.adName || 'Untitled') + '</div>' +
-        (inPlan ? '<div style="background:var(--gnb);text-align:center;font-size:9px;font-weight:600;color:var(--gn);padding:2px">✓ Added</div>' : '') +
-        '</div>';
-    }).join('') + '</div>' +
+    '<div style="font-size:13px;color:var(--mu);margin-bottom:14px">Click to add or remove. Shows all creatives including launched ones.</div>' +
+    '<div id="planAddScroll" style="max-height:440px;overflow-y:auto">' +
+    prods.map(prod => {
+      const prs = data.filter(r => r.product === prod);
+      return '<div style="margin-bottom:16px">' +
+        '<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--bor)">' + prod + '</div>' +
+        '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px">' +
+        prs.map(cr => {
+          const t = thumb(cr.link45);
+          const inPlan = alreadyIn.has(cr.id);
+          return '<div data-crid="' + cr.id + '" style="border:1.5px solid ' + (inPlan ? 'var(--gnm)' : 'var(--bor)') + ';border-radius:var(--rs);overflow:hidden;cursor:pointer;position:relative">' +
+            (t ? '<img src="' + t + '" style="width:100%;height:80px;object-fit:contain;background:#f5f5f5;display:block"/>' : '<div style="width:100%;height:80px;background:var(--sur2)"></div>') +
+            '<div style="padding:4px 5px">' +
+            '<div style="font-size:9px;font-weight:500;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;margin-bottom:2px">' + (cr.adName || 'Untitled') + '</div>' +
+            statusLabel(cr) +
+            (inPlan ? '<div style="background:var(--gnb);text-align:center;font-size:9px;font-weight:600;color:var(--gn);padding:2px;margin-top:2px;border-radius:3px">✓ Added</div>' : '') +
+            '</div></div>';
+        }).join('') +
+        '</div></div>';
+    }).join('') +
+    '</div>' +
     '<div style="display:flex;justify-content:flex-end;padding-top:14px;border-top:1px solid var(--bor);margin-top:14px">' +
     '<button class="btn btn-dark" onclick="closePlanAdd()">Done</button></div>';
+
   ov('planAddOv');
+  // Add click delegation to avoid inline onclick issues
+  setTimeout(() => {
+    const scroll = document.getElementById('planAddScroll');
+    if (scroll) {
+      scroll.onclick = (e) => {
+        const card = e.target.closest('[data-crid]');
+        if (card) togglePlanCreative(card.dataset.crid);
+      };
+      if (scrollPos) scroll.scrollTop = scrollPos;
+    }
+  }, 10);
 }
 function togglePlanCreative(creativeId) {
   const week = plan.find(x => x.id === planEditWeekId); if (!week) return;
   const idx = week.items.findIndex(i => i.creativeId === creativeId);
+  // Save current scroll position
+  const scrollEl = document.getElementById('planAddScroll');
+  const scrollPos = scrollEl ? scrollEl.scrollTop : 0;
   if (idx > -1) week.items.splice(idx, 1);
   else week.items.push({ creativeId, note: '' });
-  savePlan(); openPlanAdd(planEditWeekId);
+  savePlan();
+  // Re-render preserving scroll
+  openPlanAdd(planEditWeekId, scrollPos);
 }
 function closePlanAdd() { cv('planAddOv'); renderPlan(); }
 function removePlanItem(weekId, idx) { const week = plan.find(x => x.id === weekId); if (!week) return; week.items.splice(idx, 1); savePlan(); renderPlan(); }
 function updatePlanNote(weekId, idx, val) { const week = plan.find(x => x.id === weekId); if (!week) return; if (week.items[idx]) week.items[idx].note = val; savePlan(); }
+let _addToPlanCreativeId = null;
+function openAddToPlan(creativeId) {
+  _addToPlanCreativeId = creativeId;
+  if (!plan.length) { toast('No weeks yet — create a week in the Launch Plan tab first'); return; }
+  g('addToPlanBody').innerHTML =
+    '<div style="font-size:13px;color:var(--mu);margin-bottom:14px">Select a week to add this creative to.</div>' +
+    '<div style="display:flex;flex-direction:column;gap:8px">' +
+    plan.map(week => {
+      const alreadyIn = (week.items || []).some(i => i.creativeId === creativeId);
+      return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border:1px solid ' + (alreadyIn ? 'var(--gnm)' : 'var(--bor)') + ';border-radius:var(--rs);cursor:' + (alreadyIn ? 'default' : 'pointer') + ';background:' + (alreadyIn ? 'var(--gnb)' : 'var(--sur)') + '"' +
+        (alreadyIn ? '' : ' data-wid="' + week.id + '"') + '>' +
+        '<span style="font-size:13px;font-weight:500">' + week.label + '</span>' +
+        (alreadyIn ? '<span style="font-size:11px;color:var(--gn);font-weight:600">✓ Added</span>' : '<span style="font-size:11px;color:var(--mu)">' + (week.items || []).length + ' ads</span>') +
+        '</div>';
+    }).join('') +
+    '</div>' +
+    '<div style="display:flex;justify-content:flex-end;margin-top:14px;padding-top:14px;border-top:1px solid var(--bor)">' +
+    '<button class="btn btn-ghost" onclick="closeAddToPlan()">Done</button></div>';
+  closeCard();
+  ov('addToPlanOv');
+  // Add click delegation
+  setTimeout(() => {
+    const body = document.getElementById('addToPlanBody');
+    if (body) {
+      body.onclick = (e) => {
+        const card = e.target.closest('[data-wid]');
+        if (card) addCreativeToWeek(card.dataset.wid, _addToPlanCreativeId);
+      };
+    }
+  }, 10);
+}
+function addCreativeToWeek(weekId, creativeId) {
+  const week = plan.find(x => x.id === weekId); if (!week) return;
+  if (!week.items.find(i => i.creativeId === creativeId)) {
+    week.items.push({ creativeId, note: '' });
+    savePlan();
+  }
+  // Re-render the modal to show updated state
+  openAddToPlan(creativeId);
+  toast('Added to ' + week.label);
+}
+function closeAddToPlan() { cv('addToPlanOv'); }
+
 function planPushToQueue(creativeId) {
   pushingIds = [creativeId];
   ['q_adname', 'q_copy', 'q_headline', 'q_cta', 'q_url', 'q_params'].forEach(i => g(i).value = '');
