@@ -677,7 +677,7 @@ function startEdit(cell, id, field, isTextarea) {
   el.addEventListener('keydown', e => { if (e.key === 'Enter' && !isTextarea) { e.preventDefault(); el.blur(); } if (e.key === 'Escape') renderQueue(); });
 }
 function markLiveQ(id) { const r = data.find(x => x.id === id); if (!r) return; r.status = 'launched'; r.launchDate = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); save(); render(); toast('Launched 🎉'); }
-function removeFromQueue(id) { const r = data.find(x => x.id === id); if (!r) return; if (r.status === 'launched') { toast("Can't remove a launched ad"); return; } r.inQueue = false; r.status = 'none'; save(); render(); toast('Removed from queue'); }
+function removeFromQueue(id) { const r = data.find(x => x.id === id); if (!r) return; r.inQueue = false; if (r.status !== 'launched') r.status = 'none'; save(); render(); toast('Removed from queue'); }
 function exportCSV() {
   const qrows = data.filter(r => r.inQueue && r.status !== 'launched');
   if (!qrows.length) { toast('No pending ads to export'); return; }
